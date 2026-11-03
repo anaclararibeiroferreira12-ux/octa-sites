@@ -1,0 +1,753 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Octa Sites · Pedidos pelo celular para estabelecimentos de comida</title>
+<meta name="description" content="Sistema de pedidos por QR code para lanchonetes, pizzarias, padarias, cafés e marmitarias. O pedido sai da mesa e chega direto na cozinha, sem comissão.">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="icon" href="img/icone.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+:root{
+  --branco:#FFFFFF; --lilas-0:#F6F3FD; --lilas-1:#EDE7FB; --lilas-2:#D9CCF7;
+  --tinta:#1E1533; --tinta-2:#4A3F63; --suave:#6E6585; --linha:#E8E3F1;
+  --roxo:#6D28D9; --roxo-esc:#4C1D95; --roxo-claro:#8B5CF6;
+  --ouro:#C9A227; --ouro-esc:#8A6A0E; --ouro-claro:#FBF3D9;
+  --verde:#16A34A; --verde-txt:#15803D; --verde-claro:#DCFCE7;
+  --raio:20px; --sombra:0 1px 2px rgba(30,21,51,.06),0 8px 24px -12px rgba(30,21,51,.18);
+  --f:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--f);color:var(--tinta);background:var(--branco);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:3px solid var(--roxo-claro);outline-offset:2px;border-radius:10px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.cx{width:100%;max-width:1080px;margin:0 auto;padding:0 20px}
+section{padding:64px 0;scroll-margin-top:64px}
+.alt{background:var(--lilas-0)}
+.etq{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--roxo)}
+.etq::before{content:"";width:18px;height:2px;border-radius:2px;background:currentColor}
+h2{font-size:clamp(26px,6.6vw,38px);line-height:1.15;letter-spacing:-.025em;font-weight:800;margin-top:10px}
+.intro{margin-top:12px;color:var(--suave);font-size:16px;max-width:36rem}
+svg.i{width:22px;height:22px;flex:none}
+
+/* botões */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 22px;border-radius:14px;font-weight:700;font-size:16px;transition:transform .15s,background .2s,box-shadow .2s}
+.btn:active{transform:scale(.98)}
+.btn-roxo{background:var(--roxo);color:#fff;box-shadow:0 10px 22px -10px rgba(109,40,217,.8)}
+.btn-roxo:hover{background:var(--roxo-esc)}
+.btn-borda{background:#fff;color:var(--roxo-esc);border:1.5px solid var(--lilas-2)}
+.btn-borda:hover{background:var(--lilas-0)}
+.btn-zap{background:var(--verde-txt);color:#fff}
+.btn-zap:hover{background:#12803a}
+.btn svg{width:20px;height:20px}
+
+/* barra */
+.barra{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:saturate(1.4) blur(12px);-webkit-backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid transparent;transition:border-color .2s}
+.barra.rolou{border-color:var(--linha)}
+.barra .cx{display:flex;align-items:center;justify-content:space-between;height:64px}
+.marca{display:flex;align-items:center;gap:8px;font-weight:800;letter-spacing:.14em;font-size:15px}
+.marca img{width:40px;height:auto}
+.marca span b{color:var(--roxo)}
+.barra nav{display:none;gap:28px;font-size:14px;font-weight:600;color:var(--tinta-2)}
+.barra nav a:hover{color:var(--roxo)}
+.barra .btn{min-height:40px;padding:0 16px;font-size:14px;border-radius:12px}
+@media(min-width:900px){.barra nav{display:flex}}
+
+/* topo */
+.topo{padding:28px 0 56px;background:linear-gradient(180deg,#fff 0%,var(--lilas-0) 100%)}
+.topo .cx{display:grid;gap:36px;align-items:center}
+@media(min-width:900px){.topo{padding:64px 0 80px}.topo .cx{grid-template-columns:1.1fr .9fr}}
+.selo-topo{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--linha);border-radius:999px;padding:6px 12px 6px 6px;font-size:13px;font-weight:600;color:var(--tinta-2);box-shadow:var(--sombra)}
+.selo-topo i{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--lilas-1);color:var(--roxo);font-style:normal}
+.selo-topo i svg{width:14px;height:14px}
+h1{margin-top:18px;font-size:clamp(34px,9.4vw,56px);line-height:1.06;letter-spacing:-.035em;font-weight:800}
+h1 em{font-style:normal;color:var(--roxo)}
+.topo p.lead{margin-top:16px;font-size:17px;color:var(--tinta-2);max-width:32rem}
+.topo .acoes{display:grid;gap:12px;margin-top:24px}
+@media(min-width:520px){.topo .acoes{display:flex}}
+.provas{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:22px;font-size:13.5px;font-weight:600;color:var(--tinta-2)}
+.provas span{display:inline-flex;align-items:center;gap:6px}
+.provas svg{width:16px;height:16px;color:var(--verde)}
+.topo-visual{position:relative;display:flex;justify-content:center;padding:8px 0 12px}
+.topo-visual .celular{width:min(250px,64vw);transform:rotate(-3deg)}
+.aviso{position:absolute;display:flex;align-items:center;gap:10px;background:#fff;border-radius:16px;padding:10px 14px;box-shadow:0 14px 30px -14px rgba(30,21,51,.45);border:1px solid var(--linha);font-size:13px;line-height:1.3}
+.aviso b{display:block;font-size:13.5px}
+.aviso i{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;font-style:normal;flex:none}
+.aviso i svg{width:18px;height:18px}
+.aviso.a1{right:2%;top:16%;animation:flutua 4s ease-in-out infinite}
+.aviso.a1 i{background:var(--lilas-1);color:var(--roxo)}
+.aviso.a2{left:0;bottom:12%;animation:flutua 4s ease-in-out 1.2s infinite}
+.aviso.a2 i{background:var(--verde-claro);color:var(--verde)}
+@keyframes flutua{50%{transform:translateY(-6px)}}
+@media(min-width:900px){.aviso.a1{right:-2%}.aviso.a2{left:4%}}
+
+/* celular realista */
+.celular{position:relative;aspect-ratio:9/19.5;border-radius:44px;padding:9px;background:linear-gradient(145deg,#2A2633,#0E0C12 60%,#24202C);box-shadow:inset 0 0 0 1.5px #4A4555,inset 0 0 0 3px #0B0A0E,0 24px 40px -18px rgba(30,21,51,.55)}
+.celular::before{content:"";position:absolute;right:-3px;top:26%;width:3px;height:16%;border-radius:0 3px 3px 0;background:#1F1C25}
+.celular::after{content:"";position:absolute;left:-3px;top:20%;width:3px;height:8%;border-radius:3px 0 0 3px;background:#1F1C25;box-shadow:0 52px 0 #1F1C25}
+.tela{position:relative;width:100%;height:100%;border-radius:36px;overflow:hidden;background:#FBF8F3;display:flex;flex-direction:column}
+.tela img{flex:1;min-height:0;width:100%;object-fit:cover;object-position:top}
+.status{flex:none;height:34px;display:flex;align-items:center;justify-content:space-between;padding:4px 20px 0 24px;font:600 11px/1 var(--f);color:#111;background:#FBF8F3}
+.status span{display:flex;gap:4px;align-items:center}
+.status svg{height:9px;width:auto}
+.ilha{position:absolute;z-index:2;top:9px;left:50%;transform:translateX(-50%);width:30%;height:22px;border-radius:999px;background:#000}
+
+/* como funciona */
+.passos{display:grid;gap:14px;margin-top:28px;counter-reset:p}
+@media(min-width:720px){.passos{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1000px){.passos{grid-template-columns:repeat(4,1fr)}}
+.passo{position:relative;background:#fff;border:1px solid var(--linha);border-radius:var(--raio);padding:20px;box-shadow:var(--sombra)}
+.passo .n{display:grid;place-items:center;width:44px;height:44px;border-radius:14px;background:var(--lilas-1);color:var(--roxo);margin-bottom:14px}
+.passo .n svg{width:22px;height:22px}
+.passo h3{font-size:17px;font-weight:700;letter-spacing:-.01em}
+.passo h3::before{counter-increment:p;content:counter(p) ". ";color:var(--roxo)}
+.passo p{margin-top:6px;font-size:14.5px;color:var(--suave)}
+.passo small{display:inline-block;margin-top:10px;font-size:12px;font-weight:600;color:var(--roxo-esc);background:var(--lilas-0);border-radius:8px;padding:3px 8px}
+.nota-delivery{margin-top:16px;display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px dashed var(--lilas-2);border-radius:16px;padding:14px 16px;font-size:14.5px;color:var(--tinta-2)}
+.nota-delivery svg{color:var(--roxo);margin-top:2px}
+
+/* vantagens */
+.vant{display:grid;gap:12px;margin-top:28px}
+@media(min-width:720px){.vant{grid-template-columns:repeat(2,1fr)}}
+.v{display:flex;gap:14px;align-items:flex-start;padding:18px;border-radius:var(--raio);background:var(--lilas-0)}
+.alt .v{background:#fff;border:1px solid var(--linha)}
+.v .ic{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:var(--roxo);color:#fff;flex:none}
+.v .ic svg{width:20px;height:20px}
+.v h3{font-size:16px;font-weight:700}
+.v p{font-size:14.5px;color:var(--suave);margin-top:4px}
+.so-max{display:inline-block;vertical-align:2px;margin-left:4px;font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-radius:6px;padding:2px 7px;background:var(--ouro-claro);color:var(--ouro-esc);border:1px solid #EBD898}
+
+/* carrossel de demonstrações */
+.demo-aviso{display:flex;align-items:flex-start;gap:10px;margin-top:18px;background:var(--ouro-claro);border:1px solid #EBD898;border-radius:14px;padding:12px 14px;font-size:14px;color:#5A4507}
+.demo-aviso svg{color:var(--ouro-esc);margin-top:1px}
+.trilho{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:26px 20px 18px;margin:0 -20px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.trilho::-webkit-scrollbar{display:none}
+.demo{flex:0 0 auto;width:min(230px,62vw);scroll-snap-align:center;text-align:center}
+.demo button{display:block;width:100%;border-radius:44px;transition:transform .25s}
+.demo button:hover{transform:translateY(-4px)}
+.demo .tocar{position:absolute;z-index:3;left:50%;bottom:22px;transform:translateX(-50%);display:inline-flex;align-items:center;gap:6px;white-space:nowrap;background:rgba(30,21,51,.86);color:#fff;font-size:12.5px;font-weight:700;border-radius:999px;padding:8px 14px;backdrop-filter:blur(6px)}
+.demo .tocar svg{width:14px;height:14px}
+.demo h3{margin-top:14px;font-size:16px;font-weight:700}
+.demo p{font-size:13.5px;color:var(--suave);margin-top:2px}
+.demo .plano-tag{display:inline-block;margin-top:8px;font-size:11px;font-weight:800;letter-spacing:.08em;border-radius:6px;padding:3px 8px;background:var(--ouro-claro);color:var(--ouro-esc);border:1px solid #EBD898}
+.demo .plano-tag.pro{background:#fff;color:var(--tinta-2);border-color:var(--lilas-2)}
+.demo .plano-tag.prem{background:var(--roxo);color:#fff;border-color:var(--roxo)}
+.demo .plano-tag.dl{background:var(--lilas-1);color:var(--roxo-esc);border-color:var(--lilas-2)}
+.pontos{display:flex;justify-content:center;gap:6px}
+.pontos i{width:7px;height:7px;border-radius:50%;background:var(--lilas-2);transition:all .2s}
+.pontos i.on{width:20px;border-radius:4px;background:var(--roxo)}
+@media(min-width:1000px){.trilho{justify-content:center;overflow:visible}.pontos{display:none}}
+
+/* janela da demonstração */
+.janela{position:fixed;inset:0;z-index:80;display:none;flex-direction:column;background:#120E1C}
+.janela.aberta{display:flex}
+.janela-topo{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;padding-top:max(10px,env(safe-area-inset-top));background:#120E1C;color:#fff}
+.janela-topo span{font-size:13px;font-weight:600;color:#D9CCF7}
+.janela-topo button{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:12px;background:rgba(255,255,255,.1);font-size:14px;font-weight:700;color:#fff}
+.janela iframe{flex:1;width:100%;border:0;background:#fff}
+@media(min-width:700px){.janela iframe{width:420px;margin:0 auto 16px;border-radius:28px}}
+
+/* planos */
+.garantia-selo{display:flex;align-items:center;gap:12px;margin-top:20px;background:var(--verde-claro);border:1px solid #A7E5BC;border-radius:16px;padding:12px 14px;color:#14532D;font-size:14px}
+.garantia-selo b{display:block;font-size:15px}
+.garantia-selo .sel{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--verde-txt);color:#fff;flex:none;font-weight:800;font-size:13px;line-height:1;text-align:center}
+.ciclo{display:inline-flex;margin-top:22px;padding:4px;border-radius:14px;background:var(--lilas-1)}
+.ciclo button{min-height:40px;padding:0 16px;border-radius:10px;font-size:14px;font-weight:700;color:var(--tinta-2)}
+.ciclo button[aria-pressed="true"]{background:#fff;color:var(--roxo-esc);box-shadow:var(--sombra)}
+.ciclo small{font-size:11px;font-weight:800;color:#166534;margin-left:4px}
+.planos{display:grid;gap:18px;margin-top:22px}
+@media(min-width:960px){.planos{grid-template-columns:repeat(3,1fr);align-items:start}}
+.plano{position:relative;background:#fff;border:1.5px solid var(--linha);border-radius:24px;padding:24px 20px;box-shadow:var(--sombra)}
+.plano.prem{border-color:var(--roxo);box-shadow:0 18px 40px -20px rgba(109,40,217,.55)}
+.plano.max{border-color:var(--ouro);background:linear-gradient(180deg,#FFFDF6,#fff 40%)}
+.fita{position:absolute;top:-13px;left:20px;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:5px 12px;background:var(--roxo);color:#fff}
+.max .fita{background:linear-gradient(90deg,#B8901C,#E3C25A);color:#3A2B03}
+.plano h3{font-size:22px;font-weight:800;letter-spacing:.02em}
+.prem h3{color:var(--roxo)}
+.max h3{color:var(--ouro-esc)}
+.para{margin-top:4px;font-size:14px;color:var(--suave)}
+.preco{margin-top:16px;display:flex;align-items:baseline;gap:4px;flex-wrap:wrap}
+.preco b{font-size:36px;font-weight:800;letter-spacing:-.03em}
+.preco span{font-size:14px;color:var(--suave)}
+.dia{margin-top:2px;font-size:13px;font-weight:600;color:var(--verde-txt)}
+.destaques{list-style:none;margin-top:18px;display:grid;gap:10px}
+.destaques li,.todos li{display:flex;gap:10px;align-items:flex-start;font-size:14.5px}
+.destaques svg,.todos svg{width:18px;height:18px;color:var(--verde);flex:none;margin-top:2px}
+.max .destaques svg{color:var(--ouro-esc)}
+.plano details{margin-top:16px;border-top:1px solid var(--linha);padding-top:12px}
+.plano summary{list-style:none;display:flex;align-items:center;justify-content:space-between;min-height:44px;font-size:14.5px;font-weight:700;color:var(--roxo-esc);cursor:pointer}
+.plano summary::-webkit-details-marker{display:none}
+.plano summary svg{width:18px;height:18px;transition:transform .2s}
+.plano details[open] summary svg{transform:rotate(180deg)}
+.todos{list-style:none;display:grid;gap:8px;padding:6px 0 4px}
+.todos .grupo{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--suave);margin-top:8px}
+.todos li.nao{color:var(--suave)}
+.todos li.nao svg{color:#A39CB3}
+.plano .btn{width:100%;margin-top:18px}
+.max .btn-roxo{background:linear-gradient(90deg,#C9A227,#E3C25A);color:#2A1F02;box-shadow:0 10px 22px -10px rgba(160,123,18,.8)}
+.max .btn-roxo:hover{background:linear-gradient(90deg,#B8901C,#D4B13F)}
+.condicoes{margin-top:18px;font-size:13px;color:var(--suave);text-align:center}
+
+/* octa delivery */
+.delivery{margin-top:22px;display:grid;gap:16px;background:var(--tinta);color:#fff;border-radius:24px;padding:24px 20px;overflow:hidden;position:relative}
+@media(min-width:760px){.delivery{grid-template-columns:1fr auto;align-items:center;padding:28px}}
+.delivery .tag{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#D9CCF7}
+.delivery h3{margin-top:6px;font-size:22px;font-weight:800;letter-spacing:-.01em}
+.delivery p{margin-top:6px;color:#D9CCF7;font-size:15px}
+.delivery ul{list-style:none;display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:12px;font-size:13.5px;color:#EDE7FB}
+.delivery ul li::before{content:"✓ ";color:#86EFAC;font-weight:800}
+.delivery .preco b{color:#fff}
+.delivery .preco span{color:#D9CCF7}
+.delivery .btn{background:#fff;color:var(--tinta)}
+.delivery .btn:hover{background:var(--lilas-1)}
+
+/* questionário */
+.quiz{margin-top:24px;background:#fff;border:1px solid var(--linha);border-radius:24px;padding:20px;box-shadow:var(--sombra)}
+.quiz-barra{height:6px;border-radius:6px;background:var(--lilas-1);overflow:hidden}
+.quiz-barra i{display:block;height:100%;width:0;background:var(--roxo);border-radius:6px;transition:width .3s}
+.quiz-n{margin-top:14px;font-size:12.5px;font-weight:700;color:var(--suave)}
+.quiz h3{margin-top:4px;font-size:19px;font-weight:700;letter-spacing:-.01em}
+.opcoes{display:grid;gap:10px;margin-top:16px}
+.opcoes button{display:flex;align-items:center;gap:12px;min-height:54px;text-align:left;padding:12px 14px;border:1.5px solid var(--linha);border-radius:14px;font-size:15px;font-weight:600;transition:border-color .15s,background .15s}
+.opcoes button:hover{border-color:var(--roxo-claro);background:var(--lilas-0)}
+.opcoes button::before{content:"";width:18px;height:18px;border-radius:50%;border:2px solid var(--lilas-2);flex:none}
+.quiz-voltar{margin-top:14px;font-size:14px;font-weight:600;color:var(--suave);min-height:40px}
+.resultado{text-align:center}
+.resultado .r-tag{font-size:12.5px;font-weight:700;color:var(--suave)}
+.resultado h3{font-size:26px;font-weight:800;margin-top:4px}
+.resultado p{margin-top:8px;color:var(--tinta-2);font-size:15px}
+.resultado .acoes{display:grid;gap:10px;margin-top:18px}
+
+/* o que a loja precisa */
+.precisa{display:grid;gap:12px;margin-top:24px}
+@media(min-width:720px){.precisa{grid-template-columns:repeat(3,1fr)}}
+.precisa div{display:flex;gap:12px;align-items:center;padding:16px;border-radius:16px;background:#fff;border:1px solid var(--linha)}
+.precisa .ic{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:var(--lilas-1);color:var(--roxo);flex:none}
+.precisa b{display:block;font-size:15px}
+.precisa span{font-size:13.5px;color:var(--suave)}
+
+/* dúvidas */
+.faq{margin-top:22px;border-top:1px solid var(--linha)}
+.faq details{border-bottom:1px solid var(--linha)}
+.faq summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:60px;padding:14px 0;font-size:16px;font-weight:600;cursor:pointer}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary i{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--lilas-0);color:var(--roxo);flex:none;font-style:normal;transition:transform .2s}
+.faq details[open] summary i{transform:rotate(45deg)}
+.faq p{padding:0 0 18px;color:var(--tinta-2);font-size:15px}
+
+/* chamada final */
+.final{background:var(--roxo);color:#fff;text-align:center;border-radius:28px;padding:36px 22px;background-image:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(255,255,255,.18),transparent 70%)}
+.final h2{color:#fff;margin-top:0}
+.final p{margin-top:10px;color:#EDE7FB;font-size:16px}
+.final .btn{margin-top:22px;background:#fff;color:var(--roxo-esc);width:100%;max-width:360px}
+.final small{display:block;margin-top:12px;font-size:13px;color:#D9CCF7}
+
+/* rodapé */
+footer{padding:36px 0 calc(36px + env(safe-area-inset-bottom));border-top:1px solid var(--linha);font-size:14px;color:var(--suave)}
+footer .cx{display:grid;gap:16px}
+footer .marca{color:var(--tinta)}
+footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--tinta-2)}
+
+/* botão fixo de WhatsApp (celular) */
+.zap-fixo{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:30;display:grid;place-items:center;width:56px;height:56px;border-radius:50%;background:var(--verde-txt);color:#fff;box-shadow:0 12px 24px -10px rgba(22,163,74,.9);transition:transform .2s,opacity .2s}
+.zap-fixo svg{width:28px;height:28px}
+.zap-fixo.some{opacity:0;pointer-events:none;transform:scale(.8)}
+
+/* entrada suave */
+.surge{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+.surge.on{opacity:1;transform:none}
+/* na loja: painel + impressora */
+.loja-grid{display:grid;gap:28px;margin-top:28px;align-items:start}
+@media(min-width:900px){.loja-grid{grid-template-columns:1.3fr .7fr;gap:40px}}
+.tablet{background:linear-gradient(145deg,#2A2633,#0E0C12 60%,#24202C);border-radius:28px;padding:12px;box-shadow:inset 0 0 0 1.5px #4A4555,0 24px 40px -18px rgba(30,21,51,.55)}
+.painel-tela{background:#F6F3FD;border-radius:18px;overflow:hidden}
+.painel-topo{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;background:var(--tinta);color:#fff;font-size:13.5px;font-weight:700}
+.painel-topo span{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#D9CCF7}
+.ao-vivo{width:8px;height:8px;border-radius:50%;background:#4ADE80;box-shadow:0 0 0 0 rgba(74,222,128,.6);animation:pulsa 1.8s infinite}
+@keyframes pulsa{70%{box-shadow:0 0 0 8px rgba(74,222,128,0)}100%{box-shadow:0 0 0 0 rgba(74,222,128,0)}}
+.fila-tit{display:flex;justify-content:space-between;padding:12px 14px 4px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--suave)}
+.fila{list-style:none;display:grid;gap:10px;padding:8px 14px 14px;min-height:340px;align-content:start}
+.ped{display:grid;grid-template-columns:auto 1fr auto;gap:4px 12px;align-items:start;background:#fff;border:1px solid var(--linha);border-radius:14px;padding:12px;box-shadow:var(--sombra);transition:opacity .4s,transform .4s}
+.ped .pos{grid-row:span 2;display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:var(--lilas-1);color:var(--roxo-esc);font-weight:800;font-size:14px}
+.ped b{font-size:14.5px}
+.ped .orig{display:inline-block;margin-left:6px;font-size:11.5px;font-weight:700;color:var(--roxo-esc);background:var(--lilas-0);border:1px solid var(--lilas-2);border-radius:6px;padding:1px 6px;vertical-align:1px}
+.ped .hr{font-size:12.5px;color:var(--suave);font-weight:600;text-align:right}
+.ped .itens{grid-column:2/4;font-size:13px;color:var(--tinta-2);line-height:1.45}
+.ped .itens em{font-style:normal;color:var(--suave)}
+.ped.novo{border-color:var(--roxo);box-shadow:0 0 0 3px var(--lilas-1),var(--sombra)}
+.ped.novo .pos{background:var(--roxo);color:#fff}
+.ped .tag-novo{display:inline-block;margin-left:6px;font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#fff;background:var(--roxo);border-radius:6px;padding:1px 6px;vertical-align:1px}
+.ped.entra{opacity:0;transform:translateY(14px)}
+.ped.sai{opacity:0;transform:translateY(-14px)}
+.legenda{margin-top:12px;font-size:13.5px;color:var(--suave);text-align:center}
+.impressora-box{display:flex;flex-direction:column;align-items:center}
+.impressora{position:relative;width:min(260px,72vw);padding-top:196px}
+.papel-janela{position:absolute;left:12%;right:12%;bottom:94px;height:200px;overflow:hidden}
+.papel{position:absolute;left:0;right:0;bottom:0;background:#fff;padding:14px 14px 22px;font:500 12px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#222;box-shadow:0 6px 16px -8px rgba(0,0,0,.35);transform:translateY(100%);transition:transform 2.2s steps(22,end);-webkit-mask:linear-gradient(#000,#000) top/100% calc(100% - 8px) no-repeat,conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) bottom/12px 8px repeat-x;mask:linear-gradient(#000,#000) top/100% calc(100% - 8px) no-repeat,conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) bottom/12px 8px repeat-x}
+.papel.fora{transform:translateY(0)}
+.papel .c{text-align:center}
+.papel .grande{font-size:15px;font-weight:800}
+.papel hr{border:0;border-top:1px dashed #999;margin:6px 0}
+.corpo-imp{position:relative;height:96px;border-radius:18px 18px 22px 22px;background:linear-gradient(180deg,#3A3644,#1E1B24);box-shadow:inset 0 1.5px 0 #5A5566,0 18px 30px -16px rgba(30,21,51,.6)}
+.corpo-imp::before{content:"";position:absolute;left:10%;right:10%;top:22px;height:8px;border-radius:4px;background:#0B0A0E;box-shadow:inset 0 2px 3px #000}
+.corpo-imp::after{content:"";position:absolute;right:20px;bottom:20px;width:10px;height:10px;border-radius:50%;background:#4ADE80;box-shadow:0 0 8px #4ADE80}
+.corpo-imp span{position:absolute;left:20px;bottom:16px;font-size:11px;font-weight:700;letter-spacing:.12em;color:#8C869A}
+.imp-info{margin-top:18px;width:100%;background:var(--ouro-claro);border:1px solid #EBD898;border-radius:16px;color:#5A4507}
+.imp-info summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px;padding:12px 14px;font-size:14.5px;font-weight:600;cursor:pointer}
+.imp-info summary::-webkit-details-marker{display:none}
+.imp-info summary i{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#fff;border:1px solid #EBD898;color:var(--ouro-esc);font-style:normal;font-size:20px;font-weight:700;flex:none;transition:transform .2s}
+.imp-info[open] summary i{transform:rotate(45deg)}
+.imp-info .corpo{padding:0 14px 14px;font-size:14px}
+.imp-info ul{list-style:none;display:grid;gap:6px;margin:4px 0 10px}
+.imp-info li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed #EBD898;padding-bottom:6px}
+.imp-info li b{white-space:nowrap}
+.imp-info small{display:block;font-size:12.5px;color:#6B5A1E}
+@media (prefers-reduced-motion:reduce){.ao-vivo{animation:none}.papel{transition:none}.ped{transition:none}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.surge{opacity:1;transform:none;transition:none}.aviso{animation:none}}
+</style>
+</head>
+<body>
+
+<header class="barra" id="barra">
+  <div class="cx">
+    <a class="marca" href="#inicio" aria-label="Octa Sites, início"><img src="img/logo.png" alt=""><span>OCTA <b>SITES</b></span></a>
+    <nav aria-label="Seções">
+      <a href="#como-funciona">Como funciona</a>
+      <a href="#exemplos">Exemplos</a>
+      <a href="#planos">Planos</a>
+      <a href="#duvidas">Dúvidas</a>
+    </nav>
+    <a class="btn btn-roxo" href="#planos">Ver planos</a>
+  </div>
+</header>
+
+<main id="inicio">
+
+<!-- topo -->
+<section class="topo" aria-labelledby="titulo">
+  <div class="cx">
+    <div>
+      <span class="selo-topo"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 21h-4v-4"/></svg></i>Pedido pelo QR code da mesa</span>
+      <h1 id="titulo">Seu estabelecimento mais organizado,<br> <em>sua equipe com mais tempo.</em></h1>
+      <p class="lead">Com a Octa, o cliente pede pelo celular e o pedido chega certo na cozinha, sem papel e sem correria.</p>
+      <div class="acoes">
+        <a class="btn btn-roxo" href="#exemplos">Testar um cardápio<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-borda" href="#planos">Ver planos e preços</a>
+      </div>
+      <div class="provas">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Sem comissão por pedido</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>30 dias de garantia</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Planos a partir de R$ 3,33 por dia</span>
+      </div>
+    </div>
+    <div class="topo-visual" aria-hidden="true">
+      <div class="celular"><div class="ilha"></div><div class="tela"><div class="status"><b>9:41</b><span><svg viewBox="0 0 18 12" fill="#111"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" fill="#111"><path d="M8 2.5c2.3 0 4.4.9 6 2.4l1.3-1.3A10.3 10.3 0 0 0 8 .6 10.3 10.3 0 0 0 .7 3.6L2 4.9a8.5 8.5 0 0 1 6-2.4zm0 3.6c1.3 0 2.5.5 3.4 1.3l1.3-1.3A6.6 6.6 0 0 0 8 4.2c-1.8 0-3.5.7-4.7 1.9l1.3 1.3c.9-.8 2.1-1.3 3.4-1.3zM8 9.6l2-2a2.8 2.8 0 0 0-4 0z"/></svg><svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="#111" opacity=".5"/><rect x="2" y="2" width="17" height="8" rx="1.8" fill="#111"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" fill="#111" opacity=".5"/></svg></span></div><img src="demos/hamburgueria/tela.jpg" alt=""></div></div>
+      <div class="aviso a1"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></i><span><b>Novo pedido · Mesa 4</b>2 smash + 1 refri</span></div>
+      <div class="aviso a2"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></i><span><b>Comanda impressa</b>direto na cozinha</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- como funciona -->
+<section id="como-funciona" aria-labelledby="cf-t">
+  <div class="cx">
+    <span class="etq">Como funciona</span>
+    <h2 id="cf-t">Do celular do cliente para a cozinha, em segundos.</h2>
+    <p class="intro">O cliente não precisa baixar aplicativo. O cardápio abre direto no navegador do celular.</p>
+    <div class="passos">
+      <div class="passo surge"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 21h-4v-4"/></svg></div><h3>Lê o QR code</h3><p>Cada mesa tem o seu QR code. O pedido já chega com o número da mesa.</p></div>
+      <div class="passo surge"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg></div><h3>Escolhe e pede</h3><p>O cliente vê as fotos, escolhe as opções e envia o pedido pelo celular.</p></div>
+      <div class="passo surge"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></div><h3>Chega no painel</h3><p>O estabelecimento recebe o pedido na hora, com aviso sonoro, em ordem de chegada.</p></div>
+      <div class="passo surge"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></div><h3>Sai a comanda</h3><p>A comanda é impressa para a cozinha começar o preparo.</p><small>Automática a partir do Premium</small></div>
+    </div>
+    <div class="nota-delivery"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 17h4V5H2v12h3"/><path d="M14 9h4l4 4v4h-3"/><circle cx="7.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg><span><b>Só faz delivery?</b> O cliente pede pelo link do estabelecimento, para entregar ou retirar, e o pedido chega no mesmo painel.</span></div>
+  </div>
+</section>
+
+<!-- vantagens -->
+<section class="alt" aria-labelledby="vt-t">
+  <div class="cx">
+    <span class="etq">Para o estabelecimento</span>
+    <h2 id="vt-t">Menos correria no horário de pico.</h2>
+    <div class="vant">
+      <div class="v surge"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg></div><div><h3>Pedido direto para o preparo</h3><p>Sem anotar no papel e sem erro de pedido: o que o cliente escolheu é o que chega na cozinha.</p></div></div>
+      <div class="v surge"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><h3>Equipe livre no pico</h3><p>Os funcionários deixam de ir de mesa em mesa anotar pedidos e focam em preparar e entregar.</p></div></div>
+      <div class="v surge"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><div><h3>Cozinha organizada</h3><p>Os pedidos chegam em ordem, separados por mesa e já impressos.</p></div></div>
+      <div class="v surge"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></div><div><h3>Pequenas automações <span class="so-max">Plano MAX</span></h3><p>Além do cliente poder chamar o garçom pelo celular, também poderá solicitar a conta, já dividida por pessoa.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- exemplos -->
+<section id="exemplos" aria-labelledby="ex-t">
+  <div class="cx">
+    <span class="etq">Exemplos</span>
+    <h2 id="ex-t">Toque em um celular e faça um pedido de teste.</h2>
+    <p class="intro">Cada exemplo é um estabelecimento fictício, com as cores e o cardápio dele. O cardápio do seu estabelecimento fica com a sua marca.</p>
+    <div class="demo-aviso"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span>Cada exemplo mostra um plano: <b>PRO</b>, <b>Premium</b>, <b>MAX</b> e <b>Octa Delivery</b>. No MAX, a etiqueta <b>MAX</b> marca o que só existe nele.</span></div>
+    <div class="trilho" id="trilho">
+      <div class="demo" data-demo="padaria"><button type="button" aria-label="Abrir o exemplo da Casa do Pão"><div class="celular"><div class="ilha"></div><div class="tela"><div class="status"><b>9:41</b><span><svg viewBox="0 0 18 12" fill="#111"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" fill="#111"><path d="M8 2.5c2.3 0 4.4.9 6 2.4l1.3-1.3A10.3 10.3 0 0 0 8 .6 10.3 10.3 0 0 0 .7 3.6L2 4.9a8.5 8.5 0 0 1 6-2.4zm0 3.6c1.3 0 2.5.5 3.4 1.3l1.3-1.3A6.6 6.6 0 0 0 8 4.2c-1.8 0-3.5.7-4.7 1.9l1.3 1.3c.9-.8 2.1-1.3 3.4-1.3zM8 9.6l2-2a2.8 2.8 0 0 0-4 0z"/></svg><svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="#111" opacity=".5"/><rect x="2" y="2" width="17" height="8" rx="1.8" fill="#111"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" fill="#111" opacity=".5"/></svg></span></div><img src="demos/padaria/tela.jpg" alt="" loading="lazy"></div><span class="tocar"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>Toque para testar</span></div></button><h3>Casa do Pão</h3><p>Padaria e café</p><span class="plano-tag pro">PLANO PRO</span></div>
+      <div class="demo" data-demo="pizzaria"><button type="button" aria-label="Abrir o exemplo do Forno da Vila"><div class="celular"><div class="ilha"></div><div class="tela"><div class="status"><b>9:41</b><span><svg viewBox="0 0 18 12" fill="#111"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" fill="#111"><path d="M8 2.5c2.3 0 4.4.9 6 2.4l1.3-1.3A10.3 10.3 0 0 0 8 .6 10.3 10.3 0 0 0 .7 3.6L2 4.9a8.5 8.5 0 0 1 6-2.4zm0 3.6c1.3 0 2.5.5 3.4 1.3l1.3-1.3A6.6 6.6 0 0 0 8 4.2c-1.8 0-3.5.7-4.7 1.9l1.3 1.3c.9-.8 2.1-1.3 3.4-1.3zM8 9.6l2-2a2.8 2.8 0 0 0-4 0z"/></svg><svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="#111" opacity=".5"/><rect x="2" y="2" width="17" height="8" rx="1.8" fill="#111"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" fill="#111" opacity=".5"/></svg></span></div><img src="demos/pizzaria/tela.jpg" alt="" loading="lazy"></div><span class="tocar"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>Toque para testar</span></div></button><h3>Forno da Vila</h3><p>Pizzaria</p><span class="plano-tag prem">PLANO PREMIUM</span></div>
+      <div class="demo" data-demo="hamburgueria"><button type="button" aria-label="Abrir o exemplo da Mineiro Burger"><div class="celular"><div class="ilha"></div><div class="tela"><div class="status"><b>9:41</b><span><svg viewBox="0 0 18 12" fill="#111"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" fill="#111"><path d="M8 2.5c2.3 0 4.4.9 6 2.4l1.3-1.3A10.3 10.3 0 0 0 8 .6 10.3 10.3 0 0 0 .7 3.6L2 4.9a8.5 8.5 0 0 1 6-2.4zm0 3.6c1.3 0 2.5.5 3.4 1.3l1.3-1.3A6.6 6.6 0 0 0 8 4.2c-1.8 0-3.5.7-4.7 1.9l1.3 1.3c.9-.8 2.1-1.3 3.4-1.3zM8 9.6l2-2a2.8 2.8 0 0 0-4 0z"/></svg><svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="#111" opacity=".5"/><rect x="2" y="2" width="17" height="8" rx="1.8" fill="#111"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" fill="#111" opacity=".5"/></svg></span></div><img src="demos/hamburgueria/tela.jpg" alt="" loading="lazy"></div><span class="tocar"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>Toque para testar</span></div></button><h3>Mineiro Burger</h3><p>Hamburgueria</p><span class="plano-tag">PLANO MAX</span></div>
+      <div class="demo" data-demo="marmitaria"><button type="button" aria-label="Abrir o exemplo da Marmita da Dona Rosa"><div class="celular"><div class="ilha"></div><div class="tela"><div class="status"><b>9:41</b><span><svg viewBox="0 0 18 12" fill="#111"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" fill="#111"><path d="M8 2.5c2.3 0 4.4.9 6 2.4l1.3-1.3A10.3 10.3 0 0 0 8 .6 10.3 10.3 0 0 0 .7 3.6L2 4.9a8.5 8.5 0 0 1 6-2.4zm0 3.6c1.3 0 2.5.5 3.4 1.3l1.3-1.3A6.6 6.6 0 0 0 8 4.2c-1.8 0-3.5.7-4.7 1.9l1.3 1.3c.9-.8 2.1-1.3 3.4-1.3zM8 9.6l2-2a2.8 2.8 0 0 0-4 0z"/></svg><svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="#111" opacity=".5"/><rect x="2" y="2" width="17" height="8" rx="1.8" fill="#111"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" fill="#111" opacity=".5"/></svg></span></div><img src="demos/marmitaria/tela.jpg" alt="" loading="lazy"></div><span class="tocar"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>Toque para testar</span></div></button><h3>Marmita da Dona Rosa</h3><p>Marmitaria · só delivery</p><span class="plano-tag dl">OCTA DELIVERY</span></div>
+    </div>
+    <div class="pontos" id="pontos" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></div>
+  </div>
+</section>
+
+<!-- na loja: painel + impressora -->
+<section id="na-loja" aria-labelledby="nl-t">
+  <div class="cx">
+    <span class="etq">No estabelecimento</span>
+    <h2 id="nl-t">O pedido chega no painel e a comanda sai na impressora.</h2>
+    <p class="intro">Os pedidos aparecem em ordem de chegada, com aviso sonoro, e a comanda sai pronta para a cozinha.</p>
+    <div class="loja-grid">
+      <div>
+        <div class="tablet" role="img" aria-label="Exemplo do painel do estabelecimento: os pedidos aparecem em fila, em ordem de chegada, com o número, a mesa ou o balcão, o horário e os itens.">
+          <div class="painel-tela" aria-hidden="true">
+            <div class="painel-topo">Painel · Mineiro Burger<span><i class="ao-vivo"></i>Ao vivo · som ligado</span></div>
+            <div class="fila-tit"><span>Fila de pedidos</span><span>ordem de chegada</span></div>
+            <ol class="fila" id="fila"></ol>
+          </div>
+        </div>
+        <p class="legenda">Exemplo ilustrativo do painel do estabelecimento.</p>
+      </div>
+      <div class="impressora-box">
+        <div class="impressora" role="img" aria-label="Impressora térmica imprimindo a comanda do pedido mais recente, com número, mesa, itens e observações.">
+          <div class="papel-janela" aria-hidden="true"><div class="papel" id="papel"></div></div>
+          <div class="corpo-imp" aria-hidden="true"><span>80 mm</span></div>
+        </div>
+        <p class="legenda">No PRO, a comanda sai com 1 toque. No Premium e no MAX, ela sai sozinha.</p>
+        <details class="imp-info">
+          <summary>A impressora térmica não está inclusa: ela é comprada pelo estabelecimento.<i aria-hidden="true">+</i></summary>
+          <div class="corpo">
+            <p style="margin-bottom:6px;font-weight:700">Preços médios (outubro de 2026)</p>
+            <ul>
+              <li><span>Elgin i9</span><b>R$ 650 a 750</b></li>
+              <li><span>Bematech MP-4200 TH</span><b>R$ 680 a 800</b></li>
+              <li><span>Epson TM-T20X</span><b>R$ 990 a 1.100</b></li>
+              <li><span>Bobinas 80 mm (caixa com 30 rolos)</span><b>R$ 110 a 140</b></li>
+            </ul>
+            <small>Basta escolher uma impressora térmica de 80 mm. A Octa Sites ajuda a conferir a compatibilidade antes da compra.</small>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- planos -->
+<section id="planos" class="alt" aria-labelledby="pl-t">
+  <div class="cx">
+    <span class="etq">Planos</span>
+    <h2 id="pl-t">Escolha o plano do tamanho do seu estabelecimento.</h2>
+    <div class="garantia-selo"><span class="sel">30<br>dias</span><span><b>Garantia de 30 dias</b>Se não gostar, o estabelecimento recebe 100% do valor de volta. Contados a partir de quando o sistema entra no ar.</span></div>
+    <div class="ciclo" role="group" aria-label="Forma de pagamento">
+      <button type="button" aria-pressed="true" data-ciclo="mes">Mensal</button>
+      <button type="button" aria-pressed="false" data-ciclo="ano">Anual <small>2 meses grátis</small></button>
+    </div>
+
+    <div class="planos">
+      <!-- PRO -->
+      <article class="plano" aria-labelledby="p-pro">
+        <h3 id="p-pro">PRO</h3>
+        <p class="para">Para lanchonete, café ou quiosque com balcão e poucas mesas.</p>
+        <div class="preco" data-mes="R$ 129,90" data-ano="R$ 1.299,00"><b>R$ 129,90</b><span class="per">/mês</span></div>
+        <p class="dia" data-mes="Apenas R$ 4,33 por dia" data-ano="Economia de R$ 259,80 no ano">Apenas R$ 4,33 por dia</p>
+        <ul class="destaques">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Até 5 mesas com QR code, mais o balcão</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Até 30 produtos com fotos</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Painel com aviso sonoro</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>O dono edita o cardápio sozinho</li>
+        </ul>
+        <details>
+          <summary>Ver todos os recursos<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <ul class="todos">
+            <li class="grupo">Também inclui</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Cardápio com abas e busca</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Logo, cores e tela de abertura do estabelecimento</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Opções do produto (tamanho, dose)</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Produto esgotado com 1 toque</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Comanda impressa com 1 toque</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Suporte com resposta em até 2 dias úteis</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Selo "Feito por Octa Sites" no cardápio</li>
+            <li class="grupo">Não inclui</li>
+            <li class="nao"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Delivery, adicionais e acompanhar o pedido</li>
+            <li class="nao"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Alterações e funções novas (orçamento à parte)</li>
+          </ul>
+        </details>
+        <a class="btn btn-borda" href="https://wa.me/5535999945992?text=Ol%C3%A1!%20Tenho%20interesse%20no%20plano%20PRO%20da%20Octa%20Sites." target="_blank" rel="noopener">Quero o PRO</a>
+      </article>
+
+      <!-- PREMIUM -->
+      <article class="plano prem" aria-labelledby="p-prem">
+        <span class="fita">Mais escolhido</span>
+        <h3 id="p-prem">PREMIUM</h3>
+        <p class="para">Para restaurante, pizzaria ou padaria com mesas e delivery.</p>
+        <div class="preco" data-mes="R$ 189,90" data-ano="R$ 1.899,00"><b>R$ 189,90</b><span class="per">/mês</span></div>
+        <p class="dia" data-mes="Apenas R$ 6,33 por dia" data-ano="Economia de R$ 379,80 no ano">Apenas R$ 6,33 por dia</p>
+        <ul class="destaques">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Tudo do PRO, com até 8 mesas e 40 produtos</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Delivery e retirada com taxa por bairro</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Comanda impressa automaticamente</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Adicionais, combos e observações</li>
+        </ul>
+        <details>
+          <summary>Ver todos os recursos<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <ul class="todos">
+            <li class="grupo">Também inclui</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Acompanhar o pedido e "Meus pedidos"</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Links do Instagram e do WhatsApp</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Suporte com resposta em até 1 dia útil</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Selo "Feito por Octa Sites" no cardápio</li>
+            <li class="grupo">Não inclui</li>
+            <li class="nao"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Pedir a conta, chamar garçom e encomendas</li>
+            <li class="nao"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Alterações e funções novas (orçamento à parte)</li>
+          </ul>
+        </details>
+        <a class="btn btn-roxo" href="https://wa.me/5535999945992?text=Ol%C3%A1!%20Tenho%20interesse%20no%20plano%20Premium%20da%20Octa%20Sites." target="_blank" rel="noopener">Quero o Premium</a>
+      </article>
+
+      <!-- MAX -->
+      <article class="plano max" aria-labelledby="p-max">
+        <span class="fita">Completo</span>
+        <h3 id="p-max">MAX</h3>
+        <p class="para">Para a casa movimentada, que quer tudo e prioridade no atendimento.</p>
+        <div class="preco" data-mes="R$ 249,90" data-ano="R$ 2.499,00"><b>R$ 249,90</b><span class="per">/mês</span></div>
+        <p class="dia" data-mes="Apenas R$ 8,33 por dia" data-ano="Economia de R$ 499,80 no ano">Apenas R$ 8,33 por dia</p>
+        <ul class="destaques">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Tudo do Premium, sem limite de mesas e produtos</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Pedir a conta, já dividida por pessoa</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Chamar garçom pelo celular</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Sem o selo da Octa e suporte no mesmo dia</li>
+        </ul>
+        <details>
+          <summary>Ver todos os recursos<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <ul class="todos">
+            <li class="grupo">Também inclui</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Encomendas com data</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Destaques e promoções no topo do cardápio</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Relatório mensal de vendas</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Até 3 alterações por mês (ajustes pequenos de até 30 minutos)</li>
+          </ul>
+        </details>
+        <a class="btn btn-roxo" href="https://wa.me/5535999945992?text=Ol%C3%A1!%20Tenho%20interesse%20no%20plano%20MAX%20da%20Octa%20Sites." target="_blank" rel="noopener">Quero o MAX</a>
+      </article>
+    </div>
+
+    <!-- octa delivery -->
+    <div class="delivery" aria-labelledby="dl-t">
+      <div>
+        <span class="tag">Só faz delivery?</span>
+        <h3 id="dl-t">Octa Delivery</h3>
+        <p>O cardápio online do estabelecimento, sem comissão por pedido.</p>
+        <ul><li>Delivery e retirada</li><li>Taxa por bairro</li><li>Avisos do pedido pelo WhatsApp</li><li>Endereço pelo CEP</li><li>Adicionais e observações</li><li>Até 30 produtos</li></ul>
+      </div>
+      <div>
+        <div class="preco" data-mes="R$ 99,90" data-ano="R$ 999,00"><b>R$ 99,90</b><span class="per">/mês</span></div>
+        <a class="btn" href="https://wa.me/5535999945992?text=Ol%C3%A1!%20Tenho%20interesse%20no%20Octa%20Delivery." target="_blank" rel="noopener">Quero o Octa Delivery</a>
+      </div>
+    </div>
+
+    <p class="condicoes">Todos os planos incluem a montagem do sistema, os QR codes e a arte das plaquinhas em PDF, a visita no dia da inauguração e o treinamento básico do dono. Fidelidade de 12 meses ou plano anual com 12 meses pelo preço de 10.</p>
+  </div>
+</section>
+
+<!-- questionário -->
+<section id="questionario" aria-labelledby="qz-t">
+  <div class="cx">
+    <span class="etq">Questionário</span>
+    <h2 id="qz-t">Ficou em dúvida sobre seu plano?</h2>
+    <p class="intro">Responda 4 perguntas rápidas e veja o plano indicado para o seu estabelecimento.</p>
+    <div class="quiz" id="quiz" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- o que a loja precisa -->
+<section class="alt" aria-labelledby="pr-t">
+  <div class="cx">
+    <span class="etq">Para começar</span>
+    <h2 id="pr-t">O que o estabelecimento precisa ter.</h2>
+    <div class="precisa">
+      <div><span class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg></span><span><b>Internet</b>Wi-Fi ou dados móveis no estabelecimento.</span></div>
+      <div><span class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M12 18h.01"/></svg></span><span><b>Celular ou tablet</b>Para abrir o painel de pedidos.</span></div>
+      <div><span class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></span><span><b>Impressora (opcional)</b>Para a comanda automática. Não está inclusa.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- dúvidas -->
+<section id="duvidas" aria-labelledby="dv-t">
+  <div class="cx">
+    <span class="etq">Dúvidas</span>
+    <h2 id="dv-t">Perguntas frequentes.</h2>
+    <div class="faq">
+      <details><summary>A Octa cobra comissão por pedido?<i>+</i></summary><p>Não. Você paga só a mensalidade do plano, não importa quantos pedidos receba.</p></details>
+      <details><summary>O cliente precisa baixar algum aplicativo?<i>+</i></summary><p>Não. O cardápio abre direto no navegador do celular, ao ler o QR code da mesa ou tocar no link do estabelecimento.</p></details>
+      <details><summary>O dono consegue mudar preços e produtos?<i>+</i></summary><p>Sim. Em todos os planos, o próprio dono altera preços, fotos e produtos pelo painel, e marca o que está esgotado com 1 toque.</p></details>
+      <details><summary>Como funciona a garantia?<i>+</i></summary><p>São 30 dias, contados a partir de quando o sistema entra no ar. Se o estabelecimento não ficar satisfeito, recebe 100% do valor pago de volta, inclusive no plano anual. Equipamentos, como impressoras, não entram na garantia.</p></details>
+      <details><summary>O que é a fidelidade e o plano anual?<i>+</i></summary><p>No pagamento mensal, a fidelidade é de 12 meses. No plano anual, o estabelecimento paga 10 meses e usa 12.</p></details>
+      <details><summary>Posso cancelar?<i>+</i></summary><p>Sim. Nos primeiros 30 dias depois da inauguração, o cancelamento é livre e o estabelecimento recebe 100% do valor de volta (garantia). Depois disso, antes de completar os 12 meses de fidelidade, é cobrada uma multa de 30% das mensalidades que faltam.</p></details>
+      <details><summary>A Octa vai até o estabelecimento?<i>+</i></summary><p>Sim, no dia da inauguração do sistema, para acompanhar o início e fazer o treinamento básico do dono. O restante do atendimento é feito pelo WhatsApp.</p></details>
+      <details><summary>O que conta como alteração no plano MAX?<i>+</i></summary><p>Um ajuste pequeno no sistema, feito em até 30 minutos: mudar um texto, uma cor, um botão, uma categoria ou a ordem das seções. São até 3 por mês, e funções novas maiores recebem orçamento à parte.</p></details>
+      <details><summary>Preciso de impressora?<i>+</i></summary><p>Não é obrigatório. Sem impressora, os pedidos aparecem no painel. Para a comanda automática, dos planos Premium e MAX, é preciso uma impressora, que não está inclusa.</p></details>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="cx">
+    <a class="marca" href="#inicio"><img src="img/logo.png" alt=""><span>OCTA <b>SITES</b></span></a>
+    <nav aria-label="Rodapé"><a href="#como-funciona">Como funciona</a><a href="#exemplos">Exemplos</a><a href="#planos">Planos</a><a href="#duvidas">Dúvidas</a><a href="https://wa.me/5535999945992" target="_blank" rel="noopener">WhatsApp</a></nav>
+    <p>© 2026 Octa Sites. Sistema de pedidos para estabelecimentos de comida.</p>
+  </div>
+</footer>
+
+<a class="zap-fixo" id="zapFixo" href="https://wa.me/5535999945992?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20a%20Octa%20Sites." target="_blank" rel="noopener" aria-label="Falar com a Octa Sites pelo WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35M12.04 21.5h-.01a9.4 9.4 0 0 1-4.8-1.31l-.34-.2-3.57.93.95-3.48-.22-.36a9.42 9.42 0 0 1-1.44-5.02c0-5.2 4.24-9.44 9.45-9.44a9.4 9.4 0 0 1 9.44 9.45c0 5.21-4.24 9.44-9.44 9.44m8.04-17.48A11.3 11.3 0 0 0 12.04.7C5.77.7.67 5.8.67 12.06c0 2 .52 3.96 1.52 5.68L.57 23.7l6.1-1.6a11.33 11.33 0 0 0 5.37 1.37h.01c6.26 0 11.36-5.1 11.36-11.36 0-3.04-1.18-5.89-3.33-8.04"/></svg></a>
+
+<div class="janela" id="janela" role="dialog" aria-modal="true" aria-label="Exemplo de cardápio">
+  <div class="janela-topo"><span id="janelaNome">Exemplo</span><button type="button" id="fechar"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Voltar ao site</button></div>
+  <iframe id="demoFrame" title="Exemplo de cardápio" src="about:blank"></iframe>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  var Z='https://wa.me/5535999945992?text=';
+
+  /* barra e botão fixo */
+  var barra=document.getElementById('barra'), zap=document.getElementById('zapFixo');
+  function rola(){ barra.classList.toggle('rolou',scrollY>8); zap.classList.toggle('some',scrollY<500); }
+  addEventListener('scroll',rola,{passive:true}); rola();
+
+  /* entrada suave */
+  if('IntersectionObserver' in window){
+    var ob=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('on'); ob.unobserve(e.target); } }); },{threshold:.05,rootMargin:'0px 0px -5% 0px'});
+    document.querySelectorAll('.surge').forEach(function(el){ ob.observe(el); });
+  } else document.querySelectorAll('.surge').forEach(function(el){ el.classList.add('on'); });
+  setTimeout(function(){ document.querySelectorAll('.surge').forEach(function(el){ el.classList.add('on'); }); }, 2500);
+
+  /* carrossel: pontinhos */
+  var trilho=document.getElementById('trilho'), pts=document.querySelectorAll('#pontos i'), cards=trilho.querySelectorAll('.demo');
+  trilho.addEventListener('scroll',function(){
+    var c=trilho.scrollLeft+trilho.clientWidth/2, m=0, d=1e9;
+    cards.forEach(function(k,i){ var x=k.offsetLeft+k.offsetWidth/2, dd=Math.abs(x-c); if(dd<d){d=dd;m=i;} });
+    pts.forEach(function(p,i){ p.classList.toggle('on',i===m); });
+  },{passive:true});
+
+  /* janela da demonstração */
+  var jan=document.getElementById('janela'), fr=document.getElementById('demoFrame'), nome=document.getElementById('janelaNome'), ultimo=null;
+  var DEMOS=window.OCTA_DEMOS||{};
+  cards.forEach(function(k){
+    k.querySelector('button').addEventListener('click',function(){
+      var id=k.dataset.demo; ultimo=this;
+      nome.textContent='Exemplo: '+k.querySelector('h3').textContent;
+      if(DEMOS[id]) fr.srcdoc=DEMOS[id]; else fr.src='demos/'+id+'/';
+      jan.classList.add('aberta'); document.body.style.overflow='hidden';
+      document.getElementById('fechar').focus();
+    });
+  });
+  function fecha(){ jan.classList.remove('aberta'); document.body.style.overflow=''; fr.removeAttribute('srcdoc'); fr.src='about:blank'; if(ultimo) ultimo.focus(); }
+  document.getElementById('fechar').addEventListener('click',fecha);
+  addEventListener('keydown',function(e){ if(e.key==='Escape'&&jan.classList.contains('aberta')) fecha(); });
+
+  /* na loja: painel + impressora */
+  (function(){
+    var fila=document.getElementById('fila'), papel=document.getElementById('papel'); if(!fila||!papel) return;
+    var BASE=[
+      {o:'Mesa 2',i:['1x Mineiro Clássico','1x Coca-Cola lata']},
+      {o:'Balcão',i:['2x Cheese Salada'],obs:'para viagem'},
+      {o:'Mesa 4',i:['2x Uai Smash','1x Batata média'],obs:'sem cebola'},
+      {o:'Delivery',i:['1x Combo Clássico','1x Guaraná lata']},
+      {o:'Mesa 1',i:['1x Canastra Bacon','1x Suco natural']},
+      {o:'Balcão',i:['1x Brownie','1x Água sem gás']}
+    ];
+    var n=21, min=40*1+19*60, k=0, lista=[], MAX=4;
+    var reduz=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function hr(m){ var h=Math.floor(m/60)%24, mm=m%60; return h+':'+(mm<10?'0':'')+mm; }
+    function e(t){ return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+    function novoPed(){ var b=BASE[k%BASE.length]; k++; var p={n:n++,o:b.o,i:b.i,obs:b.obs,h:hr(min)}; min+=2; return p; }
+    function cartao(p,pos,novo){ return '<li class="ped'+(novo?' novo':'')+'"><span class="pos">'+pos+'º</span><span><b>Pedido nº '+p.n+'</b><span class="orig">'+e(p.o)+'</span>'+(novo?'<span class="tag-novo">NOVO</span>':'')+'</span><span class="hr">'+p.h+'</span><span class="itens">'+p.i.map(e).join(' · ')+(p.obs?' <em>· Obs.: '+e(p.obs)+'</em>':'')+'</span></li>'; }
+    function desenha(){ fila.innerHTML=lista.map(function(p,x){ return cartao(p,x+1,x===lista.length-1); }).join(''); }
+    function comanda(p){ return '<div class="c">MINEIRO BURGER</div><hr><div class="c grande">PEDIDO Nº '+p.n+'</div><div class="c">'+e(p.o.toUpperCase())+' · '+p.h+'</div><hr>'+p.i.map(function(x){return '<div>'+e(x)+'</div>';}).join('')+(p.obs?'<div>Obs.: '+e(p.obs)+'</div>':'')+'<hr><div class="c">Bom preparo!</div>'; }
+    function imprime(p,ja){ papel.style.transition='none'; papel.classList.remove('fora'); papel.innerHTML=comanda(p); if(ja){ papel.classList.add('fora'); return; } void papel.offsetWidth; papel.style.transition=''; setTimeout(function(){ papel.classList.add('fora'); },60); }
+    for(var x=0;x<3;x++) lista.push(novoPed());
+    desenha(); imprime(lista[lista.length-1],true);
+    if(reduz) return;
+    var timer=null, visivel=false;
+    function passo(){
+      var p=novoPed(); lista.push(p);
+      if(lista.length>MAX){ var prim=fila.firstElementChild; if(prim) prim.classList.add('sai'); setTimeout(function(){ lista.shift(); desenha(); entra(); },400); } else { desenha(); entra(); }
+      function entra(){ var u=fila.lastElementChild; if(!u) return; u.classList.add('entra'); void u.offsetWidth; u.classList.remove('entra'); imprime(p); }
+    }
+    function liga(){ if(!timer) timer=setInterval(passo,5000); }
+    function desliga(){ clearInterval(timer); timer=null; }
+    if('IntersectionObserver' in window){ new IntersectionObserver(function(es){ es.forEach(function(en){ visivel=en.isIntersecting; if(visivel&&!document.hidden) liga(); else desliga(); }); },{threshold:.2}).observe(fila); }
+    else liga();
+    document.addEventListener('visibilitychange',function(){ if(document.hidden) desliga(); else if(visivel) liga(); });
+  })();
+
+  /* mensal / anual */
+  document.querySelectorAll('[data-ciclo]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var ano=b.dataset.ciclo==='ano';
+      document.querySelectorAll('[data-ciclo]').forEach(function(x){ x.setAttribute('aria-pressed',String(x===b)); });
+      document.querySelectorAll('.preco[data-mes]').forEach(function(p){ p.querySelector('b').textContent=p.dataset[ano?'ano':'mes']; p.querySelector('.per').textContent=ano?'/ano':'/mês'; });
+      document.querySelectorAll('.dia[data-mes]').forEach(function(p){ p.textContent=p.dataset[ano?'ano':'mes']; });
+    });
+  });
+
+  /* questionário */
+  var Q=[
+    {t:'O estabelecimento atende clientes em mesas?', o:[['Sim, tenho mesas','mesa'],['Não, só faço delivery ou retirada','delivery']]},
+    {t:'Quantas mesas o estabelecimento tem?', o:[['Até 5 mesas','m5'],['De 6 a 8 mesas','m8'],['Mais de 8 mesas','m9']]},
+    {t:'O estabelecimento faz delivery?', o:[['Sim','dl'],['Não','sem']]},
+    {t:'O cliente precisa chamar o garçom ou pedir a conta pela mesa?', o:[['Sim, seria ótimo','extra'],['Não precisa','basico']]}
+  ];
+  var R={
+    delivery:{n:'Octa Delivery',p:'R$ 99,90/mês',t:'Para quem só faz delivery: cardápio online com taxa por bairro e avisos do pedido pelo WhatsApp, sem comissão por pedido.'},
+    pro:{n:'PRO',p:'R$ 129,90/mês',t:'O básico que funciona: pedido pela mesa e pelo balcão, direto no painel do estabelecimento.'},
+    premium:{n:'Premium',p:'R$ 189,90/mês',t:'Mesas e delivery no mesmo cardápio, com a comanda impressa automaticamente.'},
+    max:{n:'MAX',p:'R$ 249,90/mês',t:'Tudo liberado: pedir a conta dividida, chamar garçom, encomendas e mesas sem limite.'}
+  };
+  var quiz=document.getElementById('quiz'), resp=[], passo=0;
+  function desenha(){
+    var q=Q[passo];
+    quiz.innerHTML='<div class="quiz-barra"><i style="width:'+(passo/Q.length*100)+'%"></i></div><p class="quiz-n">Pergunta '+(passo+1)+' de '+Q.length+'</p><h3>'+q.t+'</h3><div class="opcoes">'+
+      q.o.map(function(o){ return '<button type="button" data-v="'+o[1]+'">'+o[0]+'</button>'; }).join('')+'</div>'+
+      (passo?'<button type="button" class="quiz-voltar" data-voltar>← Voltar</button>':'');
+  }
+  function calcula(){
+    if(resp[0]==='delivery') return 'delivery';
+    if(resp[3]==='extra'||resp[1]==='m9') return 'max';
+    if(resp[2]==='dl'||resp[1]==='m8') return 'premium';
+    return 'pro';
+  }
+  function final(){
+    var k=calcula(), r=R[k];
+    quiz.innerHTML='<div class="quiz-barra"><i style="width:100%"></i></div><div class="resultado"><p class="r-tag" style="margin-top:16px">O plano indicado para o seu estabelecimento é</p><h3>'+r.n+'</h3><p><b>'+r.p+'</b></p><p>'+r.t+'</p><div class="acoes">'+
+      '<a class="btn btn-roxo" target="_blank" rel="noopener" href="'+Z+encodeURIComponent('Olá! Fiz o questionário no site e o plano indicado foi o '+r.n+'. Quero saber mais.')+'">Falar sobre o '+r.n+'</a>'+
+      '<a class="btn btn-borda" href="#planos">Comparar os planos</a><button type="button" class="quiz-voltar" data-refazer>Refazer o questionário</button></div></div>';
+  }
+  quiz.addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    if(b.hasAttribute('data-refazer')){ resp=[]; passo=0; desenha(); return; }
+    if(b.hasAttribute('data-voltar')){ passo--; if(passo===1&&resp[0]==='delivery') passo=0; desenha(); return; }
+    resp[passo]=b.dataset.v;
+    if(passo===0&&b.dataset.v==='delivery'){ final(); return; }
+    passo++; if(passo<Q.length) desenha(); else final();
+  });
+  desenha();
+})();
+</script>
+</body>
+</html>
