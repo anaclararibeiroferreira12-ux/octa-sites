@@ -225,6 +225,31 @@ h1 em{font-style:normal;color:var(--roxo)}
 .resultado p{margin-top:8px;color:var(--tinta-2);font-size:15px}
 .resultado .acoes{display:grid;gap:10px;margin-top:18px}
 
+/* investimento em equipamentos */
+.imp-link{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;font-size:14.5px;font-weight:600;text-decoration:none}
+.imp-link u{text-underline-offset:3px;white-space:nowrap}
+.imp-link i{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#fff;border:1px solid #EBD898;color:var(--ouro-esc);font-style:normal;font-weight:700;flex:none}
+.eq-aviso{display:flex;gap:12px;align-items:flex-start;margin-top:20px;background:#fff;border:1.5px solid var(--roxo);border-radius:16px;padding:14px 16px;font-size:15px;color:var(--tinta-2)}
+.eq-aviso b{color:var(--tinta)}
+.eq-aviso svg{color:var(--roxo);margin-top:1px}
+.kits{display:grid;gap:14px;margin-top:20px}
+@media(min-width:900px){.kits{grid-template-columns:repeat(3,1fr);align-items:start}}
+.kit{background:#fff;border:1px solid var(--linha);border-radius:20px;padding:20px;box-shadow:var(--sombra)}
+.kit-dest{border-color:var(--lilas-2)}
+.kit h3{font-size:19px;font-weight:800}
+.kit-desc{margin-top:4px;font-size:14px;color:var(--suave)}
+.kit-total{margin-top:14px;display:flex;flex-direction:column;gap:2px}
+.kit-total b{font-size:26px;font-weight:800;letter-spacing:-.02em}
+.kit-total span{font-size:13px;font-weight:600;color:var(--suave)}
+.kit details{margin-top:12px;border-top:1px solid var(--linha);padding-top:4px}
+.kit summary{list-style:none;display:flex;align-items:center;justify-content:space-between;min-height:44px;font-size:14.5px;font-weight:700;color:var(--roxo-esc);cursor:pointer}
+.kit summary::-webkit-details-marker{display:none}
+.kit summary i{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--lilas-0);color:var(--roxo);font-style:normal;font-size:18px;transition:transform .2s}
+.kit details[open] summary i{transform:rotate(45deg)}
+.kit ul{list-style:none;display:grid;gap:8px;padding:4px 0 2px}
+.kit li{display:flex;justify-content:space-between;gap:12px;font-size:14px;border-bottom:1px dashed var(--linha);padding-bottom:8px}
+.kit li b{white-space:nowrap}
+.eq-nota{margin-top:16px;font-size:13px;color:var(--suave);text-align:center}
 /* o que a loja precisa */
 .precisa{display:grid;gap:12px;margin-top:24px}
 @media(min-width:720px){.precisa{grid-template-columns:repeat(3,1fr)}}
@@ -425,19 +450,7 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
           <div class="corpo-imp" aria-hidden="true"><span>80 mm</span></div>
         </div>
         <p class="legenda">No PRO, a comanda sai com 1 toque. No Premium e no MAX, ela sai sozinha.</p>
-        <details class="imp-info">
-          <summary>A impressora térmica não está inclusa: ela é comprada pelo estabelecimento.<i aria-hidden="true">+</i></summary>
-          <div class="corpo">
-            <p style="margin-bottom:6px;font-weight:700">Preços médios (outubro de 2026)</p>
-            <ul>
-              <li><span>Elgin i9</span><b>R$ 650 a 750</b></li>
-              <li><span>Bematech MP-4200 TH</span><b>R$ 680 a 800</b></li>
-              <li><span>Epson TM-T20X</span><b>R$ 990 a 1.100</b></li>
-              <li><span>Bobinas 80 mm (caixa com 30 rolos)</span><b>R$ 110 a 140</b></li>
-            </ul>
-            <small>Basta escolher uma impressora térmica de 80 mm. A Octa Sites ajuda a conferir a compatibilidade antes da compra.</small>
-          </div>
-        </details>
+        <a class="imp-info imp-link" href="#equipamentos"><span>A impressora térmica não está inclusa: ela é comprada pelo estabelecimento. <u>Veja os kits de equipamentos</u></span><i aria-hidden="true">→</i></a>
       </div>
     </div>
   </div>
@@ -570,16 +583,33 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
   </div>
 </section>
 
-<!-- o que a loja precisa -->
-<section class="alt" aria-labelledby="pr-t">
+<!-- investimento em equipamentos -->
+<section id="equipamentos" class="alt" aria-labelledby="eq-t">
   <div class="cx">
     <span class="etq">Para começar</span>
-    <h2 id="pr-t">O que o estabelecimento precisa ter.</h2>
-    <div class="precisa">
-      <div><span class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg></span><span><b>Internet</b>Wi-Fi ou dados móveis no estabelecimento.</span></div>
-      <div><span class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M12 18h.01"/></svg></span><span><b>Celular ou tablet</b>Para abrir o painel de pedidos.</span></div>
-      <div><span class="ic"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></span><span><b>Impressora (opcional)</b>Para a comanda automática. Não está inclusa.</span></div>
+    <h2 id="eq-t">Investimento em equipamentos.</h2>
+    <div class="eq-aviso"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span><b>Pago uma única vez e à parte.</b> Não faz parte da mensalidade do plano. A compra é feita pelo estabelecimento, onde preferir.</span></div>
+    <div class="kits">
+      <article class="kit">
+        <h3>Econômico</h3>
+        <p class="kit-desc">Para quem já tem um computador com Windows.</p>
+        <p class="kit-total"><b>R$ 760 a 890</b><span>pago uma vez</span></p>
+        <details><summary>Ver os itens<i aria-hidden="true">+</i></summary><ul><li><span>Computador do estabelecimento</span><b>sem custo</b></li><li><span>Impressora Elgin i9</span><b>R$ 650 a 750</b></li><li><span>Bobinas 80 mm (caixa com 30 rolos)</span><b>R$ 110 a 140</b></li></ul></details>
+      </article>
+      <article class="kit kit-dest">
+        <h3>Com tablet</h3>
+        <p class="kit-desc">Para deixar o painel no balcão ou na cozinha.</p>
+        <p class="kit-total"><b>R$ 1.510 a 1.890</b><span>pago uma vez</span></p>
+        <details><summary>Ver os itens<i aria-hidden="true">+</i></summary><ul><li><span>Tablet Galaxy Tab A11 de 8,7"</span><b>R$ 750 a 1.000</b></li><li><span>Impressora Elgin i9</span><b>R$ 650 a 750</b></li><li><span>Bobinas 80 mm (caixa com 30 rolos)</span><b>R$ 110 a 140</b></li></ul></details>
+      </article>
+      <article class="kit">
+        <h3>Completo</h3>
+        <p class="kit-desc">Um computador só para o painel e uma impressora mais robusta.</p>
+        <p class="kit-total"><b>R$ 2.100 a 2.640</b><span>pago uma vez</span></p>
+        <details><summary>Ver os itens<i aria-hidden="true">+</i></summary><ul><li><span>Mini PC Intel N100</span><b>R$ 1.000 a 1.400</b></li><li><span>Impressora Epson TM-T20X</span><b>R$ 990 a 1.100</b></li><li><span>Bobinas 80 mm (caixa com 30 rolos)</span><b>R$ 110 a 140</b></li></ul></details>
+      </article>
     </div>
+    <p class="eq-nota">Preços médios de outubro de 2026. A internet é o wi-fi do próprio estabelecimento. A Octa Sites ajuda a conferir a compatibilidade antes da compra.</p>
   </div>
 </section>
 
