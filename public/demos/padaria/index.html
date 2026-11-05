@@ -1805,7 +1805,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     h += '<section class="ed-bloco"><h3>Dados do estabelecimento</h3><div class="ed-corpo"><div class="dois">' +
       '<div class="campo"><label for="ed-loja-nome">Nome da padaria</label><input id="ed-loja-nome" type="text" value="' + esc(card.loja.nome) + '" maxlength="40"></div>' +
       '<div class="campo"><label for="ed-loja-whats">WhatsApp das encomendas</label><input id="ed-loja-whats" type="tel" inputmode="tel" value="' + esc(card.loja.whats) + '" placeholder="55 + DDD + número"></div></div>' +
-      '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><button type="button" class="ed-btn prim" data-ed="salvar-loja">Salvar dados do estabelecimento</button><span class="ed-salvo" id="salvoLoja" hidden>Salvo</span></div>' +
+      '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><button type="button" class="ed-btn prim" data-ed="salvar-loja">Salvar dados da loja</button><span class="ed-salvo" id="salvoLoja" hidden>Salvo</span></div>' +
       (P().conta ? '<div style="border-top:1px solid var(--linha);padding-top:12px">' + chave('ed-servico', dados.servico, 'Cobrar taxa de serviço (10%) na conta da mesa', false, ' data-ed="servico"') + '<p style="margin:6px 0 0;color:var(--suave);font-size:12.5px">Ligada, a conta pedida pelo celular mostra os 10% já marcados, e o cliente pode desmarcar (a taxa é opcional).</p></div>' : '') + '</div></section>';
     // categorias
     h += '<section class="ed-bloco"><h3>Categorias <small>Adicione, renomeie, ordene ou esconda</small></h3><div class="ed-corpo">';
@@ -1869,7 +1869,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
       if (!nome) { toast('Coloque o nome da padaria.'); $('ed-loja-nome').focus(); return; }
       if (w.length < 12) { toast('WhatsApp incompleto: use 55 + DDD + número, só os dígitos.'); $('ed-loja-whats').focus(); return; }
       card.loja.nome = nome; card.loja.whats = w;
-      if (aposMudarCardapio('Dados do estabelecimento salvos.')) { var sv = $('salvoLoja'); if (sv) sv.hidden = false; }
+      if (aposMudarCardapio('Dados da loja salvos.')) { var sv = $('salvoLoja'); if (sv) sv.hidden = false; }
     }
     else if (a === 'cat-renomear') { edCat = id; confirmaCat = null; renderEditor(); var i = $('ed-cat-nome'); if (i) { i.focus(); i.select(); } }
     else if (a === 'cat-cancelar') { edCat = null; renderEditor(); }

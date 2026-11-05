@@ -1223,14 +1223,14 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
       campo('enc', 'qtd', 'Quantidade ou tamanho', 'text', 'Ex.: 1 bolo de 2 kg', 'off') +
       campo('enc', 'data', 'Data', 'date', '', 'off') + campo('enc', 'hora', 'Horário (opcional)', 'time', '', 'off') +
       '<div class="campo"><span style="font-weight:700;font-size:13px;color:#fff">Como prefere receber?</span><div class="opc-receber" role="group" aria-label="Como prefere receber">' +
-      '<button type="button" data-acao="receber" data-v="retirar" aria-pressed="' + (e.receber === 'retirar') + '">Retirar no local</button>' +
+      '<button type="button" data-acao="receber" data-v="retirar" aria-pressed="' + (e.receber === 'retirar') + '">Retirar na loja</button>' +
       '<button type="button" data-acao="receber" data-v="entrega" aria-pressed="' + (e.receber === 'entrega') + '">Entrega</button></div></div>' +
       (e.receber === 'entrega' ? campo('enc', 'end', 'Endereço de entrega', 'text', 'Rua, número e bairro', 'street-address') : '') +
       '<div class="campo"><label for="c-enc-obs">Observações</label><textarea id="c-enc-obs" data-obj="enc" data-campo="obs" placeholder="Ex.: escrever &quot;Parabéns, Lia&quot; no bolo">' + esc(e.obs) + '</textarea></div></div>';
     var f = faltaEnc();
     h += '<a class="btn-whats" id="enviarEnc" href="' + (f ? '#' : linkEnc()) + '" target="_blank" rel="noopener" aria-disabled="' + !!f + '">' + ICON.whats + 'Enviar encomenda pelo WhatsApp</a>' +
       '<p class="falta-enc" id="faltaEnc"' + (f ? '' : ' hidden') + '>' + f + '</p>' +
-      '<p class="nota-enc">A data e o valor são confirmados pelo estabelecimento no WhatsApp.</p></section>';
+      '<p class="nota-enc">A data e o valor são confirmados pelo negócio no WhatsApp.</p></section>';
     return h;
   }
   function faltaEnc(){
@@ -1247,7 +1247,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     var L = ['Olá, ' + card.loja.nome + '! Quero fazer uma encomenda:', '', 'Item: ' + e.item];
     if (e.qtd.trim()) L.push('Quantidade/tamanho: ' + e.qtd.trim());
     L.push('Data: ' + d + (e.hora ? ' às ' + e.hora : ''));
-    L.push(e.receber === 'entrega' ? 'Entrega em: ' + e.end.trim() : 'Vou retirar no local');
+    L.push(e.receber === 'entrega' ? 'Entrega em: ' + e.end.trim() : 'Vou retirar na loja');
     L.push('', 'Nome: ' + e.nome.trim(), 'Telefone: ' + e.tel.trim());
     if (e.obs.trim()) L.push('Observações: ' + e.obs.trim());
     return 'https://wa.me/' + card.loja.whats.replace(/\D/g, '') + '?text=' + encodeURIComponent(L.join('\n'));
@@ -1440,7 +1440,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
         $('tela').innerHTML = h; mostrarAviso(); return;
       }
       var etapas = [
-        ['Pedido recebido', 'A comanda já saiu na impressora do estabelecimento.'],
+        ['Pedido recebido', 'A comanda já saiu na impressora da loja.'],
         ['Em preparo', 'A equipe está preparando o seu pedido.'],
         [mesa ? 'Pronto, a caminho da mesa' : 'Pronto!', mesa ? 'O garçom já sabe qual é a sua mesa.' : 'A equipe vai chamar você pelo nome no balcão.'],
         [(!mesa && o.consumo === 'viagem') ? 'Retirado' : 'Entregue', 'Bom apetite!']
@@ -1771,7 +1771,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     h += '<section class="ed-bloco"><h3>Dados do estabelecimento</h3><div class="ed-corpo"><div class="dois">' +
       '<div class="campo"><label for="ed-loja-nome">Nome da padaria</label><input id="ed-loja-nome" type="text" value="' + esc(card.loja.nome) + '" maxlength="40"></div>' +
       '<div class="campo"><label for="ed-loja-whats">WhatsApp das encomendas</label><input id="ed-loja-whats" type="tel" inputmode="tel" value="' + esc(card.loja.whats) + '" placeholder="55 + DDD + número"></div></div>' +
-      '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><button type="button" class="ed-btn prim" data-ed="salvar-loja">Salvar dados do estabelecimento</button><span class="ed-salvo" id="salvoLoja" hidden>Salvo</span></div>' +
+      '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><button type="button" class="ed-btn prim" data-ed="salvar-loja">Salvar dados da loja</button><span class="ed-salvo" id="salvoLoja" hidden>Salvo</span></div>' +
       (P().conta ? '<div style="border-top:1px solid var(--linha);padding-top:12px">' + chave('ed-servico', dados.servico, 'Cobrar taxa de serviço (10%) na conta da mesa', false, ' data-ed="servico"') + '<p style="margin:6px 0 0;color:var(--suave);font-size:12.5px">Ligada, a conta pedida pelo celular mostra os 10% já marcados, e o cliente pode desmarcar (a taxa é opcional).</p></div>' : '') + '</div></section>';
     // categorias
     h += '<section class="ed-bloco"><h3>Categorias <small>Adicione, renomeie, ordene ou esconda</small></h3><div class="ed-corpo">';
@@ -1835,7 +1835,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
       if (!nome) { toast('Coloque o nome da padaria.'); $('ed-loja-nome').focus(); return; }
       if (w.length < 12) { toast('WhatsApp incompleto: use 55 + DDD + número, só os dígitos.'); $('ed-loja-whats').focus(); return; }
       card.loja.nome = nome; card.loja.whats = w;
-      if (aposMudarCardapio('Dados do estabelecimento salvos.')) { var sv = $('salvoLoja'); if (sv) sv.hidden = false; }
+      if (aposMudarCardapio('Dados da loja salvos.')) { var sv = $('salvoLoja'); if (sv) sv.hidden = false; }
     }
     else if (a === 'cat-renomear') { edCat = id; confirmaCat = null; renderEditor(); var i = $('ed-cat-nome'); if (i) { i.focus(); i.select(); } }
     else if (a === 'cat-cancelar') { edCat = null; renderEditor(); }
