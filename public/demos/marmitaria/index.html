@@ -1119,12 +1119,12 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
   var somLigado = true, aba = 'cliente', naoVistos = 0, ultimoImpresso = null;
   // ---------- planos (a demonstração muda conforme o plano escolhido no topo) ----------
   var PLANOS = {
-    delivery:{nome:'OCTA DELIVERY', mesas:0, produtos:30, auto:true, meus:true, selo:true, enc:false, tv:false, data:false, conta:false, garcom:false, desc:''},
-    pro:{nome:'PRO', mesas:6, produtos:30, auto:true, meus:false, selo:true, enc:false, tv:false, data:false, conta:false, garcom:false,
+    delivery:{nome:'OCTA DELIVERY', mesas:0, produtos:30, auto:true, lista:false, meus:true, selo:true, enc:false, tv:false, data:false, conta:false, garcom:false, desc:''},
+    pro:{nome:'PRO', mesas:6, produtos:30, auto:true, lista:false, meus:false, selo:true, enc:false, tv:false, data:false, conta:false, garcom:false,
       desc:'<b>PRO · R$ 129,90/mês.</b> Até 6 mesas e 30 produtos. Comanda impressa automaticamente. O cliente vê só o número do pedido. Selo "Feito por Octa Sites" no cardápio.'},
-    premium:{nome:'PREMIUM', mesas:10, produtos:45, auto:true, meus:true, selo:false, enc:true, tv:false, data:false, conta:false, garcom:false,
+    premium:{nome:'PREMIUM', mesas:10, produtos:45, auto:true, lista:false, meus:true, selo:false, enc:true, tv:false, data:false, conta:false, garcom:false,
       desc:'<b>PREMIUM · R$ 189,90/mês.</b> Até 10 mesas e 45 produtos. Adicionais e combos, promoções em destaque e encomendas com data. O cliente acompanha o pedido.'},
-    max:{nome:'MAX', mesas:0, produtos:0, auto:true, meus:true, selo:false, enc:true, tv:false, data:true, conta:true, garcom:true,
+    max:{nome:'MAX', mesas:0, produtos:0, auto:true, lista:true, meus:true, selo:false, enc:true, tv:false, data:true, conta:true, garcom:true,
       desc:'<b>MAX · R$ 249,90/mês.</b> Tudo do Premium, sem limite de mesas e produtos, pedir a conta dividida, chamar o garçom pelo celular e relatório mensal.'}
   };
   var plano = 'delivery';
@@ -1198,7 +1198,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
       : (ativos.length ? (ativos.length === 1 ? 'Pedido nº ' + ativos[0].id + ' em preparo' : ativos.length + ' pedidos em preparo') : 'Seus pedidos de hoje');
     return '<i class="' + (prontos.length ? 'pronto' : (ativos.length ? '' : 'parado')) + '" aria-hidden="true"></i>' + txt;
   }
-  function faixaMeus(){ return P().meus && meusPedidos().length ? '<button type="button" class="meus-faixa" data-acao="meus"><span id="meusTxt">' + textoFaixaMeus() + '</span><u>Meus pedidos →</u></button>' : ''; }
+  function faixaMeus(){ return P().lista && meusPedidos().length ? '<button type="button" class="meus-faixa" data-acao="meus"><span id="meusTxt">' + textoFaixaMeus() + '</span><u>Meus pedidos →</u></button>' : ''; }
   function atualizarCliente(){
     if (cli.tela === 'confirmado' || cli.tela === 'meus' || cli.tela === 'conta') { var y = guardarRolagem(); renderCliente(); restaurarRolagem(y); }
     else { var t = $('meusTxt'); if (t) t.innerHTML = textoFaixaMeus(); else if (meusPedidos().length && (cli.tela === 'cardapio' || cli.tela === 'revisao')) { var y2 = guardarRolagem(); renderCliente(); restaurarRolagem(y2); } }
@@ -1423,7 +1423,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
       if (n) h += '<button type="button" class="app-resumo" data-acao="revisar"><span>' + n + (n === 1 ? ' item' : ' itens') + ' no pedido</span><b>Ver pedido · ' + fmt(totalDe(cli.carrinho)) + '</b></button>';
       h += '<nav class="app-nav" aria-label="Navegação"><button type="button" data-acao="aba-inicio" aria-current="true" aria-label="Cardápio">' + CASA + '<span>Cardápio</span></button>' +
         '<button type="button" data-acao="revisar"' + (n ? '' : ' disabled') + ' aria-label="Meu pedido">' + SACOLA + '<span>Pedido</span>' + (n ? '<em>' + n + '</em>' : '') + '</button>' +
-        (temMesa() ? '<button type="button" data-acao="mesa-painel" aria-expanded="' + !!cli.painelMesa + '" aria-label="Mesa">' + SINO + '<span>Mesa</span></button>' : (P().meus && meusPedidos().length ? '<button type="button" data-acao="meus" aria-label="Meus pedidos">' + RECIBO + '<span>Pedidos</span></button>' : '')) + '</nav>';
+        (temMesa() ? '<button type="button" data-acao="mesa-painel" aria-expanded="' + !!cli.painelMesa + '" aria-label="Mesa">' + SINO + '<span>Mesa</span></button>' : (P().lista && meusPedidos().length ? '<button type="button" data-acao="meus" aria-label="Meus pedidos">' + RECIBO + '<span>Pedidos</span></button>' : '')) + '</nav>';
       if (cli.painelMesa && temMesa()) h += '<div class="app-mesa" role="dialog" aria-label="Mesa ' + cli.mesa + '"><b>Mesa ' + cli.mesa + '</b>' + mesaAcoes() + '<button type="button" class="app-mesa-x" data-acao="mesa-painel">Fechar</button></div>';
       if (cli.verProd) h += telaProduto();
       if (cli.verEnc && P().enc) h += '<div class="prod-tela enc-tela" role="dialog" aria-modal="true" aria-label="Encomendas"><div class="enc-topo"><button type="button" class="voltar-prod" data-acao="fechar-enc" aria-label="Voltar ao cardápio">←</button><b>Encomendas</b></div><div class="enc-corpo">' + blocoEncomenda() + '</div></div>';
@@ -1468,9 +1468,9 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
       });
       var nMeus = meusPedidos().length;
       h += '</ol><p class="dica-painel">Na demonstração, mude o status no painel da padaria e veja esta tela atualizar.</p><button type="button" class="btn-sec" data-acao="novo">Fazer outro pedido</button>' +
-        (nMeus > 1 ? '<button type="button" class="btn-sec" data-acao="meus" style="border-color:var(--borda)">Ver todos os meus pedidos (' + nMeus + ')</button>' : '') + '</div></div>';
+        (P().lista && nMeus > 1 ? '<button type="button" class="btn-sec" data-acao="meus" style="border-color:var(--borda)">Ver todos os meus pedidos (' + nMeus + ')</button>' : '') + '</div></div>';
     }
-    else if (cli.tela === 'meus' && !P().meus) { cli.tela = 'cardapio'; return renderCliente(); }
+    else if (cli.tela === 'meus' && !P().lista) { cli.tela = 'cardapio'; return renderCliente(); }
     else if (cli.tela === 'meus') {
       var NOME_ST = {novo:'Em preparo', pronto:'Pronto', entregue:'Entregue'};
       h += '<div class="rolagem"><div class="sec"><button type="button" class="voltar" data-acao="voltar">← Voltar ao cardápio</button><h3 style="font-size:15px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--vinho);margin:4px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--ouro)">Meus pedidos de hoje</h3><div class="meus-lista">';
@@ -2164,7 +2164,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
     $('impTexto').textContent = p.auto ? 'Cada pedido novo toca um aviso e é impresso na hora, com o destino em letras grandes.' : 'Cada pedido novo toca um aviso no painel. A equipe toca em "Imprimir" e a comanda sai, com o destino em letras grandes.';
     $('impEnc').hidden = !p.enc;
     if (cli.modo === 'mesa' && p.mesas && cli.mesa > p.mesas) { var enc = cli.enc; cli = novoCliente(); cli.enc = enc; }
-    if (!p.meus && cli.tela === 'meus') cli.tela = 'cardapio';
+    if (!p.lista && cli.tela === 'meus') cli.tela = 'cardapio';
     if (!p.conta && cli.tela === 'conta') cli.tela = 'cardapio';
     montarQR(); renderCliente(); renderPainel(); renderEditor();
   }
