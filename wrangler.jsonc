@@ -2,6 +2,10 @@
   "name": "octa-sites",
   "compatibility_date": "2026-11-01",
   "workers_dev": true,
+  "routes": [
+    { "pattern": "octasites.com.br", "custom_domain": true },
+    { "pattern": "www.octasites.com.br", "custom_domain": true }
+  ],
   "assets": {
     "directory": "./public"
   }
