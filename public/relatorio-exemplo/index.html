@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Exemplo de relatório mensal · Octa Sites</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: uma folha A4 vertical, cabeçalho roxo da Octa, números no topo, depois blocos de leitura e as recomendações no fim */
+:root{
+  --bg:#F4EFE6; --folha:#FFFFFF; --tinta:#161313; --tinta-2:#463E3A; --suave:#6A605A; --linha:#E7DFD2;
+  --roxo:#B3122A; --roxo-claro:#F6E3E1; --roxo-barra:#C8102E; --verde:#15803D; --verde-claro:#E3F6EA;
+  --ouro:#9A7412; --ouro-claro:#FBF3D9; --alerta:#B45309; --alerta-claro:#FDF0DE;
+  --fonte:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E0C0B; --folha:#1B1716; --tinta:#F2F0E6; --tinta-2:#D8CFC8; --suave:#B0A59C; --linha:#332B28;
+  --roxo:#F07A86; --roxo-claro:#3A1518; --roxo-barra:#E0384E; --verde:#6EE7A0; --verde-claro:#123222;
+  --ouro:#E3C25A; --ouro-claro:#2E2610; --alerta:#F5B062; --alerta-claro:#33240F; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E0C0B; --folha:#1B1716; --tinta:#F2F0E6; --tinta-2:#D8CFC8; --suave:#B0A59C; --linha:#332B28;
+  --roxo:#F07A86; --roxo-claro:#3A1518; --roxo-barra:#E0384E; --verde:#6EE7A0; --verde-claro:#123222;
+  --ouro:#E3C25A; --ouro-claro:#2E2610; --alerta:#F5B062; --alerta-claro:#33240F; color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--tinta);font-family:var(--fonte);font-size:15px;line-height:1.5;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px}
+.aviso{max-width:820px;margin:0 auto 12px;font-size:13px;color:var(--suave);text-align:center}
+.folha{max-width:820px;margin:0 auto;background:var(--folha);border-radius:18px;overflow:hidden;box-shadow:0 20px 50px -30px rgba(20,10,10,.45)}
+.topo{background:#141414;border-bottom:4px solid #C8102E;color:#fff;padding:24px 28px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:flex-end}
+.topo .marca{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#F6D88A}
+.topo h1{font-size:26px;font-weight:800;letter-spacing:-.02em;margin:4px 0 0;text-wrap:balance}
+.topo .mes{font-size:14px;color:#F6D88A;text-align:right}
+.topo .mes b{display:block;font-size:18px;color:#fff}
+.corpo{padding:24px 28px 28px;display:grid;gap:28px}
+h2{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--roxo);margin:0 0 12px}
+.num{font-variant-numeric:tabular-nums}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:680px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.kpi{border:1px solid var(--linha);border-radius:14px;padding:14px}
+.kpi span{font-size:12.5px;color:var(--suave);font-weight:600}
+.kpi b{display:block;font-size:24px;font-weight:800;letter-spacing:-.02em;margin-top:2px}
+.kpi small{display:inline-block;margin-top:4px;font-size:12px;font-weight:700;border-radius:999px;padding:2px 8px}
+.sobe{background:var(--verde-claro);color:var(--verde)}
+.atencao{background:var(--alerta-claro);color:var(--alerta)}
+.duas{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+@media(max-width:680px){.duas{grid-template-columns:1fr}}
+.duas>div{min-width:0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:12px;color:var(--suave);font-weight:600;padding:0 0 6px;border-bottom:1px solid var(--linha)}
+th.d,td.d{text-align:right}
+td{padding:6px 0;border-bottom:1px solid var(--linha)}
+td.pos{color:var(--suave);width:26px}
+.baixo td{color:var(--tinta-2)}
+.barras{display:grid;gap:7px}
+.barra{display:grid;grid-template-columns:96px 1fr 52px;gap:10px;align-items:center;font-size:13.5px}
+.barra .trilho{height:14px;background:var(--roxo-claro);border-radius:4px;overflow:hidden}
+.barra .trilho i{display:block;height:100%;background:var(--roxo-barra);border-radius:4px}
+.barra.forte .trilho i{background:var(--tinta)}
+.barra .v{text-align:right;color:var(--tinta-2)}
+.nota{font-size:13px;color:var(--suave);margin:10px 0 0}
+.empilhada{display:flex;height:28px;border-radius:8px;overflow:hidden;margin-bottom:10px}
+.empilhada span{display:grid;place-items:center;font-size:12px;font-weight:700;color:#fff;min-width:0}
+.leg{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--tinta-2)}
+.leg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.c1{background:#141414}.c2{background:#C8102E}.c3{background:#D9A21F;color:#141414!important}.c4{background:#F3E3B5;color:#141414!important}
+.recs{background:var(--ouro-claro);border-radius:16px;padding:20px}
+.recs h2{color:var(--ouro)}
+.recs ol{margin:0;padding:0;list-style:none;display:grid;gap:12px;counter-reset:r}
+.recs li{display:grid;grid-template-columns:28px 1fr;gap:10px;counter-increment:r}
+.recs li::before{content:counter(r);display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--ouro);color:var(--folha);font-weight:800;font-size:13px}
+.recs b{display:block}
+.recs p{margin:2px 0 0;color:var(--tinta-2);font-size:14px}
+.recs p.nota{margin-top:16px;color:var(--suave);font-size:13px}
+.tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:1px}
+.t-promo{background:var(--roxo-claro);color:var(--roxo)}
+.t-melhoria{background:var(--verde-claro);color:var(--verde)}
+th.d,td.d{padding-left:12px;white-space:nowrap}
+@media(max-width:520px){
+  .topo,.corpo{padding-left:18px;padding-right:18px}
+  .topo .mes{text-align:left}
+  .kpi b{font-size:19px}
+  .kpi small{font-size:11px;padding:2px 6px}
+  .barra{grid-template-columns:84px 1fr 44px}
+}
+.rodape{font-size:12.5px;color:var(--suave);border-top:1px solid var(--linha);padding-top:14px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
+</style>
+</head>
+<body>
+
+<p class="aviso">Exemplo com dados fictícios. Mostra como seria o relatório mensal do plano MAX.</p>
+<article class="folha">
+  <header class="topo">
+    <div>
+      <div class="marca">Octa Sites · Relatório mensal</div>
+      <h1>Mineiro Burger</h1>
+    </div>
+    <div class="mes">Período<b>Outubro de 2026</b></div>
+  </header>
+
+  <div class="corpo">
+    <section>
+      <h2>Resumo do mês</h2>
+      <div class="kpis num">
+        <div class="kpi"><span>Total vendido</span><b>R$ 61.320</b><small class="sobe">+17,6% vs. setembro</small></div>
+        <div class="kpi"><span>Pedidos</span><b>1.460</b><small class="sobe">+11,5% vs. setembro</small></div>
+        <div class="kpi"><span>Ticket médio</span><b>R$ 42,00</b><small class="sobe">+5,5% vs. setembro</small></div>
+        <div class="kpi"><span>Tempo de preparo</span><b>18 min</b><small class="atencao">27 min no pico</small></div>
+      </div>
+    </section>
+
+    <section class="duas">
+      <div>
+        <h2>10 mais vendidos</h2>
+        <table class="num">
+          <thead><tr><th></th><th>Produto</th><th class="d">Qtd.</th><th class="d">Vendido</th></tr></thead>
+          <tbody>
+            <tr><td class="pos">1</td><td>Guaraná lata</td><td class="d">540</td><td class="d">R$ 3.780</td></tr>
+            <tr><td class="pos">2</td><td>Mineiro Clássico</td><td class="d">412</td><td class="d">R$ 11.536</td></tr>
+            <tr><td class="pos">3</td><td>Batata frita grande</td><td class="d">380</td><td class="d">R$ 6.840</td></tr>
+            <tr><td class="pos">4</td><td>Combo Clássico</td><td class="d">265</td><td class="d">R$ 10.335</td></tr>
+            <tr><td class="pos">5</td><td>Canastra Bacon</td><td class="d">230</td><td class="d">R$ 7.820</td></tr>
+            <tr><td class="pos">6</td><td>Coca-Cola 600 ml</td><td class="d">190</td><td class="d">R$ 1.900</td></tr>
+            <tr><td class="pos">7</td><td>Milkshake de doce de leite</td><td class="d">140</td><td class="d">R$ 2.660</td></tr>
+            <tr><td class="pos">8</td><td>Cheese Salada</td><td class="d">128</td><td class="d">R$ 3.328</td></tr>
+            <tr><td class="pos">9</td><td>Onion rings</td><td class="d">96</td><td class="d">R$ 2.112</td></tr>
+            <tr><td class="pos">10</td><td>Burger de pão de queijo</td><td class="d">70</td><td class="d">R$ 2.100</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <h2>5 que menos saíram</h2>
+        <table class="num baixo">
+          <thead><tr><th>Produto</th><th class="d">Qtd. no mês</th></tr></thead>
+          <tbody>
+            <tr><td>Salada Caesar</td><td class="d">6</td></tr>
+            <tr><td>Suco de laranja</td><td class="d">9</td></tr>
+            <tr><td>X-Vegano</td><td class="d">11</td></tr>
+            <tr><td>Brownie</td><td class="d">14</td></tr>
+            <tr><td>Água com gás</td><td class="d">15</td></tr>
+          </tbody>
+        </table>
+        <p class="nota">Juntos, esses 5 produtos venderam 55 unidades em 31 dias.</p>
+      </div>
+    </section>
+
+    <section class="duas">
+      <div>
+        <h2>Pedidos por dia da semana</h2>
+        <div class="barras num">
+          <div class="barra"><span>Segunda</span><span class="trilho"><i style="width:36%"></i></span><span class="v">120</span></div>
+          <div class="barra"><span>Terça</span><span class="trilho"><i style="width:44%"></i></span><span class="v">145</span></div>
+          <div class="barra"><span>Quarta</span><span class="trilho"><i style="width:52%"></i></span><span class="v">170</span></div>
+          <div class="barra"><span>Quinta</span><span class="trilho"><i style="width:62%"></i></span><span class="v">205</span></div>
+          <div class="barra forte"><span>Sexta</span><span class="trilho"><i style="width:91%"></i></span><span class="v">300</span></div>
+          <div class="barra forte"><span>Sábado</span><span class="trilho"><i style="width:100%"></i></span><span class="v">330</span></div>
+          <div class="barra"><span>Domingo</span><span class="trilho"><i style="width:58%"></i></span><span class="v">190</span></div>
+        </div>
+      </div>
+      <div>
+        <h2>Pedidos por horário</h2>
+        <div class="barras num">
+          <div class="barra"><span>11h às 14h</span><span class="trilho"><i style="width:38%"></i></span><span class="v">18%</span></div>
+          <div class="barra"><span>14h às 18h</span><span class="trilho"><i style="width:19%"></i></span><span class="v">9%</span></div>
+          <div class="barra"><span>18h às 19h</span><span class="trilho"><i style="width:25%"></i></span><span class="v">12%</span></div>
+          <div class="barra forte"><span>19h às 21h</span><span class="trilho"><i style="width:100%"></i></span><span class="v">48%</span></div>
+          <div class="barra"><span>21h às 23h</span><span class="trilho"><i style="width:27%"></i></span><span class="v">13%</span></div>
+        </div>
+        <p class="nota">Quase metade dos pedidos chega entre 19h e 21h.</p>
+      </div>
+    </section>
+
+    <section class="duas">
+      <div>
+        <h2>Como o cliente pediu</h2>
+        <div class="empilhada num"><span class="c1" style="width:46%">46%</span><span class="c2" style="width:32%">32%</span><span class="c3" style="width:12%">12%</span><span class="c4" style="width:10%">10%</span></div>
+        <div class="leg num"><span><i class="c1"></i>Mesas · 672</span><span><i class="c2"></i>Delivery · 467</span><span><i class="c3"></i>Balcão · 175</span><span><i class="c4"></i>Retirada · 146</span></div>
+        <h2 style="margin-top:22px">Formas de pagamento</h2>
+        <div class="empilhada num"><span class="c1" style="width:52%">52%</span><span class="c2" style="width:38%">38%</span><span class="c4" style="width:10%">10%</span></div>
+        <div class="leg"><span><i class="c1"></i>Pix</span><span><i class="c2"></i>Cartão</span><span><i class="c4"></i>Dinheiro</span></div>
+      </div>
+      <div>
+        <h2>Bairros que mais pedem</h2>
+        <table class="num">
+          <thead><tr><th>Bairro</th><th class="d">Pedidos</th><th class="d">Parte</th></tr></thead>
+          <tbody>
+            <tr><td>Centro</td><td class="d">128</td><td class="d">27%</td></tr>
+            <tr><td>Jardim Primavera</td><td class="d">96</td><td class="d">21%</td></tr>
+            <tr><td>Vila Nova</td><td class="d">74</td><td class="d">16%</td></tr>
+            <tr><td>São Benedito</td><td class="d">58</td><td class="d">12%</td></tr>
+            <tr><td>Santa Rita</td><td class="d">41</td><td class="d">9%</td></tr>
+            <tr><td>Outros bairros</td><td class="d">70</td><td class="d">15%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="recs">
+      <h2>Sugestões de melhorias e promoções para novembro</h2>
+      <ol>
+        <li><div><b>Promoção para segunda e terça <span class="tag t-promo">Promoção</span></b><p>São os dias mais fracos, com 265 pedidos somados, menos que um único sábado. Sugestão: "Terça do Cheese Salada" por R$ 22, em destaque no topo do cardápio.</p></div></li>
+        <li><div><b>Combo com milkshake <span class="tag t-promo">Promoção</span></b><p>140 milkshakes vendidos à parte. Um combo Mineiro Clássico + milkshake por R$ 42 pode subir o ticket médio.</p></div></li>
+        <li><div><b>Sugerir onion rings como adicional <span class="tag t-promo">Promoção</span></b><p>Só 96 vendas no mês. Oferecer "+ onion rings por R$ 12" ao escolher qualquer hambúrguer.</p></div></li>
+        <li><div><b>Rever a Salada Caesar <span class="tag t-melhoria">Melhoria</span></b><p>Saíram 6 no mês. Vale tirar do cardápio ou trocar por outra opção leve, para reduzir a compra de ingredientes.</p></div></li>
+        <li><div><b>Reforçar a cozinha na sexta e no sábado, das 19h às 21h <span class="tag t-melhoria">Melhoria</span></b><p>O preparo sobe de 18 para 27 minutos nesse horário. Uma pessoa a mais ou deixar batata e carnes pré-preparadas antes das 19h ajuda.</p></div></li>
+        <li><div><b>Entrega grátis no Centro acima de R$ 60 <span class="tag t-promo">Promoção</span></b><p>O Centro já faz 27% dos deliveries e fica perto. A entrega grátis incentiva pedidos maiores.</p></div></li>
+      </ol>
+      <p class="nota">Qualquer uma dessas sugestões pode ir para o cardápio: no plano MAX, a Octa Sites coloca no ar sem custo extra.</p>
+    </section>
+
+    <footer class="rodape"><span>Dados tirados dos pedidos feitos pelo cardápio da Octa Sites de 1 a 31 de outubro de 2026.</span><span>Preparado pela Octa Sites e enviado pelo WhatsApp em 1º de novembro de 2026.</span></footer>
+  </div>
+</article>
+</body>
+</html>

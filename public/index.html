@@ -183,6 +183,11 @@ h1 em{font-style:normal;color:var(--roxo)}
 .destaques li,.todos li{display:flex;gap:10px;align-items:flex-start;font-size:14.5px}
 .destaques svg,.todos svg{width:18px;height:18px;color:var(--verde);flex:none;margin-top:2px}
 .max .destaques svg{color:var(--ouro-esc)}
+.ver-rel{display:inline-flex;align-items:center;gap:6px;margin-top:8px;min-height:36px;padding:0 14px;border-radius:999px;background:#FBF3D9;border:1px solid #E9D49A;color:#6B4E07;font-weight:700;font-size:13.5px;cursor:pointer}
+.ver-rel:hover{background:#F6E7B8}
+.ver-rel svg{width:16px!important;height:16px!important;margin:0!important;color:currentColor!important}
+.destaques li>span{display:flex;flex-direction:column;align-items:flex-start}
+@media(min-width:700px){.janela.larga iframe{width:min(920px,calc(100% - 32px))}}
 .plano details{margin-top:16px;border-top:1px solid var(--linha);padding-top:12px}
 .plano summary{list-style:none;display:flex;align-items:center;justify-content:space-between;min-height:44px;font-size:14.5px;font-weight:700;color:var(--roxo-esc);cursor:pointer}
 .plano summary::-webkit-details-marker{display:none}
@@ -577,6 +582,7 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Pedir a conta, já dividida por pessoa</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Chamar garçom pelo celular</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Sem o selo da Octa e suporte no mesmo dia</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Relatório mensal de vendas, com sugestões de melhorias e promoções<button type="button" class="ver-rel" id="verRelatorio">Ver exemplo do relatório<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></span></li>
         </ul>
         <details>
           <summary>Ver todos os recursos<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></summary>
@@ -584,7 +590,6 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
             <li class="grupo">Também inclui</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Encomendas com data</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Destaques e promoções no topo do cardápio</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Relatório mensal de vendas</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Melhorias ilimitadas: apresente suas ideias e a Octa Sites coloca em prática no seu sistema</li>
           </ul>
         </details>
@@ -716,7 +721,13 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
       document.getElementById('fechar').focus();
     });
   });
-  function fecha(){ jan.classList.remove('aberta'); document.body.style.overflow=''; fr.removeAttribute('srcdoc'); fr.src='about:blank'; if(ultimo) ultimo.focus(); }
+  document.getElementById('verRelatorio').addEventListener('click',function(){
+    ultimo=this; nome.textContent='Relatório do plano MAX';
+    fr.title='Exemplo de relatório mensal'; fr.src='relatorio-exemplo/';
+    jan.classList.add('aberta','larga'); document.body.style.overflow='hidden';
+    document.getElementById('fechar').focus();
+  });
+  function fecha(){ jan.classList.remove('aberta','larga'); document.body.style.overflow=''; fr.removeAttribute('srcdoc'); fr.src='about:blank'; if(ultimo) ultimo.focus(); }
   document.getElementById('fechar').addEventListener('click',fecha);
   addEventListener('keydown',function(e){ if(e.key==='Escape'&&jan.classList.contains('aberta')) fecha(); });
 
