@@ -860,7 +860,7 @@ button,input,select,textarea{font-family:inherit}
 @media (prefers-reduced-motion:reduce){#zapNotif{transition:none}}
 </style>
 </head>
-<body><div class="faixa-plano">Demonstração do plano <b>Octa Delivery</b> · loja só de delivery</div><style id="so-cliente">
+<body><div class="faixa-plano">Demonstração do plano <b>Octa Delivery</b> · só delivery</div><style id="so-cliente">
 html,body{margin:0;background:#23270F;height:100%;overflow:hidden}
 body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNotif):not(.faixa-plano){display:none!important}
 .topo,.guia,.planos-bar,.abas,.rodape-demo,.rotulo-lado,.qr-local,.lado-painel,.dica-painel{display:none!important}
@@ -1235,14 +1235,14 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
       campo('enc', 'qtd', 'Quantidade ou tamanho', 'text', 'Ex.: 1 bolo de 2 kg', 'off') +
       campo('enc', 'data', 'Data', 'date', '', 'off') + campo('enc', 'hora', 'Horário (opcional)', 'time', '', 'off') +
       '<div class="campo"><span style="font-weight:700;font-size:13px;color:#fff">Como prefere receber?</span><div class="opc-receber" role="group" aria-label="Como prefere receber">' +
-      '<button type="button" data-acao="receber" data-v="retirar" aria-pressed="' + (e.receber === 'retirar') + '">Retirar na loja</button>' +
+      '<button type="button" data-acao="receber" data-v="retirar" aria-pressed="' + (e.receber === 'retirar') + '">Retirar no local</button>' +
       '<button type="button" data-acao="receber" data-v="entrega" aria-pressed="' + (e.receber === 'entrega') + '">Entrega</button></div></div>' +
       (e.receber === 'entrega' ? campo('enc', 'end', 'Endereço de entrega', 'text', 'Rua, número e bairro', 'street-address') : '') +
       '<div class="campo"><label for="c-enc-obs">Observações</label><textarea id="c-enc-obs" data-obj="enc" data-campo="obs" placeholder="Ex.: escrever &quot;Parabéns, Lia&quot; no bolo">' + esc(e.obs) + '</textarea></div></div>';
     var f = faltaEnc();
     h += '<a class="btn-whats" id="enviarEnc" href="' + (f ? '#' : linkEnc()) + '" target="_blank" rel="noopener" aria-disabled="' + !!f + '">' + ICON.whats + 'Enviar encomenda pelo WhatsApp</a>' +
       '<p class="falta-enc" id="faltaEnc"' + (f ? '' : ' hidden') + '>' + f + '</p>' +
-      '<p class="nota-enc">A data e o valor são confirmados pela loja no WhatsApp.</p></section>';
+      '<p class="nota-enc">A data e o valor são confirmados pelo estabelecimento no WhatsApp.</p></section>';
     return h;
   }
   function faltaEnc(){
@@ -1259,7 +1259,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
     var L = ['Olá, ' + card.loja.nome + '! Quero fazer uma encomenda:', '', 'Item: ' + e.item];
     if (e.qtd.trim()) L.push('Quantidade/tamanho: ' + e.qtd.trim());
     L.push('Data: ' + d + (e.hora ? ' às ' + e.hora : ''));
-    L.push(e.receber === 'entrega' ? 'Entrega em: ' + e.end.trim() : 'Vou retirar na loja');
+    L.push(e.receber === 'entrega' ? 'Entrega em: ' + e.end.trim() : 'Vou retirar no local');
     L.push('', 'Nome: ' + e.nome.trim(), 'Telefone: ' + e.tel.trim());
     if (e.obs.trim()) L.push('Observações: ' + e.obs.trim());
     return 'https://wa.me/' + card.loja.whats.replace(/\D/g, '') + '?text=' + encodeURIComponent(L.join('\n'));
@@ -1383,7 +1383,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
       h += '<div class="rolagem"><div class="boas"><h2>Bem-vindo!</h2><p>Como você quer fazer o seu pedido?</p></div><div class="opcoes">' +
         '<button type="button" class="opcao" data-acao="modo" data-modo="mesa" aria-expanded="' + cli.escolhendoMesa + '"><span class="ic" style="background:var(--mesa)">' + ICON.mesa + '</span><span><b>Comer aqui</b><span>Peça da mesa e receba no seu lugar</span></span></button>';
       if (cli.escolhendoMesa) {
-        h += '<div class="mesas"><p><b>Na loja, o QR code da mesa já informa o número.</b> Para a demonstração, toque na mesa:</p><div class="grade-mesas">';
+        h += '<div class="mesas"><p><b>No estabelecimento, o QR code da mesa já informa o número.</b> Para a demonstração, toque na mesa:</p><div class="grade-mesas">';
         for (var m = 1; m <= (P().mesas || 12); m++) h += '<button type="button" data-acao="mesa" data-mesa="' + m + '" aria-label="Mesa ' + m + '">' + m + '</button>';
         h += '</div></div>';
       }
@@ -1448,13 +1448,13 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
       if (!o) { cli.tela = 'inicio'; return renderCliente(); }
       var mesa = o.modo === 'mesa';
       if (!P().meus) {
-        h += '<div class="rolagem"><div class="confirma so-numero"><div class="check"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></div><h3>Pedido enviado!</h3><p>O número do seu pedido é</p><span class="grande-num">' + o.id + '</span><p>' + (mesa ? 'Vamos levar até a Mesa ' + o.mesa + ' quando estiver pronto.' : (o.consumo === 'entrega' ? 'Quando estiver pronto, o pedido sai para entrega no endereço informado.' : 'Quando estiver pronto, ' + esc(o.nome) + ' pode retirar na loja.')) + '</p>' +
+        h += '<div class="rolagem"><div class="confirma so-numero"><div class="check"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></div><h3>Pedido enviado!</h3><p>O número do seu pedido é</p><span class="grande-num">' + o.id + '</span><p>' + (mesa ? 'Vamos levar até a Mesa ' + o.mesa + ' quando estiver pronto.' : (o.consumo === 'entrega' ? 'Quando estiver pronto, o pedido sai para entrega no endereço informado.' : 'Quando estiver pronto, ' + esc(o.nome) + ' pode retirar no local.')) + '</p>' +
           (o.zap ? '<p class="zap-aviso">As atualizações do pedido chegam no seu WhatsApp ' + esc(zapFmt(o.zap)) + '.</p>' : '') +
           '<p class="dica-painel">No plano PRO, o cliente vê só o número do pedido. No Premium e no MAX, ele acompanha o preparo pelo celular.</p><button type="button" class="btn-sec" data-acao="novo">Fazer outro pedido</button></div></div>';
         $('tela').innerHTML = h; mostrarAviso(); return;
       }
       var etapas = [
-        ['Pedido recebido', 'A comanda já saiu na impressora da loja.'],
+        ['Pedido recebido', 'A comanda já saiu na impressora do estabelecimento.'],
         ['Em preparo', 'A equipe está preparando o seu pedido.'],
         [mesa ? 'Pronto, a caminho da mesa' : 'Pronto!', mesa ? 'O garçom já sabe qual é a sua mesa.' : 'A equipe vai chamar você pelo nome no balcão.'],
         [(!mesa && o.consumo === 'viagem') ? 'Retirado' : 'Entregue', 'Bom apetite!']
@@ -1502,7 +1502,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
   function blocoEntrega(){
     var h = '<div class="campo"><span style="font-weight:700;font-size:13px">Entrega ou retirada?</span><div class="consumo" role="group" aria-label="Entrega ou retirada">' +
       '<button type="button" data-acao="consumo" data-v="entrega" aria-pressed="' + (cli.consumo === 'entrega') + '">' + ICON.viagem + 'Entrega</button>' +
-      '<button type="button" data-acao="consumo" data-v="viagem" aria-pressed="' + (cli.consumo === 'viagem') + '">' + ICON.mesa + 'Retirar na loja</button></div></div>';
+      '<button type="button" data-acao="consumo" data-v="viagem" aria-pressed="' + (cli.consumo === 'viagem') + '">' + ICON.mesa + 'Retirar no local</button></div></div>';
     if (cli.consumo === 'entrega') {
       h += '<div class="campo"><label for="c-cli-bairro">Bairro</label><select id="c-cli-bairro" data-obj="cli" data-campo="bairro"><option value="">Escolha o bairro</option>' +
         BAIRROS.map(function(b){ return '<option value="' + esc(b[0]) + '"' + (cli.bairro === b[0] ? ' selected' : '') + '>' + esc(b[0]) + ' · taxa ' + fmt(b[1]) + '</option>'; }).join('') + '</select></div>' +
@@ -1709,7 +1709,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
     var card = document.querySelector('[data-pedido="' + o.id + '"]'); if (card) card.classList.add('novo-chegou');
     if (aba === 'cliente' && window.matchMedia('(max-width:1060px)').matches) {
       naoVistos++; var bl = $('bolinha'); bl.hidden = false; bl.textContent = naoVistos;
-      toast('Pedido nº ' + o.id + ' chegou na loja. Toque em "Painel da padaria" para ver.');
+      toast('Pedido nº ' + o.id + ' chegou no estabelecimento. Toque em "Painel da padaria" para ver.');
     } else if (local) toast(P().auto ? 'Pedido nº ' + o.id + ' chegou no painel e a comanda foi impressa.' : 'Pedido nº ' + o.id + ' chegou no painel. No PRO, toque em "Imprimir" para a comanda sair.');
   }
   function bipChamado(){
@@ -1860,10 +1860,10 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
     var y = window.scrollY;
     var h = '<div class="ed"><p class="ed-intro"><b>Área de atualização do dono.</b> Tudo o que você salvar aqui aparece na hora no cardápio do cliente.</p>' + (P().produtos && PRODUTOS.length > P().produtos ? '<p class="limite-aviso">Este cardápio de exemplo tem ' + PRODUTOS.length + ' produtos. No plano ' + P().nome + ', o limite é ' + P().produtos + ': um cliente desse plano precisaria tirar alguns ou subir de plano.</p>' : '');
     // dados da loja
-    h += '<section class="ed-bloco"><h3>Dados da loja</h3><div class="ed-corpo"><div class="dois">' +
+    h += '<section class="ed-bloco"><h3>Dados do estabelecimento</h3><div class="ed-corpo"><div class="dois">' +
       '<div class="campo"><label for="ed-loja-nome">Nome da padaria</label><input id="ed-loja-nome" type="text" value="' + esc(card.loja.nome) + '" maxlength="40"></div>' +
       '<div class="campo"><label for="ed-loja-whats">WhatsApp das encomendas</label><input id="ed-loja-whats" type="tel" inputmode="tel" value="' + esc(card.loja.whats) + '" placeholder="55 + DDD + número"></div></div>' +
-      '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><button type="button" class="ed-btn prim" data-ed="salvar-loja">Salvar dados da loja</button><span class="ed-salvo" id="salvoLoja" hidden>Salvo</span></div>' +
+      '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><button type="button" class="ed-btn prim" data-ed="salvar-loja">Salvar dados do estabelecimento</button><span class="ed-salvo" id="salvoLoja" hidden>Salvo</span></div>' +
       (P().conta ? '<div style="border-top:1px solid var(--linha);padding-top:12px">' + chave('ed-servico', dados.servico, 'Cobrar taxa de serviço (10%) na conta da mesa', false, ' data-ed="servico"') + '<p style="margin:6px 0 0;color:var(--suave);font-size:12.5px">Ligada, a conta pedida pelo celular mostra os 10% já marcados, e o cliente pode desmarcar (a taxa é opcional).</p></div>' : '') + '</div></section>';
     // categorias
     h += '<section class="ed-bloco"><h3>Categorias <small>Adicione, renomeie, ordene ou esconda</small></h3><div class="ed-corpo">';
@@ -1927,7 +1927,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
       if (!nome) { toast('Coloque o nome da padaria.'); $('ed-loja-nome').focus(); return; }
       if (w.length < 12) { toast('WhatsApp incompleto: use 55 + DDD + número, só os dígitos.'); $('ed-loja-whats').focus(); return; }
       card.loja.nome = nome; card.loja.whats = w;
-      if (aposMudarCardapio('Dados da loja salvos.')) { var sv = $('salvoLoja'); if (sv) sv.hidden = false; }
+      if (aposMudarCardapio('Dados do estabelecimento salvos.')) { var sv = $('salvoLoja'); if (sv) sv.hidden = false; }
     }
     else if (a === 'cat-renomear') { edCat = id; confirmaCat = null; renderEditor(); var i = $('ed-cat-nome'); if (i) { i.focus(); i.select(); } }
     else if (a === 'cat-cancelar') { edCat = null; renderEditor(); }
