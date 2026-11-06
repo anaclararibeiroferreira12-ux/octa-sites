@@ -2,11 +2,19 @@
   "name": "octa-sites",
   "compatibility_date": "2026-11-01",
   "workers_dev": true,
+  "main": "src/index.js",
   "routes": [
     { "pattern": "octasites.com.br", "custom_domain": true },
     { "pattern": "www.octasites.com.br", "custom_domain": true }
   ],
   "assets": {
-    "directory": "./public"
-  }
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
+  },
+  // Pedidos dos exemplos com ?loja=CODIGO (celular -> painel no computador)
+  "durable_objects": {
+    "bindings": [{ "name": "LOJAS", "class_name": "Loja" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Loja"] }]
 }
