@@ -950,6 +950,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
   <div class="folha" role="dialog" aria-modal="true" aria-labelledby="folhaTitulo" id="folhaCaixa"></div>
 </div>
 
+<script src="../sincronia.js"></script>
 <script>
 (function(){
   'use strict';
@@ -1085,6 +1086,8 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
 
   // ---------- estado (fica só neste navegador) ----------
   var CHAVE = 'hamburgueria-demo-v4';
+  var LOJA = window.OctaSync ? OctaSync.loja() : null;
+  if (LOJA) CHAVE += '-loja-' + LOJA;
   function semente(){
     var agora = Date.now();
     var ped = [{"id": 21, "modo": "balcao", "consumo": "viagem", "nome": "Paulo", "itens": {"combo": 1}, "obs": "", "status": "entregue", "t": agora - 38*60000}, {"id": 22, "modo": "mesa", "mesa": 5, "nome": "Marta", "itens": {"uaismash": 2, "coca": 2}, "obs": "", "status": "pronto", "t": agora - 15*60000}, {"id": 23, "modo": "mesa", "mesa": 2, "nome": "Lucas", "itens": {"canastrabacon": 1, "batata": 1}, "obs": "Sem rúcula", "status": "novo", "t": agora - 4*60000}];
@@ -1098,7 +1101,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
   }
   var dados;
   try { dados = JSON.parse(localStorage.getItem(CHAVE) || 'null'); } catch(e) { dados = null; }
-  if (!dados || !Array.isArray(dados.pedidos)) dados = semente();
+  if (!dados || !Array.isArray(dados.pedidos)) dados = LOJA ? {prox:1, pedidos:[], meus:[], chamados:[], proxCh:1, servico:true} : semente();
   if (!Array.isArray(dados.meus)) dados.meus = [];
   if (!Array.isArray(dados.chamados)) { dados.chamados = []; dados.proxCh = 1; }
   function salvar(){ try { localStorage.setItem(CHAVE, JSON.stringify(dados)); } catch(e){} }
@@ -1122,9 +1125,12 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
   try { canal = new BroadcastChannel('hamburgueria-demo-v2'); } catch(e) {}
   if (canal) canal.onmessage = function(ev){
     if (ev.data && ev.data.tipo === 'cardapio') { card = ev.data.card; aplicarCardapio(); limparCarrinho(); renderCliente(); renderEditor(); atualizarNomeLoja(); return; }
+    receberDados(ev.data.dados || ev.data);
+  };
+  function receberDados(novo){
     var antes = dados.pedidos.map(function(p){ return p.id; });
     var stAntes = {}; dados.pedidos.forEach(function(p){ stAntes[p.id] = p.status; });
-    dados = ev.data.dados || ev.data;
+    dados = novo;
     if (!Array.isArray(dados.meus)) dados.meus = [];
     if (!Array.isArray(dados.chamados)) dados.chamados = [];
     var chNovos = dados.chamados.filter(function(c){ return chVistos.indexOf(c.id) < 0 && c.status === 'aberto'; });
@@ -1135,7 +1141,20 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     if (novos.length) chegou(novos[novos.length - 1], false);
     if (chNovos.length) chamadoChegou(chNovos[chNovos.length - 1]);
   };
-  function publicar(){ salvar(); if (canal) try { canal.postMessage({tipo:'pedidos', dados:dados}); } catch(e){} }
+  function publicar(){ salvar(); if (canal) try { canal.postMessage({tipo:'pedidos', dados:dados}); } catch(e){} if (sync) sync.enviar(); }
+  // Modo online (?loja=CODIGO): pedidos feitos no celular chegam no painel de outro aparelho.
+  var sync = LOJA ? OctaSync.iniciar({loja:LOJA, dados:function(){ return dados; }, receber:function(r){
+    (r.remap || []).forEach(function(m){
+      if (m.t === 'p') { dados.meus = dados.meus.map(function(id){ return id === m.de ? m.para : id; }); if (cli.pedidoId === m.de) cli.pedidoId = m.para; }
+      else { if (cli.chGarcom === m.de) cli.chGarcom = m.para; if (cli.chConta === m.de) cli.chConta = m.para; if (chVistos.indexOf(m.de) >= 0) chVistos.push(m.para); }
+    });
+    var novo = {prox:r.prox, proxCh:r.proxCh, pedidos:r.pedidos, chamados:r.chamados, meus:dados.meus, servico:dados.servico};
+    if (r.primeiro) {
+      dados = novo; dados.chamados.forEach(function(c){ chVistos.push(c.id); });
+      renderPainel(); atualizarCliente();
+    } else receberDados(novo);
+    salvar();
+  }}) : null;
   function salvarCardapio(){
     try { localStorage.setItem(CHAVE_CARD, JSON.stringify(card)); }
     catch(e) { toast('Não foi possível salvar: o espaço do navegador acabou. Use fotos menores ou restaure o cardápio.'); return false; }
@@ -1608,9 +1627,38 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     h += '<div class="lin"></div><div class="dupla"><b>TOTAL</b><b>' + fmt(totalPed(o)) + '</b></div><div>Pagamento no caixa</div>';
     return h;
   }
+  // Impressão real na impressora térmica (80 mm). Só liga com ?impressora=1 no link,
+  // para o exemplo público continuar só com a animação.
+  var impressoraReal = /[?&]impressora=1\b/.test(location.search);
+  function imprimirDeVerdade(html){
+    if (!impressoraReal) return;
+    var f = document.createElement('iframe');
+    f.setAttribute('aria-hidden', 'true');
+    f.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden';
+    document.body.appendChild(f);
+    var d = f.contentWindow.document;
+    d.open();
+    d.write('<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Comanda</title><style>' +
+      '@page{size:80mm auto;margin:0}' +
+      'html,body{margin:0;background:#fff;color:#000}' +
+      'body{width:72mm;padding:2mm 3mm 6mm;font-family:"Courier New",Courier,monospace;font-size:13px;line-height:1.35}' +
+      '.faixa{background:#000;color:#fff;text-align:center;font-family:Arial,Helvetica,sans-serif;font-weight:800;font-size:24px;padding:6px 4px;margin-bottom:8px;-webkit-print-color-adjust:exact;print-color-adjust:exact}' +
+      '.faixa small{display:block;font-size:12px;letter-spacing:.1em}' +
+      '.dupla{display:flex;justify-content:space-between;gap:6px}' +
+      '.lin{border-top:1px dashed #000;margin:6px 0}' +
+      '.grande{font-weight:700;font-size:15px}' +
+      '.centro{text-align:center;font-weight:700}' +
+      '</style></head><body>' + html + '</body></html>');
+    d.close();
+    setTimeout(function(){
+      try { f.contentWindow.focus(); f.contentWindow.print(); } catch(e){}
+      setTimeout(function(){ f.remove(); }, 60000);
+    }, 150);
+  }
   function imprimir(o){
     ultimoImpresso = o.id; o.impresso = true;
     $('saida').innerHTML = '<div class="papel saindo">' + comandaHTML(o) + '</div>';
+    imprimirDeVerdade(comandaHTML(o));
     var led = $('led'); led.classList.add('imprimindo'); setTimeout(function(){ led.classList.remove('imprimindo'); }, 2400);
   }
   function chegou(o, local){ if (true) { if (P().auto) imprimir(o); else renderPainel(); return; }
@@ -1677,6 +1725,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     var c = chDe(+b.dataset.id); if (!c) return;
     if (b.dataset.chp === 'pre') {
       $('saida').innerHTML = '<div class="papel saindo">' + preContaHTML(c) + '</div>';
+      imprimirDeVerdade(preContaHTML(c));
       var led = $('led'); led.classList.add('imprimindo'); setTimeout(function(){ led.classList.remove('imprimindo'); }, 2400);
       ultimoImpresso = -1; toast('Pré-conta da Mesa ' + c.mesa + ' impressa.'); return;
     }
