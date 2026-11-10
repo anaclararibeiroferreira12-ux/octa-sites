@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
+<meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Mineiro Burger · Cardápio</title>
 <meta name="description" content="Exemplo de cardápio com pedido pelo celular: Mineiro Burger, hamburgueria.">
@@ -11,7 +12,7 @@
 <style>
 body{margin:0}img{max-width:100%}[hidden]{display:none!important}
 
-/* Layout: à esquerda o celular do cliente (coluna de categorias + cardápio em linhas), à direita o painel da padaria.
+/* Layout: à esquerda o celular do cliente (coluna de categorias + cardápio em linhas), à direita o painel da loja.
    No celular, abas alternam as duas telas. Visual único da marca (sem tema escuro), por decisão. */
 :root{
   color-scheme:light;
@@ -21,7 +22,7 @@ body{margin:0}img{max-width:100%}[hidden]{display:none!important}
   --creme:#FAF8F0; --creme-2:#EEEADB; --borda:#DEDACA; --linha:#ECE8DA;
   --texto:#1E2412; --suave:#5B6250; --branco:#FFFFFF;
   --painel:#F3F1E8; --painel-borda:#E0DCCD;
-  --mesa:#4E5A1E; --balcao:#8A5300; --viagem:#1C4F7A;
+  --mesa:#4E5A1E; --balcao:#8A5300; --viagem:#1C4F7A; --entrega:#6B2C91;
   --ok:#1F6B45;
   --titulo:"Playfair Display", Georgia, serif;
   --corpo:"Inter", "Segoe UI", system-ui, sans-serif;
@@ -432,6 +433,8 @@ button,input,select,textarea{font-family:inherit}
 .mesa-acoes button.feito{border-color:var(--ok);color:var(--ok);background:#EAF5EE}
 .mesa-acoes button.feito svg{color:var(--ok)}
 .mesa-acoes button:disabled{cursor:default}
+.dica-sino{margin:8px 16px 10px;font-size:12.5px;color:var(--suave);text-align:center}
+.app-mesa .dica-sino{margin:6px 0 0}
 .c-ped{margin-top:14px;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--suave)}
 .c-item{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--linha);font-size:14.5px}
 .c-item span:last-child{font-weight:800;color:var(--vinho);white-space:nowrap}
@@ -667,7 +670,7 @@ button,input,select,textarea{font-family:inherit}
 .app-vazio{margin:0 18px;color:var(--suave)}
 .app-abas{display:flex;gap:22px;overflow-x:auto;padding:22px 18px 4px;scrollbar-width:none;position:static;background:none}
 .app-abas::-webkit-scrollbar{display:none}
-.app-abas button{flex:none;border:0;background:none;padding:6px 0;font:700 15px var(--corpo);color:#8A7F72;cursor:pointer;position:relative;min-height:0;box-shadow:none;border-radius:0}
+.app-abas button{flex:none;border:0;background:none;padding:6px 0;font:700 15px var(--corpo);color:#6B6155;cursor:pointer;position:relative;min-height:0;box-shadow:none;border-radius:0}
 .app-abas button[aria-current="true"]{color:var(--vinho-esc);background:none}
 .app-abas button[aria-current="true"]::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;border-radius:3px;background:var(--madeira)}
 .app-abas button:focus-visible{outline:2px solid var(--ouro);outline-offset:2px}
@@ -782,7 +785,7 @@ button,input,select,textarea{font-family:inherit}
 /* ===== cardápio em lista (versão final) ===== */
 .app{padding-bottom:160px}
 .app-oi{padding:14px 18px 2px}
-.app-oi span{font-size:15px;color:var(--ouro-esc)}
+.app-oi span{font-size:15px;color:#7E5A08}
 .app-oi h2{font-size:25px}
 .app-busca{height:48px;margin:12px 18px 4px}
 .dst-faixa{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:16px 18px 6px;scroll-padding:0 18px;scrollbar-width:none}
@@ -846,28 +849,227 @@ button,input,select,textarea{font-family:inherit}
 .toast{bottom:auto;top:calc(14px + env(safe-area-inset-top,0px));padding:10px 16px;font-size:13.5px;border-radius:999px;background:#141414;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:0 10px 24px -10px rgba(10,10,10,.7);transform:translate(-50%,-30px)}
 .toast.on{transform:translate(-50%,0)}
 @media (max-width:340px){.lst b{font-size:14.5px}.lst img{width:64px;height:64px}}
+.planos-bar{display:none!important}
 </style>
 </head>
-<body><div class="faixa-plano">Demonstração do plano <b>MAX</b> · <i>MAX</i> = só no plano MAX</div><style id="so-cliente">
+<body><div class="faixa-plano"><span class="fp-txt">Exemplo do sistema <b>Octa Completo</b></span><div class="fp-abas" role="tablist" aria-label="Telas do exemplo"><button type="button" role="tab" id="abaCliente" aria-selected="true" aria-controls="ladoCliente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg>Celular do cliente</button><button type="button" role="tab" id="abaPainel" aria-selected="false" aria-controls="ladoPainel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>Painel da loja<span class="bolinha" id="bolinha" hidden>0</span></button></div></div><style id="so-cliente">
+@media (max-width:1060px){
 html,body{margin:0;background:#0B0B0B;height:100%;overflow:hidden}
-body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-plano){display:none!important}
-.topo,.guia,.planos-bar,.abas,.rodape-demo,.rotulo-lado,.qr-local,.lado-painel,.dica-painel{display:none!important}
-.palco{display:block!important;padding:0!important;margin:0!important;max-width:none!important;height:calc(100dvh - 34px);margin-top:34px!important}
-.lado-cliente{position:static!important;padding:0!important;height:calc(100dvh - 34px)}
-.aparelho{width:100%!important;max-width:480px;margin:0 auto!important;padding:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;height:calc(100dvh - 34px)}
-.tela{border-radius:0!important;border:0!important;height:calc(100dvh - 34px)!important;min-height:0!important}
+body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-plano):not(.folha-fundo){display:none!important}
+.topo,.guia,.planos-bar,.abas,.rodape-demo,.rotulo-lado,.qr-local{display:none!important}
+.palco{display:block!important;padding:0!important;margin:0!important;max-width:none!important;height:calc(100dvh - 50px);margin-top:50px!important}
+.lado-cliente{position:static!important;padding:0!important;height:calc(100dvh - 50px)}
+.aparelho{width:100%!important;max-width:480px;margin:0 auto!important;padding:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;height:calc(100dvh - 50px)}
+.tela{border-radius:0!important;border:0!important;height:calc(100dvh - 50px)!important;min-height:0!important}
 .abertura{inset:0!important;border-radius:0!important}
-.toast{top:calc(44px + env(safe-area-inset-top,0px))!important;bottom:auto!important}
+.toast{top:calc(60px + env(safe-area-inset-top,0px))!important;bottom:auto!important}
+.palco[data-aba="cliente"] .lado-painel{display:none!important}
+.palco[data-aba="painel"] .lado-cliente{display:none!important}
+.palco[data-aba="painel"] .lado-painel{display:block!important;height:calc(100dvh - 50px);overflow-y:auto;overscroll-behavior:contain;background:var(--creme-2,#F4ECDD);padding:0 0 24px}
+.faixa-plano{height:50px!important;padding:0 8px!important}
+.faixa-plano .fp-txt{display:none}
+.lado-painel .dica-mob{display:block}
+}
+@media (min-width:1061px){
+.planos-bar,.abas,.rodape-demo{display:none!important}
+body{padding-top:34px}
+.lado-cliente{top:50px}
+.faixa-plano .fp-abas{display:none}
+}
+</style><style>
+.ch.atrasado{box-shadow:0 0 0 3px #C8102E,0 10px 24px -12px rgba(200,16,46,.6);animation:chEspera 1.6s ease-in-out infinite}
+.ch.atrasado .ch-topo span{color:#C8102E;font-weight:800}
+@keyframes chEspera{0%,100%{box-shadow:0 0 0 3px #C8102E}50%{box-shadow:0 0 0 6px rgba(200,16,46,.35)}}
+@media (prefers-reduced-motion:reduce){.ch.atrasado{animation:none}}
+html.so-cliente-loja .fp-abas,html.so-cliente-loja .lado-painel,html.so-cliente-loja .guia,html.so-cliente-loja .dica-painel{display:none!important}
+html.so-cliente-loja .faixa-plano .fp-txt{display:inline!important}
+html.so-cliente-loja .palco{grid-template-columns:minmax(0,420px)!important;justify-content:center}
+.end-linha{display:flex;gap:12px;align-items:flex-end}.end-linha .campo{flex:1}
+.sem-num{display:flex;align-items:center;gap:8px;min-height:46px;font-weight:600;font-size:14px;white-space:nowrap}
+.sem-num input{width:20px;height:20px;accent-color:#B20F27}
+.cep-msg{font-size:12.5px;color:#5E5A4E}.cep-msg.erro{color:#A3261B}
+.pedido-corpo .end{font-size:13px;line-height:1.35;color:#3A2A1A}
+.promo-preco{flex-direction:column;align-items:flex-start!important;gap:0!important;line-height:1.05;white-space:nowrap}
+.promo-preco s{font-size:13px!important;line-height:1.2}
+.fp-abas{display:flex;gap:4px;width:100%;max-width:480px;background:rgba(255,255,255,.08);padding:4px;border-radius:12px}
+.fp-abas button{flex:1;position:relative;height:36px;border:0;border-radius:9px;background:none;color:#D9CCF7;font:700 13.5px/1 Inter,system-ui,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+.fp-abas button svg{width:16px;height:16px;flex:none}
+.fp-abas button[aria-selected="true"]{background:#fff;color:#1E1533}
+.fp-abas .bolinha{position:static!important;min-width:20px;height:20px;border-radius:10px;background:#E8B23A;color:#2E2203;font-size:11.5px;font-weight:900;display:inline-flex;align-items:center;justify-content:center;padding:0 6px;animation:fpPulso 1.2s ease-in-out infinite}
+.fp-abas .bolinha[hidden]{display:none}
+@keyframes fpPulso{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+@media (prefers-reduced-motion:reduce){.fp-abas .bolinha{animation:none}}
+.dica-mob{display:none;margin:12px 12px 0;padding:12px 14px;border-radius:14px;background:#1E1533;color:#EDE7FB;font:600 13.5px/1.4 Inter,system-ui,sans-serif}
+.dica-mob b{color:#fff}
+.dica-mob button{margin-top:8px;border:0;border-radius:999px;background:#E8B23A;color:#2E2203;font:800 13px Inter,system-ui,sans-serif;padding:8px 14px;cursor:pointer}
+.dica-painel[data-ir-painel]{cursor:pointer}
+.btn-ver-painel{display:none;width:100%;min-height:52px;border:0;border-radius:14px;background:#5B21B6;color:#fff;font-weight:800;font-size:15px;padding:0 16px;cursor:pointer;box-shadow:0 10px 24px -12px rgba(91,33,182,.8);animation:pulsar 1.6s ease-in-out 3}
+@keyframes pulsar{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+@media (prefers-reduced-motion:reduce){.btn-ver-painel{animation:none}}
+@media (max-width:1060px){.btn-ver-painel{display:block}.dica-painel[data-ir-painel]{display:none}}
+html.so-cliente-loja .btn-ver-painel{display:none!important}
+@media (max-width:1060px){.dica-painel[data-ir-painel]{color:#5B21B6;font-weight:700;text-decoration:underline;text-underline-offset:3px}}
 .faixa-plano{position:fixed;top:0;left:0;right:0;z-index:9999;height:34px;display:flex;align-items:center;justify-content:center;gap:8px;padding:0 10px;font:600 12px/1.2 Inter,system-ui,sans-serif;color:#EDE7FB;background:#1E1533;text-align:center;white-space:nowrap;overflow:hidden}
 .faixa-plano b{font-weight:800}
 .faixa-plano i{font-style:normal;font-size:10px;font-weight:800;letter-spacing:.06em;padding:2px 6px;border-radius:5px;background:#C9A227;color:#2E2203}
-[data-acao="garcom"]::after,[data-acao="conta"]::after,.enc-cartao b::after,#cats [data-cat="encomendas"]::after,.dst::after{content:"MAX";display:inline-block;margin-left:6px;padding:2px 6px;border-radius:5px;font:800 9.5px/1.2 Inter,system-ui,sans-serif;letter-spacing:.06em;background:#C9A227;color:#2E2203;vertical-align:middle}
-.dst{position:relative}.dst::after{position:absolute;top:10px;right:10px;margin:0}
+.dst{position:relative}
+
+/* promoção do dia: lanche "saindo" do cartão */
+.promo-dia{padding:64px 18px 4px;position:relative}
+.promo-3d{position:relative;height:192px;border-radius:26px;cursor:pointer;outline:none;perspective:700px;
+  background:radial-gradient(120% 90% at 85% 10%,#E8243F 0%,#B20F27 38%,#4A0710 100%);box-shadow:0 26px 36px -22px rgba(74,7,16,.95),inset 0 1px 0 rgba(255,255,255,.18);
+  transform-style:preserve-3d;transition:transform .35s ease}
+.promo-3d:focus-visible{outline:3px solid var(--ouro);outline-offset:3px}
+.promo-3d:active{transform:scale(.985)}
+.promo-brilho{position:absolute;inset:0;border-radius:inherit;overflow:hidden;pointer-events:none}
+.promo-brilho::before{content:"";position:absolute;right:-40px;top:-60px;width:250px;height:250px;border-radius:50%;background:radial-gradient(circle,rgba(255,200,90,.45),transparent 65%)}
+.promo-brilho::after{content:"";position:absolute;top:0;bottom:0;width:60px;left:-80px;background:linear-gradient(100deg,transparent,rgba(255,255,255,.22),transparent);transform:skewX(-18deg);animation:promoReflexo 4.5s ease-in-out 1.2s infinite}
+@keyframes promoReflexo{0%,60%{left:-80px}100%{left:110%}}
+.promo-lanche{position:absolute;right:-2px;bottom:52px;width:60%;max-width:225px;z-index:2;pointer-events:none;
+  filter:drop-shadow(0 22px 16px rgba(30,0,4,.55)) drop-shadow(0 4px 4px rgba(30,0,4,.35));transform-origin:50% 90%;animation:promoFlutua 3.6s ease-in-out infinite}
+@keyframes promoFlutua{0%,100%{transform:translateY(0) rotate(-6deg) scale(1)}50%{transform:translateY(-9px) rotate(-3deg) scale(1.03)}}
+.promo-sombra{position:absolute;right:14px;bottom:44px;width:40%;max-width:150px;height:18px;border-radius:50%;background:radial-gradient(closest-side,rgba(20,0,3,.6),transparent);z-index:1;animation:promoSombra 3.6s ease-in-out infinite}
+@keyframes promoSombra{0%,100%{transform:scaleX(1);opacity:.9}50%{transform:scaleX(.82);opacity:.6}}
+.promo-txt{position:absolute;left:18px;bottom:18px;top:16px;width:45%;display:flex;flex-direction:column;justify-content:flex-end;gap:3px;color:#FFF5E8;z-index:3}
+.promo-tag{align-self:flex-start;white-space:nowrap;margin-bottom:auto;font-size:10.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;background:#F6C552;color:#4A0710;border-radius:999px;padding:5px 10px;box-shadow:0 6px 12px -6px rgba(0,0,0,.6)}
+.promo-txt b{font-size:24px;font-weight:900;line-height:1.08}
+.promo-txt small{font-size:13px;font-weight:600;color:#FBD9C4;line-height:1.25}
+.promo-preco{font-size:22px;font-weight:900;color:#F6C552;margin-top:4px;display:flex;align-items:baseline;gap:8px}
+.promo-preco s{font-size:13px;font-weight:700;color:#E7A9A0}
+.promo-add{position:absolute;right:30px;bottom:-14px;z-index:4;border:0;cursor:pointer;border-radius:999px;padding:10px 18px;font:inherit;font-size:14px;font-weight:800;color:#4A0710;background:linear-gradient(180deg,#FFD976,#E8B23A);box-shadow:0 10px 18px -8px rgba(74,7,16,.9),inset 0 1px 0 rgba(255,255,255,.6)}
+.promo-add:focus-visible{outline:3px solid #141414;outline-offset:2px}
+.promo-dia + .app-abas{margin-top:22px}
+@media (prefers-reduced-motion:reduce){.promo-lanche,.promo-sombra,.promo-brilho::after{animation:none}}
+/* "Vai um refri?" na tela do pedido */
+.refri{margin:16px -4px 4px;padding:14px 4px 6px;border-radius:18px;background:linear-gradient(180deg,#FFF3E0,#FFFBF5);box-shadow:0 0 0 1px rgba(200,16,46,.10)}
+.refri-tit{padding:0 10px 10px}
+.refri-tit b{display:block;font-size:18px;font-weight:900;color:#B20F27}
+.refri-tit small{font-size:12.5px;color:var(--suave)}
+.refri-lista{display:flex;gap:10px;overflow-x:auto;padding:2px 10px 10px;scroll-snap-type:x mandatory;scrollbar-width:none}
+.refri-lista::-webkit-scrollbar{display:none}
+.refri-item{flex:none;width:118px;scroll-snap-align:start;background:#fff;border-radius:16px;padding:8px;display:flex;flex-direction:column;gap:3px;box-shadow:0 8px 16px -12px rgba(20,20,20,.5),0 0 0 1px rgba(20,20,20,.06)}
+.refri-item.tem{box-shadow:0 0 0 2px #C8102E,0 8px 16px -12px rgba(20,20,20,.5)}
+.refri-item img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:11px}
+.refri-item b{font-size:12.5px;line-height:1.2;min-height:30px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.refri-item span{font-size:13px;font-weight:800;color:#B20F27}
+.refri-add{margin-top:3px;height:32px;border:0;border-radius:999px;cursor:pointer;font:inherit;font-size:13px;font-weight:800;color:#F7E7B4;background:linear-gradient(180deg,#C8102E,#141414)}
+.refri-passo{margin-top:3px;height:32px;display:flex;align-items:center;justify-content:space-between;background:#141414;border-radius:999px;padding:2px}
+.refri-passo button{width:28px;height:28px;border-radius:50%;border:0;background:#C8102E;color:#F7E7B4;font-size:16px;font-weight:800;cursor:pointer}
+.refri-passo output{color:#fff;font-weight:800;font-size:13px}
+.refri-add:focus-visible,.refri-passo button:focus-visible{outline:3px solid var(--ouro);outline-offset:2px}
+
+/* ===== lista de lanches: foto grande ===== */
+.app .lst-grade{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;background:none;box-shadow:none;padding:0;border-radius:0}
+.app .lst{display:block;position:relative;background:#fff;border:0;border-radius:22px;padding:0 0 14px;overflow:hidden;box-shadow:0 14px 26px -18px rgba(10,10,10,.6),0 0 0 1px rgba(20,20,20,.05)}
+.app .lst-abre{flex-direction:column;align-items:stretch;gap:10px;border-radius:0}
+.app .lst img{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:0;box-shadow:none;margin:0}
+.app .lst-txt{padding:0 16px;gap:3px}
+.app .lst b{font-size:17px;-webkit-line-clamp:1}
+.app .lst-txt small{-webkit-line-clamp:2;padding-right:56px}
+.app .lst-preco{padding-right:120px}
+.app .lst-preco{font-size:17px}
+.app .lst-add,.app .lst-passo{position:absolute;right:14px;bottom:18px}
+.app .lst-add{width:46px;height:46px;font-size:26px}
+.app .lst-passo{flex-direction:row;gap:2px}
+.app .lst .selo-esg{position:absolute;right:14px;bottom:18px}
+
+/* barra "Ver pedido" em destaque */
+.app-resumo.app-resumo{left:18px;right:18px;bottom:90px;padding:8px 14px 8px 8px;border-radius:20px;justify-content:flex-start;gap:12px;color:#3A0610;
+  background:linear-gradient(180deg,#FFD976,#E8B23A);box-shadow:0 16px 30px -12px rgba(74,7,16,.75),inset 0 1px 0 rgba(255,255,255,.6),0 0 0 1px rgba(150,100,10,.25)}
+.app-resumo .ar-ic{position:relative;flex:none;width:44px;height:44px;border-radius:14px;background:linear-gradient(180deg,#C8102E,#4A0710);color:#FFE7A8;display:grid;place-items:center}
+.app-resumo .ar-ic svg{width:22px;height:22px}
+.app-resumo .ar-ic em{position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#fff;color:#B20F27;font-style:normal;font-size:12px;font-weight:900;display:grid;place-items:center;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.app-resumo .ar-txt{display:flex;flex-direction:column;align-items:flex-start;line-height:1.15}
+.app-resumo .ar-txt b{font-size:16.5px;font-weight:900;color:#3A0610}
+.app-resumo .ar-txt small{font-size:12.5px;font-weight:700;color:#7A4A10}
+.app-resumo .ar-total{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:17px;font-weight:900;color:#3A0610}
+.app-resumo .ar-total svg{width:20px;height:20px}
+.app-resumo.pulou{animation:arPulo .5s cubic-bezier(.3,1.6,.5,1)}
+.app-resumo.pulou .ar-ic em{animation:arBadge .5s ease}
+@keyframes arPulo{0%{transform:translateY(14px) scale(.96);opacity:.4}100%{transform:none;opacity:1}}
+@keyframes arBadge{0%,100%{transform:scale(1)}50%{transform:scale(1.45)}}
+.app-resumo:focus-visible{outline:3px solid #141414;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.app-resumo.pulou,.app-resumo.pulou .ar-ic em{animation:none}}
+
+/* ===== bebidas ===== */
+.beb{position:relative}
+.beb-abre{cursor:pointer;outline:none}
+.beb-abre:focus-visible{outline:3px solid var(--ouro);outline-offset:2px}
+.beb-foto img{display:block}
+.beb-txt{display:flex;flex-direction:column}
+.beb-txt b{font-weight:900;line-height:1.15}
+.beb-txt small{color:var(--suave);font-weight:600}
+.beb-preco{font-weight:900}
+.beb-add{border:0;cursor:pointer;font:inherit;font-weight:800}
+.beb-passo{display:flex;align-items:center;gap:2px;border-radius:999px;padding:3px}
+.beb-passo button{width:28px;height:28px;border-radius:50%;border:0;cursor:pointer;font-size:16px;font-weight:800}
+.beb-passo output{min-width:18px;text-align:center;font-weight:900;font-size:13px}
+.beb-add:focus-visible,.beb-passo button:focus-visible{outline:3px solid var(--ouro);outline-offset:2px}
+/* A: geladeira (carrossel com a lata na cor da marca) */
+.beb-a{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -18px;padding:6px 18px 16px;scrollbar-width:none}
+.beb-a::-webkit-scrollbar{display:none}
+.beb-a .beb{flex:none;width:150px;scroll-snap-align:start;border-radius:24px;padding:12px 12px 14px;color:#fff;overflow:hidden;
+  background:radial-gradient(90% 60% at 50% 30%,rgba(255,255,255,.35),transparent 70%),linear-gradient(180deg,color-mix(in srgb,var(--cor) 80%,#fff),var(--cor) 55%,color-mix(in srgb,var(--cor) 70%,#000));
+  box-shadow:0 16px 26px -16px color-mix(in srgb,var(--cor) 70%,#000),inset 0 1px 0 rgba(255,255,255,.35)}
+.beb-a .beb-abre{display:flex;flex-direction:column;gap:8px}
+.beb-a .beb-foto{height:150px;display:grid;place-items:center}
+.beb-a .beb-foto img{max-height:150px;max-width:110px;object-fit:contain;filter:drop-shadow(0 12px 10px rgba(0,0,0,.4))}
+.beb-a .beb-txt b{font-size:15.5px;color:#fff}
+.beb-a .beb-txt small{font-size:12px;color:rgba(255,255,255,.85)}
+.beb-a .beb-preco{font-size:17px;margin-top:6px;color:#fff}
+.beb-a .beb-add,.beb-a .beb-passo{position:absolute;right:10px;bottom:12px}
+.beb-a .beb-add{width:38px;height:38px;border-radius:50%;background:#fff;color:var(--cor);font-size:22px;box-shadow:0 6px 12px -6px rgba(0,0,0,.6)}
+.beb-a .beb-passo{background:rgba(0,0,0,.35)}
+.beb-a .beb-passo button{background:#fff;color:var(--cor)}
+.beb-a .beb-passo output{color:#fff}
+.beb-a .beb:has(.beb-passo){padding-bottom:52px}
+.beb-a .beb-passo{left:10px;right:10px;justify-content:space-between}
+
+/* bebidas: efeito de vidro líquido (no estilo do Liquid Glass do iPhone) */
+.beb-a .beb{border:1px solid rgba(255,255,255,.38);padding:12px 10px 10px;isolation:isolate;
+  background:radial-gradient(60% 45% at 28% 22%,color-mix(in srgb,var(--cor) 45%,#fff) 0%,transparent 70%),radial-gradient(70% 55% at 85% 70%,color-mix(in srgb,var(--cor) 60%,#000) 0%,transparent 75%),linear-gradient(160deg,color-mix(in srgb,var(--cor) 85%,#fff),var(--cor) 50%,color-mix(in srgb,var(--cor) 65%,#000));
+  box-shadow:0 18px 30px -18px color-mix(in srgb,var(--cor) 75%,#000),inset 0 1px 0 rgba(255,255,255,.55),inset 0 0 0 1px rgba(255,255,255,.08)}
+.beb-a .beb::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:3;
+  background:linear-gradient(125deg,rgba(255,255,255,.38) 0%,rgba(255,255,255,.06) 22%,transparent 40%,transparent 75%,rgba(255,255,255,.12) 100%)}
+.beb-a .beb-abre{gap:0}
+.beb-a .beb-foto{position:relative;z-index:1;height:158px}
+.beb-a .beb-foto img{max-height:158px}
+.beb-a .beb-txt{position:relative;z-index:2;margin-top:-52px;padding:10px 12px 12px;border-radius:18px;
+  background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.03));-webkit-backdrop-filter:blur(4px) saturate(160%);backdrop-filter:blur(4px) saturate(160%);
+  border:1px solid rgba(255,255,255,.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.75),inset 0 -10px 18px -10px rgba(255,255,255,.2),0 10px 20px -14px rgba(0,0,0,.35)}
+.beb-a .beb-txt b,.beb-a .beb-txt small,.beb-a .beb-preco{text-shadow:0 1px 3px rgba(0,0,0,.45)}
+.beb-a .beb-preco{margin-top:4px;padding-right:0;white-space:nowrap}
+.beb-a .beb{width:156px}
+.beb-a{align-items:flex-start}
+.beb-a .beb-txt small{white-space:nowrap;font-size:11.5px}
+.beb-a .beb-add{z-index:4;right:10px;top:10px;bottom:auto;width:36px;height:36px;font-size:20px;color:#fff;background:rgba(255,255,255,.1);-webkit-backdrop-filter:blur(3px) saturate(160%);backdrop-filter:blur(3px) saturate(160%);
+  border:1px solid rgba(255,255,255,.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 6px 12px -6px rgba(0,0,0,.5)}
+.beb-a .beb:has(.beb-passo){padding-bottom:56px}
+.beb-a .beb-passo{z-index:4;bottom:10px;background:rgba(255,255,255,.18);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.5)}
+.beb-a .beb-passo button{background:rgba(255,255,255,.9);color:var(--cor)}
+.beb-a .beb:has(.beb-passo) .beb-preco{padding-right:0}
+
+/* combos em vinho e dourado; sobremesas em caramelo claro */
+#sec-combos .lst{background:linear-gradient(180deg,#8E1022 0%,#4A0710 100%);box-shadow:0 16px 28px -18px rgba(74,7,16,.9),inset 0 1px 0 rgba(255,255,255,.12)}
+#sec-combos .lst b{color:#FFF5E8}
+#sec-combos .lst-txt small{color:#F1C9C0}
+#sec-combos .lst-preco{color:#F6C552}
+#sec-combos .lst-preco small{color:#F1C9C0}
+#sec-combos .lst-add{background:linear-gradient(180deg,#FFD976,#E8B23A);color:#4A0710}
+#sec-combos .lst-passo{background:#2A0509}
+#sec-combos .lst-passo button{background:#F6C552;color:#4A0710}
+#sec-sobremesas .lst{background:linear-gradient(180deg,#FCEFDC 0%,#F3DDBE 100%);box-shadow:0 14px 26px -18px rgba(120,70,20,.6),0 0 0 1px rgba(160,100,40,.12)}
+#sec-sobremesas .lst b{color:#4A2A12}
+#sec-sobremesas .lst-txt small{color:#8A6440}
+#sec-sobremesas .lst-preco{color:#9A4A12}
+#sec-sobremesas .lst-add{background:linear-gradient(180deg,#B8642A,#6E3510);color:#FFF1DC}
+#sec-sobremesas .lst-passo{background:#4A2A12}
+#sec-sobremesas .lst-passo button{background:#B8642A;color:#FFF1DC}
 </style>
 
 <header class="topo">
   <div class="topo-in">
-    <img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%2750%27%20r%3D%2750%27%20fill%3D%27%234E5A1E%27/%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%2750%27%20r%3D%2744%27%20fill%3D%27none%27%20stroke%3D%27%23E8B23A%27%20stroke-width%3D%272.5%27/%3E%3Cpath%20d%3D%27M22%2050%20L50%2026%20L78%2050%27%20fill%3D%27none%27%20stroke%3D%27%23E8B23A%27%20stroke-width%3D%276%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27/%3E%3Crect%20x%3D%2764%27%20y%3D%2730%27%20width%3D%277%27%20height%3D%2712%27%20rx%3D%271.5%27%20fill%3D%27%23E8B23A%27/%3E%3Cpath%20d%3D%27M28%2066c0-10%209.5-15%2022-15s22%205%2022%2015v4H28z%27%20fill%3D%27%23E8B23A%27/%3E%3Cpath%20d%3D%27M40%2056l-3%209M50%2054v11M60%2056l3%209%27%20stroke%3D%27%234E5A1E%27%20stroke-width%3D%273.2%27%20stroke-linecap%3D%27round%27/%3E%3Cpath%20d%3D%27M26%2074h48%27%20stroke%3D%27%23E8B23A%27%20stroke-width%3D%274%27%20stroke-linecap%3D%27round%27/%3E%3C/svg%3E" alt="Logo da Casa do Pão">
+    <img src="img/logo.jpg" style="border-radius:50%;object-fit:cover" alt="Logo da Casa do Pão">
     <div class="tit"><b id="nomeTopo">Casa do Pão</b><small>Sistema de pedidos</small></div>
     <span class="selo-demo"><i aria-hidden="true"></i>Demonstração<span class="longo">&nbsp;· pedidos fictícios</span></span>
     <button class="btn-reset" type="button" id="restaurar">Restaurar cardápio</button>
@@ -878,9 +1080,9 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
 <div class="guia">
   <div class="guia-in">
     <strong>Experimente:</strong>
-    <span class="curto">escolha o plano em "Ver como", faça um pedido e veja ele chegar no painel.</span>
+    <span class="curto">faça um pedido e veja ele chegar no painel.</span>
     <ol>
-      <li><span>1</span>Escolha o plano em "Ver como" e o QR code lido</li>
+      <li><span>1</span>Escolha o QR code lido</li>
       <li><span>2</span>Monte o pedido e envie</li>
       <li><span>3</span>Veja a comanda sair na impressora</li>
       <li><span>4</span>Marque como pronto e entregue</li>
@@ -894,10 +1096,6 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
   <p class="planos-desc" id="planoDesc" aria-live="polite"></p>
 </div></div>
 
-<div class="abas" role="tablist" aria-label="Telas da demonstração">
-  <button type="button" role="tab" id="abaCliente" aria-selected="true" aria-controls="ladoCliente">Celular do cliente</button>
-  <button type="button" role="tab" id="abaPainel" aria-selected="false" aria-controls="ladoPainel">Painel da padaria<span class="bolinha" id="bolinha" hidden>0</span></button>
-</div>
 
 <main class="palco" id="palco" data-aba="cliente">
   <section class="lado-cliente" id="ladoCliente" aria-label="Celular do cliente">
@@ -906,8 +1104,9 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     <div class="aparelho"><div class="tela" id="tela"></div></div>
   </section>
 
-  <section class="lado-painel" id="ladoPainel" aria-label="Painel da padaria">
-    <div class="rotulo-lado">Painel da padaria · computador do balcão</div>
+  <section class="lado-painel" id="ladoPainel" aria-label="Painel da loja">
+    <div class="dica-mob"><b>Este é o painel da loja</b>, a tela que fica no computador ou tablet do balcão. Os pedidos feitos no celular chegam aqui. Mude o status do pedido e veja o celular do cliente atualizar.<br><button type="button" data-voltar-cel>Voltar ao celular do cliente</button></div>
+    <div class="rotulo-lado">Painel da loja · computador do balcão</div>
     <div class="painel">
       <div class="painel-topo">
         <div class="painel-abas" role="tablist" aria-label="Áreas do painel">
@@ -932,6 +1131,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
             <span style="background:var(--mesa)">MESA</span>
             <span style="background:var(--balcao)">BALCÃO · COMER AQUI</span>
             <span style="background:var(--viagem)">BALCÃO · PARA VIAGEM</span>
+            <span style="background:var(--entrega)">DELIVERY</span>
           </div>
           <p style="font-size:13px" id="impEnc">Encomendas com data marcada chegam pelo WhatsApp, para combinar o agendamento com o cliente.</p>
         </div>
@@ -941,15 +1141,16 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
       <div id="vistaCardapio" role="tabpanel" aria-labelledby="vCardapio" hidden></div>
     </div>
     <section class="tv-demo" id="tvDemo" aria-label="TV do salão" hidden></section>
-    <p class="tv-legenda" id="tvLegenda" hidden>Plano MAX: a TV do salão chama os pedidos do balcão quando ficam prontos.</p>
+    <p class="tv-legenda" id="tvLegenda" hidden>A TV do salão chama os pedidos do balcão quando ficam prontos.</p>
   </section>
 </main>
-<p class="rodape-demo">Demonstração para apresentação. Pedidos, nomes e preços são fictícios e ficam só neste navegador. No sistema real, o pedido feito no celular do cliente chega pela internet ao computador da padaria e sai na impressora térmica.</p>
+<p class="rodape-demo">Demonstração para apresentação. Pedidos, nomes e preços são fictícios e ficam só neste navegador. No sistema real, o pedido feito no celular do cliente chega pela internet ao computador da loja e sai na impressora térmica.</p>
 <div class="toast" id="toast" role="status"></div>
 <div class="folha-fundo" id="folha" hidden>
   <div class="folha" role="dialog" aria-modal="true" aria-labelledby="folhaTitulo" id="folhaCaixa"></div>
 </div>
 
+<script src="../sincronia.js"></script>
 <script>
 (function(){
   'use strict';
@@ -1023,13 +1224,13 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
   // g = gênero (para escrever por extenso: um/uma, dois/duas); s/p = singular/plural na comanda
   var F = 'img/';
   var CATS_PADRAO = [{"id": "burgers", "nome": "Burgers", "curto": "Burgers", "icon": "lanches", "visivel": true}, {"id": "combos", "nome": "Combos e porções", "curto": "Combos", "icon": "estrela", "visivel": true}, {"id": "bebidas", "nome": "Bebidas", "curto": "Bebidas", "icon": "frias", "visivel": true}, {"id": "sobremesas", "nome": "Sobremesas", "curto": "Doces", "icon": "doces", "visivel": true}];
-  var PRODUTOS_PADRAO = [{"id": "classico", "cat": "burgers", "g": "m", "s": "Mineiro Clássico", "p": "Mineiros Clássicos", "preco": 28, "desc": "Blend 150 g, cheddar, alface, tomate, cebola roxa e maionese da casa.", "img": F + 'classico.jpg'}, {"id": "cheesesalada", "cat": "burgers", "g": "m", "s": "Cheese Salada", "p": "Cheeses Salada", "preco": 26, "desc": "Blend 150 g, cheddar, alface, tomate e cebola roxa.", "img": F + 'cheesesalada.jpg'}, {"id": "canastrabacon", "cat": "burgers", "g": "m", "s": "Canastra Bacon", "p": "Canastras Bacon", "preco": 34, "desc": "Blend 180 g, cheddar, bacon crocante, rúcula e molho da casa.", "img": F + 'canastrabacon.jpg'}, {"id": "uaismash", "cat": "burgers", "g": "m", "s": "Uai Smash", "p": "Uai Smashes", "preco": 32, "desc": "Duas carnes smash, cheddar duplo, cebola caramelizada e picles.", "img": F + 'uaismash.jpg'}, {"id": "cogumelo", "cat": "burgers", "g": "m", "s": "Burger de cogumelos", "p": "Burgers de cogumelos", "preco": 33, "desc": "Blend 180 g, cheddar, cogumelos salteados, alface e tomate.", "img": F + 'cogumelo.jpg'}, {"id": "frango", "cat": "burgers", "g": "m", "s": "Frango Crocante", "p": "Frangos Crocantes", "preco": 29, "desc": "Sobrecoxa empanada, queijo, molho especial, alface e tomate.", "img": F + 'frango.jpg'}, {"id": "combo", "cat": "combos", "g": "m", "s": "Combo Clássico", "p": "Combos Clássicos", "preco": 39, "desc": "Cheeseburger com picles, batata frita e refrigerante lata.", "img": F + 'combo.jpg'}, {"id": "batata", "cat": "combos", "g": "f", "s": "Batata frita", "p": "Batatas fritas", "preco": 14, "desc": "Sequinha e crocante.", "img": F + 'batata.jpg'}, {"id": "coca", "cat": "bebidas", "g": "f", "s": "Coca-Cola lata", "p": "Coca-Colas lata", "preco": 6, "desc": "350 ml, bem gelada.", "img": F + 'coca.jpg'}, {"id": "guarana", "cat": "bebidas", "g": "m", "s": "Guaraná Antarctica lata", "p": "Guaranás Antarctica lata", "preco": 6, "desc": "350 ml, bem gelado.", "img": F + 'guarana.jpg'}, {"id": "fanta", "cat": "bebidas", "g": "f", "s": "Fanta Laranja lata", "p": "Fantas Laranja lata", "preco": 6, "desc": "350 ml, bem gelada.", "img": F + 'fanta.jpg'}, {"id": "suco", "cat": "bebidas", "g": "m", "s": "Suco de laranja", "p": "Sucos de laranja", "preco": 10, "desc": "Natural, feito na hora.", "img": F + 'suco.jpg'}, {"id": "agua", "cat": "bebidas", "g": "f", "s": "Água mineral", "p": "Águas minerais", "preco": 4, "desc": "500 ml, com ou sem gás.", "img": F + 'agua.jpg'}, {"id": "pudim", "cat": "sobremesas", "g": "m", "s": "Pudim de leite", "p": "Pudins de leite", "preco": 12, "desc": "Fatia generosa com calda de caramelo.", "img": F + 'pudim.jpg'}, {"id": "brownie", "cat": "sobremesas", "g": "m", "s": "Brownie", "p": "Brownies", "preco": 14, "desc": "Chocolate meio amargo e casquinha crocante.", "img": F + 'brownie.jpg'}];
+  var PRODUTOS_PADRAO = [{"id": "classico", "cat": "burgers", "g": "m", "s": "Mineiro Clássico", "p": "Mineiros Clássicos", "preco": 28, "desc": "Blend 150 g, cheddar, alface, tomate, cebola roxa e maionese da casa.", "img": F + 'classico.jpg'}, {"id": "cheesesalada", "cat": "burgers", "g": "m", "s": "Cheese Salada", "p": "Cheeses Salada", "preco": 26, "desc": "Blend 150 g, cheddar, alface, tomate e cebola roxa.", "img": F + 'cheesesalada.jpg'}, {"id": "canastrabacon", "cat": "burgers", "g": "m", "s": "Canastra Bacon", "p": "Canastras Bacon", "preco": 34, "desc": "Blend 180 g, cheddar, bacon crocante, rúcula e molho da casa.", "img": F + 'canastrabacon.jpg'}, {"id": "uaismash", "cat": "burgers", "g": "m", "s": "Uai Smash", "p": "Uai Smashes", "preco": 32, "desc": "Duas carnes smash, cheddar duplo, cebola caramelizada e picles.", "img": F + 'uaismash.jpg'}, {"id": "cogumelo", "cat": "burgers", "g": "m", "s": "Burger de cogumelos", "p": "Burgers de cogumelos", "preco": 33, "desc": "Blend 180 g, cheddar, cogumelos salteados, alface e tomate.", "img": F + 'cogumelo.jpg'}, {"id": "frango", "cat": "burgers", "g": "m", "s": "Frango Crocante", "p": "Frangos Crocantes", "preco": 29, "desc": "Sobrecoxa empanada, queijo, molho especial, alface e tomate.", "img": F + 'frango.jpg'}, {"id": "combo", "cat": "combos", "g": "m", "s": "Combo Clássico", "p": "Combos Clássicos", "preco": 39, "desc": "Mineiro Clássico, batata frita e refrigerante lata.", "img": F + 'combo-completo.jpg'}, {"id": "comboburger", "cat": "combos", "g": "m", "s": "Combo Burger + Batata", "p": "Combos Burger + Batata", "preco": 34, "desc": "Mineiro Clássico com uma porção de batata frita.", "img": F + 'combo-burger-batata.jpg'}, {"id": "batatarefri", "cat": "combos", "g": "m", "s": "Batata + Refri", "p": "Batatas + Refri", "preco": 18, "desc": "Porção de batata frita e refrigerante lata.", "img": F + 'combo-batata-refri.jpg'}, {"id": "batata", "cat": "combos", "g": "f", "s": "Batata frita", "p": "Batatas fritas", "preco": 14, "desc": "Sequinha e crocante.", "img": F + 'batata.jpg'}, {"id": "coca", "cat": "bebidas", "g": "f", "s": "Coca-Cola lata", "p": "Coca-Colas lata", "preco": 6, "desc": "350 ml, bem gelada.", "img": F + 'coca.jpg'}, {"id": "pepsi", "cat": "bebidas", "g": "f", "s": "Pepsi lata", "p": "Pepsis lata", "preco": 6, "desc": "350 ml, bem gelada.", "img": F + 'pepsi.jpg'}, {"id": "guarana", "cat": "bebidas", "g": "m", "s": "Guaraná Antarctica lata", "p": "Guaranás Antarctica lata", "preco": 6, "desc": "350 ml, bem gelado.", "img": F + 'guarana.jpg'}, {"id": "fanta", "cat": "bebidas", "g": "f", "s": "Fanta Laranja lata", "p": "Fantas Laranja lata", "preco": 6, "desc": "350 ml, bem gelada.", "img": F + 'fanta.jpg'}, {"id": "fantauva", "cat": "bebidas", "g": "f", "s": "Fanta Uva lata", "p": "Fantas Uva lata", "preco": 6, "desc": "350 ml, bem gelada.", "img": F + 'fantauva.jpg'}, {"id": "sprite", "cat": "bebidas", "g": "f", "s": "Sprite lata", "p": "Sprites lata", "preco": 6, "desc": "350 ml, bem gelada.", "img": F + 'sprite.jpg'}, {"id": "suco", "cat": "bebidas", "g": "m", "s": "Suco de laranja", "p": "Sucos de laranja", "preco": 10, "desc": "Natural, feito na hora.", "img": F + 'suco.jpg'}, {"id": "agua", "cat": "bebidas", "g": "f", "s": "Água mineral", "p": "Águas minerais", "preco": 4, "desc": "500 ml, com ou sem gás.", "img": F + 'agua.jpg'}, {"id": "heineken", "cat": "bebidas", "g": "f", "s": "Heineken long neck", "p": "Heinekens long neck", "preco": 12, "desc": "330 ml, cerveja puro malte.", "img": F + 'heineken.jpg'}, {"id": "budweiser", "cat": "bebidas", "g": "f", "s": "Budweiser long neck", "p": "Budweisers long neck", "preco": 10, "desc": "330 ml, cerveja lager.", "img": F + 'budweiser.jpg'}, {"id": "pudim", "cat": "sobremesas", "g": "m", "s": "Pudim de leite", "p": "Pudins de leite", "preco": 12, "desc": "Fatia generosa com calda de caramelo.", "img": F + 'pudim.jpg'}, {"id": "brownie", "cat": "sobremesas", "g": "m", "s": "Brownie", "p": "Brownies", "preco": 14, "desc": "Chocolate meio amargo e casquinha crocante.", "img": F + 'brownie.jpg'}];
   PRODUTOS_PADRAO.forEach(function(p){ if (!p.nome) p.nome = p.s; p.esgotado = false; });
   var LOJA_PADRAO = {"nome": "Mineiro Burger", "whats": "5535999945992"};
   var SEM_FOTO = svg('<rect x="16" y="20" width="32" height="24" rx="4" fill="none" stroke="#8C8A72" stroke-width="2.5"/><circle cx="32" cy="32" r="6" fill="none" stroke="#8C8A72" stroke-width="2.5"/><path d="M26 20l2-4h8l2 4" fill="none" stroke="#8C8A72" stroke-width="2.5" stroke-linejoin="round"/>');
 
   // o cardápio (categorias, produtos e dados da loja) fica salvo e pode ser editado pelo dono
-  var CHAVE_CARD = 'hamburgueria-cardapio-v2';
+  var CHAVE_CARD = 'hamburgueria-cardapio-v3';
   function cardapioPadrao(){ return JSON.parse(JSON.stringify({cats:CATS_PADRAO, produtos:PRODUTOS_PADRAO, loja:LOJA_PADRAO})); }
   var card;
   try { card = JSON.parse(localStorage.getItem(CHAVE_CARD) || 'null'); } catch(e) { card = null; }
@@ -1040,8 +1241,28 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     PRODUTOS.forEach(function(p){ PROD[p.id] = p; });
     Object.keys(VARIANTES).forEach(function(id){ var b = PROD[id]; if (!b) return;
       VARIANTES[id].ops.forEach(function(o){ var v = {}; for (var k in b) v[k] = b[k]; v.id = id + '~' + o.k; v.base = id; v.s = o.s; v.p = o.p; v.nome = o.s; v.preco = b.preco + o.mais; v.op = o.rot; PROD[v.id] = v; }); });
+    gerarAdicionais();
   }
-  var VARIANTES = {"batata": {"rot": "Tamanho", "ops": [{"k": "p", "rot": "Individual", "mais": 0, "s": "Batata frita individual", "p": "Batatas fritas individuais"}, {"k": "g", "rot": "Para dividir", "mais": 8, "s": "Batata frita para dividir", "p": "Batatas fritas para dividir"}]}, "uaismash": {"rot": "Carnes", "ops": [{"k": "2", "rot": "Duas carnes", "mais": 0, "s": "Uai Smash", "p": "Uai Smashes"}, {"k": "3", "rot": "Três carnes", "mais": 7, "s": "Uai Smash triplo", "p": "Uai Smashes triplos"}]}};
+  var VARIANTES = {"combo": {"rot": "Refrigerante do combo", "escolher": true, "ops": [{"k": "coca", "rot": "Coca-Cola", "mais": 0, "s": "Combo Clássico com Coca-Cola", "p": "Combos Clássicos com Coca-Cola"}, {"k": "guarana", "rot": "Guaraná Antarctica", "mais": 0, "s": "Combo Clássico com Guaraná Antarctica", "p": "Combos Clássicos com Guaraná Antarctica"}, {"k": "pepsi", "rot": "Pepsi", "mais": 0, "s": "Combo Clássico com Pepsi", "p": "Combos Clássicos com Pepsi"}, {"k": "fanta", "rot": "Fanta Laranja", "mais": 0, "s": "Combo Clássico com Fanta Laranja", "p": "Combos Clássicos com Fanta Laranja"}, {"k": "fantauva", "rot": "Fanta Uva", "mais": 0, "s": "Combo Clássico com Fanta Uva", "p": "Combos Clássicos com Fanta Uva"}, {"k": "sprite", "rot": "Sprite", "mais": 0, "s": "Combo Clássico com Sprite", "p": "Combos Clássicos com Sprite"}]}, "batatarefri": {"rot": "Refrigerante", "escolher": true, "ops": [{"k": "coca", "rot": "Coca-Cola", "mais": 0, "s": "Batata + Refri com Coca-Cola", "p": "Batatas + Refri com Coca-Cola"}, {"k": "guarana", "rot": "Guaraná Antarctica", "mais": 0, "s": "Batata + Refri com Guaraná Antarctica", "p": "Batatas + Refri com Guaraná Antarctica"}, {"k": "pepsi", "rot": "Pepsi", "mais": 0, "s": "Batata + Refri com Pepsi", "p": "Batatas + Refri com Pepsi"}, {"k": "fanta", "rot": "Fanta Laranja", "mais": 0, "s": "Batata + Refri com Fanta Laranja", "p": "Batatas + Refri com Fanta Laranja"}, {"k": "fantauva", "rot": "Fanta Uva", "mais": 0, "s": "Batata + Refri com Fanta Uva", "p": "Batatas + Refri com Fanta Uva"}, {"k": "sprite", "rot": "Sprite", "mais": 0, "s": "Batata + Refri com Sprite", "p": "Batatas + Refri com Sprite"}]}, "batata": {"rot": "Tamanho", "ops": [{"k": "p", "rot": "Individual", "mais": 0, "s": "Batata frita individual", "p": "Batatas fritas individuais"}, {"k": "g", "rot": "Para dividir", "mais": 8, "s": "Batata frita para dividir", "p": "Batatas fritas para dividir"}]}, "uaismash": {"rot": "Carnes", "ops": [{"k": "2", "rot": "Duas carnes", "mais": 0, "s": "Uai Smash", "p": "Uai Smashes"}, {"k": "3", "rot": "Três carnes", "mais": 7, "s": "Uai Smash triplo", "p": "Uai Smashes triplos"}]}};
+  var ADICIONAIS = {"rot": "Adicionais", "itens": {"classico": 1, "cheesesalada": 1, "canastrabacon": 1, "uaismash": 1, "cogumelo": 1, "frango": 1}, "ops": [{"k": "bacon", "rot": "Bacon extra", "mais": 5}, {"k": "cheddar", "rot": "Cheddar extra", "mais": 4}, {"k": "ovo", "rot": "Ovo", "mais": 3}]};
+  function temAdic(id){ return plano !== 'pro' && !!ADICIONAIS.itens[id]; }
+  function gerarAdicionais(){
+    Object.keys(ADICIONAIS.itens).forEach(function(id){ if (!PROD[id]) return;
+      var bases = VARIANTES[id] ? VARIANTES[id].ops.map(function(o){ return PROD[id + '~' + o.k]; }) : [PROD[id]];
+      var ops = ADICIONAIS.ops, n = ops.length;
+      bases.forEach(function(b){
+        for (var m = 1; m < (1 << n); m++) {
+          var sel = ops.filter(function(o, i){ return m & (1 << i); });
+          var v = {}; for (var k in b) v[k] = b[k];
+          var suf = sel.map(function(o){ return o.k; }).join('+'), txt = sel.map(function(o){ return o.rot.toLowerCase(); }).join(' + ');
+          v.id = (b.id === id ? id + '~' : b.id) + '+' + suf; v.base = id;
+          v.s = b.s + ' + ' + txt; v.p = (b.p || b.s) + ' + ' + txt; v.nome = (b.nome || b.s) + ' + ' + txt;
+          v.preco = b.preco + sel.reduce(function(t, o){ return t + o.mais; }, 0);
+          PROD[v.id] = v;
+        }
+      });
+    });
+  }
   var RECORTES = [];
   function recorte(p){ var m = /img\/([\w-]+)\.jpg$/.exec(p.img || ''); return m && RECORTES.indexOf(m[1]) >= 0 ? (window.RECORTE_SRC ? window.RECORTE_SRC[m[1]] : 'img/r/' + m[1] + '.webp') : ''; }
   aplicarCardapio();
@@ -1066,6 +1287,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
   var ICONES_ESCOLHA = [['paes','Pão'],['bolos','Bolo'],['quentes','Xícara'],['frias','Copo'],['lanches','Sanduíche'],['doces','Doce'],['salgados','Salgado'],['estrela','Estrela'],['cesta','Cesta']];
   function dest(o){
     if (o.modo === 'mesa') return {cor:'var(--mesa)', sub:'CONSUMO NO LOCAL'};
+    if (o.modo === 'delivery') return {cor:'var(--entrega)', sub:'ENTREGA' + (o.bairro ? ' · ' + String(o.bairro).toUpperCase() : '')};
     if (o.consumo === 'viagem') return {cor:'var(--viagem)', sub:'PARA VIAGEM · CHAMAR PELO NOME'};
     return {cor:'var(--balcao)', sub:'COMER AQUI · CHAMAR PELO NOME'};
   }
@@ -1079,15 +1301,20 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
   function snapDe(itens){ var r = {}; Object.keys(itens).forEach(function(id){ var p = PROD[id]; if (p) r[id] = {s:p.s, p:p.p, g:p.g, preco:p.preco}; }); return r; }
   function infoPed(o, id){ return (o.snap && o.snap[id]) || PROD[id] || null; }
   function linhaPed(o, id){ var p = infoPed(o, id), q = o.itens[id]; return q + ' (' + extenso(q, p.g) + ') ' + (q === 1 ? p.s : p.p); }
-  function totalPed(o){ return Object.keys(o.itens).reduce(function(s, id){ var p = infoPed(o, id); return s + (p ? o.itens[id] * p.preco : 0); }, 0); }
-  function destinoTitulo(o){ return o.modo === 'mesa' ? 'MESA ' + o.mesa : 'BALCÃO'; }
+  function totalPed(o){ return Object.keys(o.itens).reduce(function(s, id){ var p = infoPed(o, id); return s + (p ? o.itens[id] * p.preco : 0); }, 0) + (o.taxa || 0); }
+  function destinoTitulo(o){ return o.modo === 'mesa' ? 'MESA ' + o.mesa : o.modo === 'delivery' ? 'DELIVERY' : 'BALCÃO'; }
   function totalDe(itens){ return Object.keys(itens).reduce(function(s, id){ return s + itens[id] * (PROD[id] ? PROD[id].preco : 0); }, 0); }
 
   // ---------- estado (fica só neste navegador) ----------
-  var CHAVE = 'hamburgueria-demo-v4';
+  var CHAVE = 'hamburgueria-demo-v5';
+  var LOJA = window.OctaSync ? OctaSync.loja() : null;
+  // link de cliente (?loja= sem &chave=): o aparelho mostra só o celular do cliente
+  var SO_CLIENTE = !!(LOJA && !OctaSync.chave());
+  if (SO_CLIENTE) document.documentElement.classList.add('so-cliente-loja');
+  if (LOJA) CHAVE += '-loja-' + LOJA;
   function semente(){
     var agora = Date.now();
-    var ped = [{"id": 21, "modo": "balcao", "consumo": "viagem", "nome": "Paulo", "itens": {"combo": 1}, "obs": "", "status": "entregue", "t": agora - 38*60000}, {"id": 22, "modo": "mesa", "mesa": 5, "nome": "Marta", "itens": {"uaismash": 2, "coca": 2}, "obs": "", "status": "pronto", "t": agora - 15*60000}, {"id": 23, "modo": "mesa", "mesa": 2, "nome": "Lucas", "itens": {"canastrabacon": 1, "batata": 1}, "obs": "Sem rúcula", "status": "novo", "t": agora - 4*60000}];
+    var ped = [{"id": 21, "modo": "balcao", "consumo": "viagem", "nome": "Paulo", "itens": {"combo": 1}, "obs": "", "status": "entregue", "t": agora - 38*60000}, {"id": 22, "modo": "mesa", "mesa": 5, "nome": "Marta", "itens": {"uaismash": 2, "coca": 2}, "obs": "", "status": "pronto", "t": agora - 15*60000}, {"id": 23, "modo": "mesa", "mesa": 2, "nome": "Lucas", "itens": {"canastrabacon": 1, "batata": 1}, "obs": "Sem rúcula", "status": "novo", "t": agora - 4*60000}, {"id": 20, "modo": "delivery", "consumo": "entrega", "nome": "Rita", "bairro": "Centro", "end": "Rua Direita, 150 · CEP 37500-000", "taxa": 5, "zap": "35999990000", "itens": {"classico": 1, "batata": 1}, "obs": "", "status": "entregue", "t": agora - 52*60000}];
     var base = {}; PRODUTOS_PADRAO.forEach(function(p){ base[p.id] = p; });
     ped.forEach(function(o){ o.snap = {}; Object.keys(o.itens).forEach(function(id){ var p = base[id]; o.snap[id] = {s:p.s, p:p.p, g:p.g, preco:p.preco}; }); });
     // chamados das mesas (Premium e MAX): a Mesa 5 pediu a conta
@@ -1098,7 +1325,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
   }
   var dados;
   try { dados = JSON.parse(localStorage.getItem(CHAVE) || 'null'); } catch(e) { dados = null; }
-  if (!dados || !Array.isArray(dados.pedidos)) dados = semente();
+  if (!dados || !Array.isArray(dados.pedidos)) dados = LOJA ? {prox:1, pedidos:[], meus:[], chamados:[], proxCh:1, servico:true} : semente();
   if (!Array.isArray(dados.meus)) dados.meus = [];
   if (!Array.isArray(dados.chamados)) { dados.chamados = []; dados.proxCh = 1; }
   function salvar(){ try { localStorage.setItem(CHAVE, JSON.stringify(dados)); } catch(e){} }
@@ -1108,23 +1335,26 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
   var somLigado = true, aba = 'cliente', naoVistos = 0, ultimoImpresso = null;
   // ---------- planos (a demonstração muda conforme o plano escolhido no topo) ----------
   var PLANOS = {
-    pro:{nome:'PRO', mesas:6, produtos:30, auto:true, lista:false, meus:false, selo:true, enc:false, tv:false, data:false, conta:false, garcom:false, dst:false, obs:false,
+    pro:{nome:'PRO', mesas:6, produtos:30, auto:true, lista:false, meus:false, selo:true, enc:false, tv:false, data:false, conta:false, garcom:false, dst:false, obs:true,
       desc:'<b>PRO · R$ 129,90/mês.</b> Até 6 mesas e 30 produtos. Comanda impressa automaticamente. O cliente vê só o número do pedido. Selo "Feito por Octa Sites" no cardápio.'},
     premium:{nome:'PREMIUM', mesas:10, produtos:45, auto:true, lista:false, meus:true, selo:false, enc:true, tv:false, data:false, conta:false, garcom:false, dst:false, obs:true,
       desc:'<b>PREMIUM · R$ 189,90/mês.</b> Até 10 mesas e 45 produtos. Adicionais e combos e encomendas com data. O cliente acompanha o preparo do pedido pelo celular.'},
-    max:{nome:'MAX', mesas:0, produtos:0, auto:true, lista:true, meus:true, selo:false, enc:true, tv:false, data:true, conta:true, garcom:true, dst:true, obs:true,
-      desc:'<b>MAX · R$ 249,90/mês.</b> Tudo do Premium, sem limite de mesas e produtos, pedir a conta dividida e chamar o garçom pelo celular.'}
+    max:{nome:'OCTA COMPLETO', mesas:0, produtos:0, auto:true, lista:true, meus:true, selo:false, enc:true, tv:false, data:true, conta:true, garcom:true, dst:true, obs:true,
+      desc:'<b>Octa Completo · R$ 199,90/mês.</b> Todos os recursos liberados, sem limite de mesas e produtos.'}
   };
-  var plano = 'premium';
+  var plano = 'max';
   function P(){ return PLANOS[plano]; }
 
   var canal = null;
   try { canal = new BroadcastChannel('hamburgueria-demo-v2'); } catch(e) {}
   if (canal) canal.onmessage = function(ev){
     if (ev.data && ev.data.tipo === 'cardapio') { card = ev.data.card; aplicarCardapio(); limparCarrinho(); renderCliente(); renderEditor(); atualizarNomeLoja(); return; }
+    receberDados(ev.data.dados || ev.data);
+  };
+  function receberDados(novo){
     var antes = dados.pedidos.map(function(p){ return p.id; });
     var stAntes = {}; dados.pedidos.forEach(function(p){ stAntes[p.id] = p.status; });
-    dados = ev.data.dados || ev.data;
+    dados = novo;
     if (!Array.isArray(dados.meus)) dados.meus = [];
     if (!Array.isArray(dados.chamados)) dados.chamados = [];
     var chNovos = dados.chamados.filter(function(c){ return chVistos.indexOf(c.id) < 0 && c.status === 'aberto'; });
@@ -1135,7 +1365,20 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     if (novos.length) chegou(novos[novos.length - 1], false);
     if (chNovos.length) chamadoChegou(chNovos[chNovos.length - 1]);
   };
-  function publicar(){ salvar(); if (canal) try { canal.postMessage({tipo:'pedidos', dados:dados}); } catch(e){} }
+  function publicar(){ salvar(); if (canal) try { canal.postMessage({tipo:'pedidos', dados:dados}); } catch(e){} if (sync) sync.enviar(); }
+  // Modo online (?loja=CODIGO): pedidos feitos no celular chegam no painel de outro aparelho.
+  var sync = LOJA ? OctaSync.iniciar({loja:LOJA, dados:function(){ return dados; }, receber:function(r){
+    (r.remap || []).forEach(function(m){
+      if (m.t === 'p') { dados.meus = dados.meus.map(function(id){ return id === m.de ? m.para : id; }); if (cli.pedidoId === m.de) cli.pedidoId = m.para; }
+      else { if (cli.chGarcom === m.de) cli.chGarcom = m.para; if (cli.chConta === m.de) cli.chConta = m.para; if (chVistos.indexOf(m.de) >= 0) chVistos.push(m.para); }
+    });
+    var novo = {prox:r.prox, proxCh:r.proxCh, pedidos:r.pedidos, chamados:r.chamados, meus:dados.meus, servico:dados.servico};
+    if (r.primeiro) {
+      dados = novo; dados.chamados.forEach(function(c){ chVistos.push(c.id); });
+      renderPainel(); atualizarCliente();
+    } else receberDados(novo);
+    salvar();
+  }}) : null;
   function salvarCardapio(){
     try { localStorage.setItem(CHAVE_CARD, JSON.stringify(card)); }
     catch(e) { toast('Não foi possível salvar: o espaço do navegador acabou. Use fotos menores ou restaure o cardápio.'); return false; }
@@ -1173,7 +1416,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
   function faixa(){
     var chip = '';
     if (cli.tela === 'cardapio' || cli.tela === 'revisao') {
-      chip = '<span class="destino-chip" title="Local lido pelo QR code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>' + (cli.modo === 'mesa' ? 'Mesa ' + cli.mesa : 'Balcão') + '</span>';
+      chip = '<span class="destino-chip" title="Local lido pelo QR code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>' + (cli.modo === 'mesa' ? 'Mesa ' + cli.mesa : cli.modo === 'delivery' ? 'Delivery' : 'Balcão') + '</span>';
     }
     return '<div class="faixa-marca"><img src="' + IMG.logo + '" alt=""><div><b>' + esc(card.loja.nome) + '</b><small>Hamburgueria artesanal</small></div>' + chip + '</div>';
   }
@@ -1216,7 +1459,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
   }
   function blocoEncomenda(){
     var e = cli.enc, h = '<section class="encomenda" id="sec-encomendas" data-cat="encomendas" aria-labelledby="t-enc"><h3 id="t-enc">Encomendas com data marcada</h3>' +
-      '<p class="intro">Bolos inteiros, tortas, salgados e panetones para o seu dia especial. Preencha e envie: combinamos tudo pelo WhatsApp.</p><div class="campos">' +
+      '<p class="intro">Kits de mini burgers e combos para festas e eventos. Preencha e envie: combinamos tudo pelo WhatsApp.</p><div class="campos">' +
       campo('enc', 'nome', 'Seu nome', 'text', '', 'given-name') + campo('enc', 'tel', 'Telefone', 'tel', '(35) 9 0000-0000', 'tel') +
       '<div class="campo"><label for="c-enc-item">O que deseja encomendar</label><select id="c-enc-item" data-obj="enc" data-campo="item"><option value="">Escolha</option>' +
       itensEncomenda().map(function(x){ return '<option' + (e.item === x ? ' selected' : '') + '>' + esc(x) + '</option>'; }).join('') + '</select></div>' +
@@ -1273,7 +1516,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     if (!temMesa()) return '';
     var g = garcomRecente(), c = chDe(cli.chConta), contaAb = c && c.status === 'aberto';
     return '<div class="mesa-acoes" id="mesaAcoes">' + (P().garcom ? '<button type="button" data-acao="garcom"' + (g ? ' class="feito" disabled' : '') + '>' + SINO + (g ? 'Garçom chamado ✓' : 'Chamar garçom') + '</button>' : '') +
-      '<button type="button" data-acao="conta"' + (contaAb ? ' class="feito"' : '') + '>' + RECIBO + (contaAb ? 'Conta pedida ✓' : 'Pedir a conta') + '</button></div>';
+      '<button type="button" data-acao="conta"' + (contaAb ? ' class="feito"' : '') + '>' + RECIBO + (contaAb ? 'Conta pedida ✓' : 'Pedir a conta') + '</button></div>' + (P().garcom && !g && !jaChamouGarcom ? '<p class="dica-sino">Toque em "Chamar garçom" e ouça a campainha que toca no painel da loja.</p>' : '');
   }
   function trocoFmt(t){ var n = parseFloat(String(t || '').replace(',', '.')); return n ? fmt(n) : esc(t); }
   function telaConta(){
@@ -1285,7 +1528,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
         '<h3>' + (fechada ? 'Conta fechada' : 'Conta pedida!') + '</h3><p>' + (fechada ? 'Obrigado pela visita! Volte sempre.' : 'O garçom já vai até a Mesa ' + cli.mesa + (c.pagamento === 'dinheiro' ? ' com o troco.' : c.pagamento === 'pix' ? ' com o Pix.' : ' com a maquininha.')) + '</p>' +
         '<div class="c-resumo"><div><span>Total' + (c.servico ? ' (com 10% de serviço)' : '') + '</span><b>' + fmt(c.total) + '</b></div>' + (c.pessoas > 1 ? '<div><span>Dividido por ' + c.pessoas + '</span><b>' + fmt(c.porPessoa) + ' cada</b></div>' : '') +
         '<div><span>Pagamento</span><b>' + PAGC[c.pagamento] + '</b></div>' + (c.troco ? '<div><span>Troco para</span><b>' + trocoFmt(c.troco) + '</b></div>' : '') + '</div>' +
-        (fechada ? '' : '<p class="dica-painel">Na demonstração, toque em "Conta fechada" no painel da padaria e veja esta tela atualizar.</p>') +
+        (fechada ? '' : '<p class="dica-painel" data-ir-painel role="button" tabindex="0">Na demonstração, toque em "Conta fechada" no painel da loja e veja esta tela atualizar.</p>') +
         '<button type="button" class="btn-sec" data-acao="' + (fechada ? 'c-nova' : 'voltar') + '">Voltar ao cardápio</button></div></div>';
     }
     h += '<h3 style="font-size:15px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--vinho);margin:4px 0 6px;padding-bottom:8px;border-bottom:2px solid var(--ouro)">Conta da Mesa ' + cli.mesa + '</h3>';
@@ -1323,7 +1566,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
   function capaHTML(){
     return '<header class="capa" style="--capa:url(\'' + (card.loja.capa || 'img/capa.jpg') + '\')"><div class="capa-topo"><img src="' + IMG.logo + '" alt=""><div><b>' + esc(card.loja.nome) + '</b><small>Hamburgueria artesanal</small></div></div>' +
       '<div class="capa-txt"><span class="sobre">Fornadas o dia todo</span><h1>Feito hoje, do jeito que você gosta</h1><p>Pães quentinhos, cafés especiais, lanches e doces da casa.</p></div>' + CAMADAS + '</header>' +
-      '<div class="capa-acoes"><button type="button" class="btn-ouro" data-acao="ver-cardapio">Ver cardápio' + SETA + '</button><button type="button" class="chip-local" data-acao="trocar" title="Local lido pelo QR code">' + QRI + (cli.modo === 'mesa' ? 'Mesa ' + cli.mesa : 'Balcão') + '</button></div>' + saudacao();
+      '<div class="capa-acoes"><button type="button" class="btn-ouro" data-acao="ver-cardapio">Ver cardápio' + SETA + '</button><button type="button" class="chip-local" data-acao="trocar" title="Local lido pelo QR code">' + QRI + (cli.modo === 'mesa' ? 'Mesa ' + cli.mesa : cli.modo === 'delivery' ? 'Delivery' : 'Balcão') + '</button></div>' + saudacao();
   }
   var CAMADAS = '<svg class="camadas" viewBox="0 0 400 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 30 C60 8 110 40 170 24 S290 4 400 22 V70 H0Z" fill="#B91C1C" opacity=".55"/><path d="M0 40 C70 22 120 52 200 34 S320 18 400 36 V70 H0Z" fill="#C8102E" opacity=".9"/><path d="M0 50 C80 36 140 62 220 46 S330 34 400 48 V70 H0Z" fill="#E8B23A"/><path d="M0 60 C90 50 150 70 240 58 S340 50 400 58 V70 H0Z" fill="#FBF6F0"/></svg>';
   function saudacao(){ var h = new Date().getHours(), t = h < 12 ? 'Bom dia!' : h < 18 ? 'Boa tarde!' : 'Boa noite!'; return '<div class="saudacao"><span>' + t + '</span><h2>O que vai querer hoje?</h2></div>'; }
@@ -1334,26 +1577,63 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     var r = recorte(p);
     return '<button type="button" class="mini" data-acao="ver-prod" data-id="' + p.id + '"><span class="mini-foto">' + (r ? '<img src="' + r + '" alt="">' : '<img class="cheia" src="' + p.img + '" alt="">') + '</span><span class="mini-nome">' + esc(p.nome) + '</span></button>';
   }
+  // o "+" põe a versão padrão do produto (1ª opção, sem adicionais); tocar no resto do cartão abre os detalhes
+  function temMais(id){ var v = VARIANTES[id]; return !!v && v.ops.some(function(o){ return o.mais > 0; }); }
+  function idPadrao(p){ var v = VARIANTES[p.id], k = v ? p.id + '~' + v.ops[0].k : p.id; return PROD[k] ? k : p.id; }
+  // bebidas em carrossel "geladeira": cartão na cor da marca com a bebida recortada
+  var BEB = 'a';
+  var BEB_COR = {coca:'#C8102E', pepsi:'#1F4FB4', guarana:'#1E7B34', fanta:'#F28C00', fantauva:'#6B2C91', sprite:'#1E8A45', suco:'#F2B705', agua:'#3B8BD4', heineken:'#1F6B2E', budweiser:'#B3122E'};
+  function cartaoBebida(p){
+    var q = qtdBase(p.id), rec = BEB_COR[p.id] ? 'img/b/' + p.id + '.webp' : p.img, cor = BEB_COR[p.id] || '#8A6A4A', vol = (/^(\d+ ?ml)/.exec(p.desc || '') || [])[1] || '';
+    var ctrl = p.esgotado ? '<span class="selo-esg">Esgotado</span>' : (!q ? '<button type="button" class="beb-add" data-acao="mais" data-id="' + p.id + '" aria-label="Adicionar ' + esc(p.nome) + '">+</button>'
+      : '<div class="beb-passo"><button type="button" data-acao="menos" data-id="' + p.id + '" aria-label="Remover um">−</button><output>' + q + '</output><button type="button" data-acao="mais" data-id="' + p.id + '" aria-label="Adicionar mais um">+</button></div>');
+    var lt = / lata$/.test(p.nome), ln = / long neck$/.test(p.nome), nome = esc(p.nome.replace(/ (lata|long neck)$/, '')), sub = esc(lt ? 'Lata · ' + (vol || '350 ml') : ln ? 'Long neck · ' + (vol || '330 ml') : (p.desc || ''));
+    return '<article class="beb' + (q ? ' tem' : '') + (p.esgotado ? ' esgotado' : '') + '" style="--cor:' + cor + '"><div class="beb-abre" data-acao="ver-prod" data-id="' + p.id + '" role="button" tabindex="0" aria-label="Ver ' + esc(p.nome) + '">' +
+      '<span class="beb-foto"><img src="' + rec + '" alt="" loading="lazy"></span><span class="beb-txt"><b>' + nome + '</b><small>' + sub + '</small><span class="beb-preco">' + fmt(p.preco) + '</span></span></div>' + ctrl + '</article>';
+  }
   function cartaoLista(p){
-    var q = qtdBase(p.id), v = VARIANTES[p.id], ctrl;
+    var q = qtdBase(p.id), v = VARIANTES[p.id] || temAdic(p.id), ctrl;
     if (p.esgotado) ctrl = '<span class="selo-esg">Esgotado</span>';
-    else if (v || !q) ctrl = '<button type="button" class="lst-add" data-acao="' + (v ? 'ver-prod' : 'mais') + '" data-id="' + p.id + '" aria-label="Adicionar ' + esc(p.nome) + '">' + (v && q ? '<span>' + q + '</span>' : '+') + '</button>';
-    else ctrl = '<div class="lst-passo"><button type="button" data-acao="menos" data-id="' + p.id + '" aria-label="Remover um">−</button><output>' + q + '</output><button type="button" data-acao="mais" data-id="' + p.id + '" aria-label="Adicionar mais um">+</button></div>';
-    return '<article class="lst' + (p.esgotado ? ' esgotado' : '') + '"><div class="lst-abre" data-acao="ver-prod" data-id="' + p.id + '" role="button" tabindex="0" aria-label="Ver ' + esc(p.nome) + '"><img src="' + p.img + '" alt="" loading="lazy"><span class="lst-txt"><b>' + esc(p.nome) + '</b>' + (p.desc ? '<small>' + esc(p.desc) + '</small>' : '') + '<span class="lst-preco">' + (v ? 'a partir de ' : '') + fmt(p.preco) + '</span></span></div>' + ctrl + '</article>';
+    else if (!q) ctrl = '<button type="button" class="lst-add" data-acao="mais" data-id="' + idPadrao(p) + '" aria-label="Adicionar ' + esc(p.nome) + '">+</button>';
+    else ctrl = '<div class="lst-passo"><button type="button" data-acao="menos" data-id="' + idPadrao(p) + '" data-base="' + p.id + '" aria-label="Remover um">−</button><output>' + q + '</output><button type="button" data-acao="mais" data-id="' + idPadrao(p) + '" aria-label="Adicionar mais um">+</button></div>';
+    return '<article class="lst' + (p.esgotado ? ' esgotado' : '') + '"><div class="lst-abre" data-acao="ver-prod" data-id="' + p.id + '" role="button" tabindex="0" aria-label="Ver ' + esc(p.nome) + '"><img src="' + p.img + '" alt="" loading="lazy"><span class="lst-txt"><b>' + esc(p.nome) + '</b>' + (p.desc ? '<small>' + esc(p.desc) + '</small>' : '') + '<span class="lst-preco">' + (temMais(p.id) ? 'a partir de ' : '') + fmt(p.preco) + '</span></span></div>' + ctrl + '</article>';
   }
   function cartao3d(p){
-    var r = recorte(p), q = qtdBase(p.id), v = VARIANTES[p.id];
-    var btn = p.esgotado ? '<span class="selo-esg">Esgotado</span>' : '<button type="button" class="c3-add" data-acao="' + (v ? 'ver-prod' : 'mais') + '" data-id="' + p.id + '" aria-label="Adicionar ' + esc(p.nome) + '">' + (q ? '<span>' + q + '</span>' : '+') + '</button>';
+    var r = recorte(p), q = qtdBase(p.id), v = VARIANTES[p.id] || temAdic(p.id);
+    var btn = p.esgotado ? '<span class="selo-esg">Esgotado</span>' : '<button type="button" class="c3-add" data-acao="mais" data-id="' + idPadrao(p) + '" aria-label="Adicionar ' + esc(p.nome) + '">' + (q ? '<span>' + q + '</span>' : '+') + '</button>';
     return '<article class="c3' + (p.esgotado ? ' esgotado' : '') + '" data-cat="' + p.cat + '"><div class="c3-cartao" data-acao="ver-prod" data-id="' + p.id + '" role="button" tabindex="0" aria-label="Ver ' + esc(p.nome) + '">' +
       (r ? '<img class="c3-foto" src="' + r + '" alt="">' : '<img class="c3-foto cheia" src="' + p.img + '" alt="">') +
-      '<div class="c3-txt"><b>' + esc(p.nome) + '</b><small>' + esc(p.desc) + '</small><span class="c3-preco">' + (v ? 'a partir de ' : '') + fmt(p.preco) + '</span></div></div>' + btn + '</article>';
+      '<div class="c3-txt"><b>' + esc(p.nome) + '</b><small>' + esc(p.desc) + '</small><span class="c3-preco">' + (temMais(p.id) ? 'a partir de ' : '') + fmt(p.preco) + '</span></div></div>' + btn + '</article>';
+  }
+  function deCombo(){ return (PROD.classico ? PROD.classico.preco : 0) + (PROD.batata ? PROD.batata.preco : 0) + (PROD.coca ? PROD.coca.preco : 0); }
+  function promoDia(){
+    var p = PROD.combo; if (!p || p.esgotado || !(catDe(p.cat) || {}).visivel) return '';
+    var q = qtdBase(p.id);
+    return '<div class="promo-dia"><div class="promo-3d" data-acao="ver-prod" data-id="' + p.id + '" role="button" tabindex="0" aria-label="Promoção do dia: ' + esc(p.nome) + '">' +
+      '<span class="promo-brilho" aria-hidden="true"></span><span class="promo-sombra" aria-hidden="true"></span><img class="promo-lanche" src="img/promo-recorte.webp" alt="">' +
+      '<div class="promo-txt"><span class="promo-tag">Promoção do dia</span><b>' + esc(p.nome) + '</b><small>Burger, batata e refri por menos</small>' +
+      '<span class="promo-preco">' + (deCombo() > p.preco ? '<s>' + fmt(deCombo()) + '</s>' : '') + fmt(p.preco) + '</span></div></div>' +
+      '<button type="button" class="promo-add" data-acao="mais" data-id="' + p.id + '" aria-label="Adicionar ' + esc(p.nome) + '">' + (q ? q + ' no pedido · +1' : 'Quero esse') + '</button></div>';
+  }
+  // "Vai um refri?" na tela do pedido
+  function refriHTML(){
+    var bs = PRODUTOS.filter(function(p){ var c = catDe(p.cat); return p.cat === 'bebidas' && c && c.visivel && !p.esgotado; });
+    if (!bs.length) return '';
+    var tem = bs.some(function(p){ return qtdBase(p.id); });
+    return '<div class="refri"><div class="refri-tit"><b>' + (tem ? 'Mais uma bebida?' : 'Vai um refri?') + '</b><small>Bem gelada, chega junto com o seu pedido.</small></div><div class="refri-lista">' +
+      bs.map(function(p){ var q = cli.carrinho[p.id] || 0;
+        return '<div class="refri-item' + (q ? ' tem' : '') + '"><img src="' + p.img + '" alt="" loading="lazy"><b>' + esc(p.nome) + '</b><span>' + fmt(p.preco) + '</span>' +
+          (q ? '<div class="refri-passo"><button type="button" data-acao="menos" data-id="' + p.id + '" aria-label="Remover um ' + esc(p.s) + '">−</button><output>' + q + '</output><button type="button" data-acao="mais" data-id="' + p.id + '" aria-label="Adicionar mais um ' + esc(p.s) + '">+</button></div>'
+             : '<button type="button" class="refri-add" data-acao="mais" data-id="' + p.id + '" aria-label="Adicionar ' + esc(p.s) + '">+ Adicionar</button>') + '</div>'; }).join('') + '</div></div>';
   }
   function telaProduto(){
     var p = PROD[cli.verProd]; if (!p) { cli.verProd = null; return ''; }
-    var v = VARIANTES[p.id], op = v ? (cli.opProd || v.ops[0].k) : null, alvo = v ? PROD[p.id + '~' + op] : p, qt = cli.qtdProd || 1;
+    var v = VARIANTES[p.id], op = v ? (cli.opProd || v.ops[0].k) : null, alvo = v ? PROD[p.id + '~' + op] : p, qt = cli.qtdProd || 1, ad = temAdic(p.id) ? (cli.adProd || []) : [];
+    if (ad.length) { var sufA = ADICIONAIS.ops.filter(function(o){ return ad.indexOf(o.k) >= 0; }).map(function(o){ return o.k; }).join('+'); alvo = PROD[(v ? alvo.id : p.id + '~') + '+' + sufA] || alvo; }
     var h = '<div class="prod-tela" role="dialog" aria-modal="true" aria-label="' + esc(p.nome) + '"><div class="prod-foto" style="background-image:url(\'' + p.img + '\')"><button type="button" class="voltar-prod" data-acao="fechar-prod" aria-label="Voltar ao cardápio">←</button></div>' +
       '<div class="prod-corpo"><h2>' + esc(p.nome) + '</h2><p>' + esc(p.desc) + '</p>';
     if (v) h += '<span class="rot">' + v.rot + '</span><div class="pilulas" role="group" aria-label="' + v.rot + '">' + v.ops.map(function(o){ return '<button type="button" data-acao="op" data-op="' + o.k + '" aria-pressed="' + (o.k === op) + '">' + o.rot + (o.mais ? ' <small>+' + fmt(o.mais) + '</small>' : '') + '</button>'; }).join('') + '</div>';
+    if (temAdic(p.id)) h += '<span class="rot">' + ADICIONAIS.rot + ' <small style="font-weight:600;text-transform:none;letter-spacing:0">(opcional)</small></span><div class="pilulas" role="group" aria-label="' + ADICIONAIS.rot + '">' + ADICIONAIS.ops.map(function(o){ return '<button type="button" data-acao="ad" data-op="' + o.k + '" aria-pressed="' + (ad.indexOf(o.k) >= 0) + '">' + o.rot + ' <small>+' + fmt(o.mais) + '</small></button>'; }).join('') + '</div>';
     if (!p.esgotado) h += '<span class="rot">Quantidade</span><div class="qtd-linha"><div class="passo"><button type="button" data-acao="qtd-menos" aria-label="Diminuir">−</button><output>' + qt + '</output><button type="button" data-acao="qtd-mais" aria-label="Aumentar">+</button></div><span class="preco-g">' + fmt(alvo.preco * qt) + '</span></div>';
     else h += '<p><b>Esgotado no momento.</b></p>';
     h += '</div>' + (p.esgotado ? '' : '<div class="prod-rodape"><button type="button" data-acao="add-prod" data-id="' + alvo.id + '">Adicionar ao pedido · ' + fmt(alvo.preco * qt) + '</button></div>') + '</div>';
@@ -1375,15 +1655,16 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
         for (var m = 1; m <= (P().mesas || 12); m++) h += '<button type="button" data-acao="mesa" data-mesa="' + m + '" aria-label="Mesa ' + m + '">' + m + '</button>';
         h += '</div></div>';
       }
-      h += '<button type="button" class="opcao" data-acao="modo" data-modo="viagem"><span class="ic" style="background:var(--viagem)">' + ICON.viagem + '</span><span><b>Para viagem</b><span>Peça e aguarde: chamamos você pelo nome</span></span></button>' +
-        '</div>' + (P().enc ? '<button type="button" class="ir-encomenda" data-acao="ir-encomenda">' + ICON.agenda + '<span><b>Encomendas com data marcada</b><span>Bolos inteiros, tortas e salgados para festas</span></span></button>' : '') + '</div>';
+      h += '<button type="button" class="opcao" data-acao="modo" data-modo="delivery"><span class="ic" style="background:var(--entrega)">' + ICON.viagem + '</span><span><b>Delivery</b><span>Receba em casa. A taxa muda conforme o bairro</span></span></button>' +
+        '<button type="button" class="opcao" data-acao="modo" data-modo="viagem"><span class="ic" style="background:var(--viagem)">' + ICON.viagem + '</span><span><b>Para viagem</b><span>Peça e aguarde: chamamos você pelo nome</span></span></button>' +
+        '</div>' + (P().enc ? '<button type="button" class="ir-encomenda" data-acao="ir-encomenda">' + ICON.agenda + '<span><b>Encomendas com data marcada</b><span>Kits de mini burgers e combos para festas</span></span></button>' : '') + '</div>';
     }
     else if (cli.tela === 'cardapio') {
       var visiveis = CATS.filter(function(c){ return c.visivel && PRODUTOS.some(function(p){ return p.cat === c.id; }); });
       if (!cli.aba || (cli.aba !== 'encomendas' && !visiveis.some(function(c){ return c.id === cli.aba; }))) cli.aba = (visiveis.filter(function(c){ return c.id === 'cafes'; })[0] || visiveis[0] || {}).id;
       var hr = new Date().getHours(), oi = hr < 12 ? 'Bom dia!' : hr < 18 ? 'Boa tarde!' : 'Boa noite!';
       h += '<div class="app" id="lista">';
-      h += '<div class="app-topo"><img src="' + IMG.logo + '" alt="' + esc(card.loja.nome) + '"><button type="button" class="app-local" data-acao="trocar">' + QRI + (cli.modo === 'mesa' ? 'Mesa ' + cli.mesa : 'Balcão') + '</button></div>';
+      h += '<div class="app-topo"><img src="' + IMG.logo + '" alt="' + esc(card.loja.nome) + '"><button type="button" class="app-local" data-acao="trocar">' + QRI + (cli.modo === 'mesa' ? 'Mesa ' + cli.mesa : cli.modo === 'delivery' ? 'Delivery' : 'Balcão') + '</button></div>';
       h += '<div class="app-oi"><span>' + oi + '</span><h2>O que vai querer hoje?</h2></div>';
       h += '<label class="app-busca">' + LUPA + '<input id="busca" type="search" placeholder="Buscar no cardápio" autocomplete="off" value="' + esc(cli.busca || '') + '" aria-label="Buscar no cardápio"></label>';
       h += extras;
@@ -1392,23 +1673,22 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
         var achados = PRODUTOS.filter(function(p){ return (p.nome + ' ' + p.desc).toLowerCase().indexOf(termo) >= 0; });
         h += '<section class="lst-sec"><h3>Resultados</h3>' + (achados.length ? '<div class="lst-grade">' + achados.map(cartaoLista).join('') + '</div>' : '<p class="app-vazio">Nenhum produto encontrado. Tente outra palavra.</p>') + '</section>';
       } else {
-        // destaques do dia
-        var destq = [];
-        if (P().data) destq.push('<button type="button" class="dst dst-natal" data-acao="ver-prod" data-id="combo" style="--f:url(\'img/natal.jpg\')"><span class="dst-tag">Promoção de terça</span><b>Combo Clássico</b><small>Batata grande pelo preço da pequena</small></button>');
-        if (P().dst) ['uaismash', 'canastrabacon', 'frango', 'cogumelo'].forEach(function(id){ var p = PROD[id]; if (p && !p.esgotado) destq.push('<button type="button" class="dst" data-acao="ver-prod" data-id="' + p.id + '" style="--f:url(\'' + p.img + '\')"><span class="dst-tag">Destaque</span><b>' + esc(p.nome) + '</b><small>' + fmt(p.preco) + '</small></button>'); });
-        if (destq.length) h += '<div class="dst-faixa" aria-label="Destaques do dia">' + destq.join('') + '</div>';
+        // promoção do dia (um cartão só, com o lanche saindo do cartão)
+        if (P().data || P().dst) h += promoDia();
         h += '<nav class="app-abas" id="cats" aria-label="Categorias">';
         visiveis.forEach(function(c, k){ h += '<button type="button" data-acao="aba" data-cat="' + c.id + '"' + (k === 0 ? ' aria-current="true"' : '') + '>' + esc(c.curto || c.nome) + '</button>'; });
         if (P().enc) h += '<button type="button" data-acao="aba" data-cat="encomendas">Encomendas</button>';
         h += '</nav>';
         visiveis.forEach(function(c){
-          h += '<section class="lst-sec" id="sec-' + c.id + '" data-cat="' + c.id + '"><h3>' + esc(c.nome) + '</h3><div class="lst-grade">' + PRODUTOS.filter(function(p){ return p.cat === c.id; }).map(cartaoLista).join('') + '</div></section>';
+          var ehBeb = c.id === 'bebidas' && BEB;
+          h += '<section class="lst-sec" id="sec-' + c.id + '" data-cat="' + c.id + '"><h3>' + esc(c.nome) + '</h3><div class="' + (ehBeb ? 'beb-grade beb-' + BEB : 'lst-grade') + '">' + PRODUTOS.filter(function(p){ return p.cat === c.id; }).map(ehBeb ? cartaoBebida : cartaoLista).join('') + '</div></section>';
         });
         if (P().enc) h += '<section class="lst-sec" id="sec-encomendas" data-cat="encomendas"><button type="button" class="enc-cartao" data-acao="abrir-enc"><span class="enc-ic">' + ICON.agenda + '</span><span><b>Encomendas</b><small>Kits de mini burgers e combos para festas e eventos.</small></span><span class="enc-seta" aria-hidden="true">→</span></button></section>';
       }
       h += (P().selo ? '<p class="selo-octa">Feito por <b>Octa Sites</b></p>' : '') + '</div>';
       var n = qtdCarrinho();
-      if (n) h += '<button type="button" class="app-resumo" data-acao="revisar"><span>' + n + (n === 1 ? ' item' : ' itens') + ' no pedido</span><b>Ver pedido · ' + fmt(totalDe(cli.carrinho)) + '</b></button>';
+      if (n) h += '<button type="button" class="app-resumo' + (n > (cli.nAnt || 0) ? ' pulou' : '') + '" data-acao="revisar"><span class="ar-ic">' + SACOLA + '<em>' + n + '</em></span><span class="ar-txt"><b>Ver pedido</b><small>' + n + (n === 1 ? ' item' : ' itens') + '</small></span><span class="ar-total">' + fmt(totalDe(cli.carrinho)) + SETA + '</span></button>';
+      cli.nAnt = n;
       h += '<nav class="app-nav" aria-label="Navegação"><button type="button" data-acao="aba-inicio" aria-current="true" aria-label="Cardápio">' + CASA + '<span>Cardápio</span></button>' +
         '<button type="button" data-acao="revisar"' + (n ? '' : ' disabled') + ' aria-label="Meu pedido">' + SACOLA + '<span>Pedido</span>' + (n ? '<em>' + n + '</em>' : '') + '</button>' +
         (temMesa() ? '<button type="button" data-acao="mesa-painel" aria-expanded="' + !!cli.painelMesa + '" aria-label="Mesa">' + SINO + '<span>Mesa</span></button>' : (P().lista && meusPedidos().length ? '<button type="button" data-acao="meus" aria-label="Meus pedidos">' + RECIBO + '<span>Pedidos</span></button>' : '')) + '</nav>';
@@ -1422,13 +1702,15 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
         var q = cli.carrinho[id], p = PROD[id];
         h += '<div class="rev-item"><div><b>' + esc(p.s) + '</b><small>' + fmt(p.preco) + ' cada · ' + fmt(q * p.preco) + '</small></div>' + controle(p) + '</div>';
       });
-      h += '<div class="total-linha"><span style="font-weight:700">Total</span><b>' + fmt(totalDe(cli.carrinho)) + '</b></div><div class="campos">' +
-        (cli.modo === 'balcao' ? consumoBloco() : '') +
-        campo('cli', 'nome', 'Seu nome (vamos chamar você por ele)', 'text', 'Como podemos te chamar?', 'given-name') +
+      h += refriHTML();
+      h += linhasTotal() + '<div class="campos">' +
+        (cli.modo === 'balcao' ? consumoBloco() : '') + (cli.modo === 'delivery' ? blocoEntrega() : '') +
+        campo('cli', 'nome', cli.modo === 'delivery' ? 'Seu nome' : cli.modo === 'mesa' ? 'Seu nome' : 'Seu nome (vamos chamar você por ele)', 'text', 'Como podemos te chamar?', 'given-name') +
+        (cli.modo === 'delivery' ? campo('cli', 'zap', 'Seu WhatsApp (para avisos do pedido)', 'tel', '(35) 99999-9999', 'tel') : '') +
         (P().obs ? '<div class="campo"><label for="c-cli-obs">Observações (opcional)</label><textarea id="c-cli-obs" data-obj="cli" data-campo="obs" placeholder="Ex.: sem cebola, carne ao ponto">' + esc(cli.obs) + '</textarea></div>' : '') + '</div>' +
         '</div></div>';
       var f = faltando();
-      h += '<div class="barra-pedido"><button type="button" data-acao="enviar"' + (f ? ' disabled' : '') + '><span>Enviar pedido</span><span>' + fmt(totalDe(cli.carrinho)) + '</span></button><p class="falta" id="falta"' + (f ? '' : ' hidden') + '>' + f + '</p></div>';
+      h += '<div class="barra-pedido"><button type="button" data-acao="enviar"' + (f ? ' disabled' : '') + '><span>Enviar pedido</span><span>' + fmt(totalFinal()) + '</span></button><p class="falta" id="falta"' + (f ? '' : ' hidden') + '>' + f + '</p></div>';
     }
     else if (cli.tela === 'confirmado') {
       var o = dados.pedidos.filter(function(p){ return p.id === cli.pedidoId; })[0];
@@ -1436,24 +1718,24 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
       var mesa = o.modo === 'mesa';
       if (!P().meus) {
         h += '<div class="rolagem"><div class="confirma so-numero"><div class="check"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></div><h3>Pedido enviado!</h3><p>O número do seu pedido é</p><span class="grande-num">' + o.id + '</span><p>' + (mesa ? 'Vamos levar até a Mesa ' + o.mesa + ' quando estiver pronto.' : 'Quando estiver pronto, chamamos ' + esc(o.nome) + ' pelo nome no balcão.') + '</p>' +
-          '<p class="dica-painel">No plano PRO, o cliente vê só o número do pedido. No Premium e no MAX, ele acompanha o preparo pelo celular.</p><button type="button" class="btn-sec" data-acao="novo">Fazer outro pedido</button></div></div>';
+          '<p class="dica-painel">O cliente acompanha o preparo do pedido pelo celular.</p><button type="button" class="btn-sec" data-acao="novo">Fazer outro pedido</button></div></div>';
         $('tela').innerHTML = h; mostrarAviso(); return;
       }
       var etapas = [
         ['Pedido recebido', 'A comanda já saiu na impressora da loja.'],
         ['Em preparo', 'A equipe está preparando o seu pedido.'],
-        [mesa ? 'Pronto, a caminho da mesa' : 'Pronto!', mesa ? 'O garçom já sabe qual é a sua mesa.' : 'A equipe vai chamar você pelo nome no balcão.'],
+        o.modo === 'delivery' ? ['Saiu para entrega', 'O entregador está a caminho do seu endereço.'] : [mesa ? 'Pronto, a caminho da mesa' : 'Pronto!', mesa ? 'O garçom já sabe qual é a sua mesa.' : 'A equipe vai chamar você pelo nome no balcão.'],
         [(!mesa && o.consumo === 'viagem') ? 'Retirado' : 'Entregue', 'Bom apetite!']
       ];
       var nivel = o.status === 'novo' ? 1 : (o.status === 'pronto' ? 2 : 4);
       h += '<div class="rolagem"><div class="confirma"><div class="check"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></div>' +
-        '<h3>Pedido enviado!</h3><span class="num">Pedido nº ' + o.id + ' · ' + esc(o.nome) + '</span><span class="dest" style="background:' + dest(o).cor + '">' + destinoTitulo(o) + (o.modo === 'balcao' ? ' · ' + (o.consumo === 'viagem' ? 'PARA VIAGEM' : 'COMER AQUI') : '') + '</span><ol class="etapas" aria-label="Andamento do pedido">';
+        '<h3>Pedido enviado!</h3><span class="num">Pedido nº ' + o.id + ' · ' + esc(o.nome) + '</span><span class="dest" style="background:' + dest(o).cor + '">' + destinoTitulo(o) + (o.modo === 'balcao' ? ' · ' + (o.consumo === 'viagem' ? 'PARA VIAGEM' : 'COMER AQUI') : o.modo === 'delivery' ? ' · ' + esc(String(o.bairro || '').toUpperCase()) : '') + '</span><ol class="etapas" aria-label="Andamento do pedido">';
       etapas.forEach(function(e, i){
         var cls = i < nivel ? 'feita' : (i === nivel && nivel < 4 ? 'atual' : '');
         h += '<li class="' + cls + '"><span class="bola">' + (i < nivel ? '✓' : i + 1) + '</span><div><b>' + e[0] + '</b><span>' + e[1] + '</span></div></li>';
       });
       var nMeus = meusPedidos().length;
-      h += '</ol><p class="dica-painel">Na demonstração, mude o status no painel da padaria e veja esta tela atualizar.</p><button type="button" class="btn-sec" data-acao="novo">Fazer outro pedido</button>' +
+      h += '</ol><button type="button" class="btn-ver-painel" data-ir-painel>Agora veja o pedido chegando no painel da loja →</button><p class="dica-painel" data-ir-painel role="button" tabindex="0">Na demonstração, mude o status no painel da loja e veja esta tela atualizar.</p><button type="button" class="btn-sec" data-acao="novo">Fazer outro pedido</button>' +
         (P().lista && nMeus > 1 ? '<button type="button" class="btn-sec" data-acao="meus" style="border-color:var(--borda)">Ver todos os meus pedidos (' + nMeus + ')</button>' : '') + '</div></div>';
     }
     else if (cli.tela === 'meus' && !P().lista) { cli.tela = 'cardapio'; return renderCliente(); }
@@ -1477,8 +1759,57 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
           '<button type="button" data-acao="consumo" data-v="aqui" aria-pressed="' + (cli.consumo === 'aqui') + '">' + ICON.mesa + 'Comer aqui</button>' +
           '<button type="button" data-acao="consumo" data-v="viagem" aria-pressed="' + (cli.consumo === 'viagem') + '">' + ICON.viagem + 'Para viagem</button></div></div>';
   }
+  var BAIRROS = [["Centro", 5], ["Jardim Primavera", 6], ["Vila Nova", 7], ["São Benedito", 7], ["Santa Rita", 8]];
+  function taxaEntrega(){ if (cli.modo !== 'delivery') return 0; for (var i = 0; i < BAIRROS.length; i++) if (BAIRROS[i][0] === cli.bairro) return BAIRROS[i][1]; return 0; }
+  function totalFinal(){ return totalDe(cli.carrinho) + taxaEntrega(); }
+  function linhasTotal(){
+    var tx = taxaEntrega();
+    return (cli.modo === 'delivery' ? '<div class="total-linha" style="padding-bottom:0"><span>Subtotal</span><span>' + fmt(totalDe(cli.carrinho)) + '</span></div><div class="total-linha" style="padding-top:4px;padding-bottom:0"><span>Taxa de entrega' + (cli.bairro ? ' · ' + esc(cli.bairro) : '') + '</span><span>' + (cli.bairro ? fmt(tx) : '—') + '</span></div>' : '') +
+      '<div class="total-linha"><span style="font-weight:700">Total</span><b>' + fmt(totalFinal()) + '</b></div>';
+  }
+  function blocoEntrega(){
+    var h = blocoCep() + '<div class="campo"><label for="c-cli-bairro">Bairro</label><select id="c-cli-bairro" data-obj="cli" data-campo="bairro"><option value="">Escolha o bairro</option>' +
+      BAIRROS.map(function(b){ return '<option value="' + esc(b[0]) + '"' + (cli.bairro === b[0] ? ' selected' : '') + '>' + esc(b[0]) + ' · taxa ' + fmt(b[1]) + '</option>'; }).join('') + '</select></div>';
+    h += '<div class="campo"><label for="c-cli-rua">Rua</label><input id="c-cli-rua" data-obj="cli" data-campo="rua" type="text" placeholder="Preenchida pelo CEP" autocomplete="address-line1" value="' + esc(cli.rua || '') + '"></div>' +
+      '<div class="end-linha"><div class="campo"><label for="c-cli-num">Número</label><input id="c-cli-num" data-obj="cli" data-campo="num" type="text" inputmode="numeric" placeholder="Ex.: 120" autocomplete="off" value="' + esc(cli.semnum ? '' : (cli.num || '')) + '"' + (cli.semnum ? ' disabled' : '') + '></div>' +
+      '<label class="sem-num"><input type="checkbox" data-obj="cli" data-campo="semnum"' + (cli.semnum ? ' checked' : '') + '> Sem número</label></div>' +
+      '<div class="campo"><label for="c-cli-comp">Complemento (opcional)</label><input id="c-cli-comp" data-obj="cli" data-campo="comp" type="text" placeholder="Apto, bloco, ponto de referência" autocomplete="address-line2" value="' + esc(cli.comp || '') + '"></div>';
+    return h;
+  }
+  function cepFmt(v){ var d = String(v || '').replace(/\D/g, '').slice(0, 8); return d.length > 5 ? d.slice(0, 5) + '-' + d.slice(5) : d; }
+  function blocoCep(){
+    var st = cli.cepSt || '';
+    var msg = st === 'buscando' ? 'Buscando o endereço…' : st === 'ok' ? 'Endereço encontrado' + (cli.cidade ? ': ' + esc(cli.cidade) : '') + '. Confira a rua e informe o número.' : st === 'erro' ? 'CEP não encontrado. Confira o número ou preencha a rua abaixo.' : st === 'offline' ? 'Não foi possível buscar o CEP agora. Preencha a rua abaixo.' : 'Digite o CEP e o endereço é preenchido sozinho.';
+    return '<div class="campo"><label for="c-cli-cep">CEP</label><input id="c-cli-cep" data-obj="cli" data-campo="cep" type="text" inputmode="numeric" maxlength="9" placeholder="00000-000" autocomplete="postal-code" value="' + esc(cepFmt(cli.cep)) + '"><small class="cep-msg' + (st === 'erro' || st === 'offline' ? ' erro' : '') + '" role="status">' + msg + '</small></div>';
+  }
+  var cepBuscado = '';
+  function buscarCep(d){
+    if (d === cepBuscado) return; cepBuscado = d;
+    cli.cepSt = 'buscando'; atualizarCep();
+    fetch('https://viacep.com.br/ws/' + d + '/json/').then(function(r){ return r.json(); }).then(function(j){
+      if (cepBuscado !== d) return;
+      if (!j || j.erro) { cli.cepSt = 'erro'; atualizarCep(); return; }
+      cli.cepSt = 'ok'; cli.cidade = j.localidade ? j.localidade + '/' + j.uf : '';
+      if (j.logradouro) cli.rua = j.logradouro;
+      if (j.bairro) BAIRROS.forEach(function(b){ if (b[0].toLowerCase() === j.bairro.toLowerCase()) cli.bairro = b[0]; });
+      var y = guardarRolagem(); renderCliente(); restaurarRolagem(y);
+      var alvo = $(cli.rua ? 'c-cli-num' : 'c-cli-rua'); if (alvo && !alvo.disabled) alvo.focus();
+    }).catch(function(){ if (cepBuscado !== d) return; cli.cepSt = 'offline'; atualizarCep(); });
+  }
+  function atualizarCep(){ var c = document.querySelector('.cep-msg'); if (!c) return; var tmp = document.createElement('div'); tmp.innerHTML = blocoCep(); var n = tmp.querySelector('.cep-msg'); c.className = n.className; c.textContent = n.textContent; }
+  function enderecoTexto(){ return (cli.rua || '').trim() + ', ' + (cli.semnum ? 's/n' : (cli.num || '').trim()) + ((cli.comp || '').trim() ? ' - ' + cli.comp.trim() : '') + (cli.cidade ? ' · ' + cli.cidade : '') + ' · CEP ' + cepFmt(cli.cep); }
+  function soDigitos(v){ return String(v || '').replace(/\D/g, ''); }
+  function zapFmt(d){ d = soDigitos(d); return d.length === 11 ? '(' + d.slice(0,2) + ') ' + d.slice(2,7) + '-' + d.slice(7) : d.length === 10 ? '(' + d.slice(0,2) + ') ' + d.slice(2,6) + '-' + d.slice(6) : d; }
   function faltando(){
     if (!qtdCarrinho()) return 'Adicione pelo menos um item.';
+    if (cli.modo === 'delivery') {
+      if (soDigitos(cli.cep).length !== 8) return 'Preencha o CEP de entrega.';
+      if (!cli.bairro) return 'Escolha o seu bairro.';
+      if (!(cli.rua || '').trim()) return 'Preencha a rua de entrega.';
+      if (!cli.semnum && !(cli.num || '').trim()) return 'Preencha o número da casa ou marque "Sem número".';
+      if (!cli.nome.trim()) return 'Preencha seu nome para enviar.';
+      if (soDigitos(cli.zap).length < 10) return 'Preencha seu WhatsApp com DDD.';
+    }
     if (cli.modo === 'balcao' && !cli.consumo) return 'Escolha: comer aqui ou para viagem.';
     if (!cli.nome.trim()) return 'Preencha seu nome para enviar.';
     return '';
@@ -1527,7 +1858,8 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     var a = b.dataset.acao;
     if (a === 'modo') {
       if (b.dataset.modo === 'mesa') { cli.escolhendoMesa = !cli.escolhendoMesa; renderCliente(); return; }
-      cli.modo = 'viagem'; cli.mesa = null; cli.tela = 'cardapio';
+      if (b.dataset.modo === 'delivery') { cli.modo = 'delivery'; cli.consumo = 'entrega'; } else { cli.modo = 'balcao'; cli.consumo = 'viagem'; }
+      cli.mesa = null; cli.tela = 'cardapio';
     }
     else if (a === 'mesa') { cli.modo = 'mesa'; cli.mesa = +b.dataset.mesa; cli.tela = 'cardapio'; cli.escolhendoMesa = false; }
     else if (a === 'trocar') { cli.tela = 'inicio'; cli.escolhendoMesa = cli.modo === 'mesa'; }
@@ -1538,7 +1870,13 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     else if (a === 'consumo') { cli.consumo = b.dataset.v; var yc = guardarRolagem(); renderCliente(); restaurarRolagem(yc); return; }
     else if (a === 'receber') { cli.enc.receber = b.dataset.v; var y0 = guardarRolagem(); renderCliente(); restaurarRolagem(y0); return; }
     else if (a === 'mais' || a === 'menos') {
-      var id = b.dataset.id, q = (cli.carrinho[id] || 0) + (a === 'mais' ? 1 : -1);
+      var id = b.dataset.id, bs = b.dataset.base;
+      var bsEsc = (PROD[id] && PROD[id].base) || id;
+      if (a === 'mais' && VARIANTES[bsEsc] && VARIANTES[bsEsc].escolher && b.closest('.lst, .c3, .promo-dia')) {
+        cli.verProd = bsEsc; cli.opProd = null; cli.adProd = []; cli.qtdProd = 1; var ye = guardarRolagem(); renderCliente(); restaurarRolagem(ye); return;
+      }
+      if (a === 'menos' && bs && !cli.carrinho[id]) { var ks = Object.keys(cli.carrinho).filter(function(k){ return k === bs || k.indexOf(bs + '~') === 0; }); if (ks.length) id = ks[ks.length - 1]; }
+      var q = (cli.carrinho[id] || 0) + (a === 'mais' ? 1 : -1);
       if (q <= 0) delete cli.carrinho[id]; else cli.carrinho[id] = q;
       if (cli.tela === 'revisao' && !qtdCarrinho()) cli.tela = 'cardapio';
       var y = guardarRolagem(); renderCliente(); restaurarRolagem(y);
@@ -1551,9 +1889,10 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     else if (a === 'aba') { var ct = b.dataset.cat; if (ct === 'encomendas') { cli.yEnc = $('lista') ? $('lista').scrollTop : 0; cli.verEnc = true; renderCliente(); return; } var lt = $('lista'), sc = $('sec-' + ct), cs2 = $('cats'); if (lt) lt._alvo = ct; if (lt && sc) lt.scrollTo({top:sc.offsetTop - (cs2 ? cs2.offsetHeight : 0) - 6, behavior:'smooth'}); return; }
     else if (a === 'aba-inicio') { cli.painelMesa = false; cli.busca = ''; renderCliente(); var l0 = $('lista'); if (l0) l0.scrollTop = 0; return; }
     else if (a === 'mesa-painel') { cli.painelMesa = !cli.painelMesa; var ym = guardarRolagem(); renderCliente(); restaurarRolagem(ym); return; }
+    else if (a === 'ad') { cli.adProd = cli.adProd || []; var ik = cli.adProd.indexOf(b.dataset.op); if (ik >= 0) cli.adProd.splice(ik, 1); else cli.adProd.push(b.dataset.op); var yd = guardarRolagem(); renderCliente(); restaurarRolagem(yd); return; }
     else if (a === 'op') { cli.opProd = b.dataset.op; var yo = guardarRolagem(); renderCliente(); restaurarRolagem(yo); return; }
     else if (a === 'qtd-mais' || a === 'qtd-menos') { cli.qtdProd = Math.max(1, Math.min(20, (cli.qtdProd || 1) + (a === 'qtd-mais' ? 1 : -1))); var yq = guardarRolagem(); renderCliente(); restaurarRolagem(yq); return; }
-    else if (a === 'ver-prod') { cli.verProd = b.dataset.id; cli.opProd = null; cli.qtdProd = 1; var yv = guardarRolagem(); renderCliente(); restaurarRolagem(yv); var fv = document.querySelector('#tela .voltar-prod'); if (fv) fv.focus({preventScroll:true}); return; }
+    else if (a === 'ver-prod') { cli.verProd = b.dataset.id; cli.opProd = null; cli.adProd = []; cli.qtdProd = 1; var yv = guardarRolagem(); renderCliente(); restaurarRolagem(yv); var fv = document.querySelector('#tela .voltar-prod'); if (fv) fv.focus({preventScroll:true}); return; }
     else if (a === 'fechar-prod') { var idf = cli.verProd; cli.verProd = null; var yf = guardarRolagem(); renderCliente(); restaurarRolagem(yf); var vf = document.querySelector('#tela .nome-item[data-id="' + idf + '"]'); if (vf) vf.focus({preventScroll:true}); return; }
     else if (a === 'add-prod') { var ida = b.dataset.id; cli.carrinho[ida] = (cli.carrinho[ida] || 0) + (cli.qtdProd || 1); cli.verProd = null; toast(PROD[ida].nome + ' adicionado ao pedido.'); var ya = guardarRolagem(); renderCliente(); restaurarRolagem(ya); return; }
     else if (a === 'revisar') { cli.tela = 'revisao'; }
@@ -1568,7 +1907,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     else if (a === 'c-pmais' || a === 'c-pmenos') { cli.conta.pessoas = Math.max(1, Math.min(30, cli.conta.pessoas + (a === 'c-pmais' ? 1 : -1))); var yp = guardarRolagem(); renderCliente(); restaurarRolagem(yp); return; }
     else if (a === 'c-pag') { cli.conta.pag = b.dataset.v; var yg = guardarRolagem(); renderCliente(); restaurarRolagem(yg); return; }
     else if (a === 'c-enviar') { pedirConta(); return; }
-    else if (a === 'novo') { var enc = cli.enc; cli = novoCliente(); cli.enc = enc; }
+    else if (a === 'novo') { var enc = cli.enc, mdA = cli.modo, msA = cli.mesa; cli = novoCliente(); cli.enc = enc; if (mdA === 'mesa') { cli.modo = 'mesa'; cli.mesa = msA; } }
     renderCliente();
   });
   $('tela').addEventListener('keydown', function(e){ var b = e.target.closest('[role="button"][data-acao]'); if (b && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); b.click(); } });
@@ -1581,19 +1920,22 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
       bt.setAttribute('aria-disabled', !!f); bt.href = f ? '#' : linkEnc();
       p.hidden = !f; p.textContent = f;
     } else {
-      cli[k] = el.value;
+      cli[k] = el.type === 'checkbox' ? el.checked : el.value;
+      if (k === 'cep') { var cf = cepFmt(el.value); if (el.value !== cf) el.value = cf; cli.cep = cf; var dg = cf.replace(/\D/g, ''); if (dg.length === 8) buscarCep(dg); else { cepBuscado = ''; if (cli.cepSt) { cli.cepSt = ''; atualizarCep(); } } }
       var f2 = faltando(), b2 = document.querySelector('[data-acao="enviar"]'), p2 = $('falta');
       if (b2) b2.disabled = !!f2; if (p2) { p2.hidden = !f2; p2.textContent = f2; }
     }
   }
   $('tela').addEventListener('input', aoDigitar);
   $('tela').addEventListener('change', aoDigitar);
+  $('tela').addEventListener('change', function(e){ if (e.target.dataset && (e.target.dataset.campo === 'bairro' || e.target.dataset.campo === 'semnum')) { var y = guardarRolagem(); renderCliente(); restaurarRolagem(y); } });
 
   function enviar(){
     if (faltando()) return;
     var o = {id:dados.prox++, modo:cli.modo, nome:cli.nome.trim(), itens:JSON.parse(JSON.stringify(cli.carrinho)), snap:snapDe(cli.carrinho), obs:cli.obs.trim(), status:'novo', t:Date.now()};
     if (cli.modo === 'mesa') o.mesa = cli.mesa;
     if (cli.modo === 'balcao') o.consumo = cli.consumo;
+    if (cli.modo === 'delivery') { o.consumo = 'entrega'; o.bairro = cli.bairro; o.end = enderecoTexto(); o.taxa = taxaEntrega(); o.zap = soDigitos(cli.zap); }
     dados.pedidos.push(o); dados.meus.push(o.id); publicar();
     cli.pedidoId = o.id; cli.tela = 'confirmado';
     renderCliente(); renderPainel(); chegou(o, true);
@@ -1602,27 +1944,85 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
   // ---------- PAINEL ----------
   function comandaHTML(o){
     var h = '<div class="faixa">' + destinoTitulo(o) + '<small>' + dest(o).sub + '</small></div>';
-    h += '<div class="dupla"><b>Pedido nº ' + o.id + '</b><span>' + hora(o.t) + '</span></div><div>Cliente: <b>' + esc(o.nome) + '</b></div><div class="lin"></div>';
+    h += '<div class="dupla"><b>Pedido nº ' + o.id + '</b><span>' + hora(o.t) + '</span></div><div>Cliente: <b>' + esc(o.nome) + '</b></div>' + (o.end ? '<div>Entrega: <b>' + esc(o.end) + '</b></div><div>Bairro: <b>' + esc(o.bairro) + '</b></div>' : '') + (o.zap ? '<div>WhatsApp: <b>' + esc(zapFmt(o.zap)) + '</b></div>' : '') + '<div class="lin"></div>';
     Object.keys(o.itens).forEach(function(id){ if (infoPed(o, id)) h += '<div class="grande">' + esc(linhaPed(o, id)) + '</div>'; });
     if (o.obs) h += '<div class="lin"></div><div>Obs.: ' + esc(o.obs) + '</div>';
-    h += '<div class="lin"></div><div class="dupla"><b>TOTAL</b><b>' + fmt(totalPed(o)) + '</b></div><div>Pagamento no caixa</div>';
+    if (o.taxa) h += '<div class="lin"></div><div class="dupla"><span>Taxa de entrega</span><span>' + fmt(o.taxa) + '</span></div>';
+    h += '<div class="lin"></div><div class="dupla"><b>TOTAL</b><b>' + fmt(totalPed(o)) + '</b></div><div>' + (o.modo === 'delivery' ? 'Pagamento na entrega' : 'Pagamento no caixa') + '</div>';
     return h;
+  }
+  // Impressão real na impressora térmica (80 mm). Só liga com ?impressora=1 no link,
+  // para o exemplo público continuar só com a animação.
+  var impressoraReal = /[?&]impressora=1\b/.test(location.search) && !SO_CLIENTE;
+  function imprimirDeVerdade(html){
+    if (!impressoraReal) return;
+    var f = document.createElement('iframe');
+    f.setAttribute('aria-hidden', 'true');
+    f.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden';
+    document.body.appendChild(f);
+    var d = f.contentWindow.document;
+    d.open();
+    d.write('<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Comanda</title><style>' +
+      '@page{size:80mm auto;margin:0}' +
+      'html,body{margin:0;background:#fff;color:#000}' +
+      'body{width:72mm;padding:2mm 3mm 6mm;font-family:"Courier New",Courier,monospace;font-size:13px;line-height:1.35}' +
+      '.faixa{background:#000;color:#fff;text-align:center;font-family:Arial,Helvetica,sans-serif;font-weight:800;font-size:24px;padding:6px 4px;margin-bottom:8px;-webkit-print-color-adjust:exact;print-color-adjust:exact}' +
+      '.faixa small{display:block;font-size:12px;letter-spacing:.1em}' +
+      '.dupla{display:flex;justify-content:space-between;gap:6px}' +
+      '.lin{border-top:1px dashed #000;margin:6px 0}' +
+      '.grande{font-weight:700;font-size:15px}' +
+      '.centro{text-align:center;font-weight:700}' +
+      '</style></head><body>' + html + '</body></html>');
+    d.close();
+    setTimeout(function(){
+      try { f.contentWindow.focus(); f.contentWindow.print(); } catch(e){}
+      setTimeout(function(){ f.remove(); }, 60000);
+    }, 150);
   }
   function imprimir(o){
     ultimoImpresso = o.id; o.impresso = true;
     $('saida').innerHTML = '<div class="papel saindo">' + comandaHTML(o) + '</div>';
+    imprimirDeVerdade(comandaHTML(o));
     var led = $('led'); led.classList.add('imprimindo'); setTimeout(function(){ led.classList.remove('imprimindo'); }, 2400);
   }
-  function chegou(o, local){ if (true) { if (P().auto) imprimir(o); else renderPainel(); return; }
+  function chegou(o, local){
     bip(); if (P().auto) imprimir(o); else renderPainel();
     var card = document.querySelector('[data-pedido="' + o.id + '"]'); if (card) card.classList.add('novo-chegou');
-    if (aba === 'cliente' && window.matchMedia('(max-width:1060px)').matches) {
+    if (aba === 'cliente' && !SO_CLIENTE && window.matchMedia('(max-width:1060px)').matches) {
       naoVistos++; var bl = $('bolinha'); bl.hidden = false; bl.textContent = naoVistos;
-      toast('Pedido nº ' + o.id + ' chegou no estabelecimento. Toque em "Painel da padaria" para ver.');
+      toast('Pedido nº ' + o.id + ' chegou no estabelecimento. Toque em "Painel da loja" para ver.');
     } else if (local) toast(P().auto ? 'Pedido nº ' + o.id + ' chegou no painel e a comanda foi impressa.' : 'Pedido nº ' + o.id + ' chegou no painel. No PRO, toque em "Imprimir" para a comanda sair.');
   }
-  function bipChamado(){
+  // campainha de balcão ("trim"), tocada duas vezes, para o chamado do garçom
+  var jaChamouGarcom = false;
+  function campainha(){
     if (!somLigado) return;
+    try {
+      ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+      var saida = ctx.createGain(); saida.gain.value = .5; saida.connect(ctx.destination);
+      [0, .42].forEach(function(at){
+        var t0 = ctx.currentTime + at;
+        // parciais de um sino de metal pequeno (não harmônicas), cada uma some num tempo
+        [[2093, .55, 1.6], [2093 * 2.32, .22, .9], [2093 * 4.07, .12, .5], [2093 * 6.21, .06, .3], [2099, .35, 1.6]].forEach(function(pz){
+          var o = ctx.createOscillator(), g = ctx.createGain();
+          o.type = 'sine'; o.frequency.value = pz[0];
+          g.gain.setValueAtTime(.0001, t0);
+          g.gain.exponentialRampToValueAtTime(pz[1], t0 + .004);
+          g.gain.exponentialRampToValueAtTime(.0001, t0 + pz[2]);
+          o.connect(g); g.connect(saida); o.start(t0); o.stop(t0 + pz[2] + .05);
+        });
+        // batida do martelinho
+        var n = ctx.createBuffer(1, Math.floor(ctx.sampleRate * .02), ctx.sampleRate), dd = n.getChannelData(0);
+        for (var i = 0; i < dd.length; i++) dd[i] = (Math.random() * 2 - 1) * (1 - i / dd.length);
+        var src = ctx.createBufferSource(), f = ctx.createBiquadFilter(), gn = ctx.createGain();
+        src.buffer = n; f.type = 'highpass'; f.frequency.value = 3000; gn.gain.value = .25;
+        src.connect(f); f.connect(gn); gn.connect(saida); src.start(t0);
+      });
+    } catch(e){}
+  }
+  function bipChamado(tipo){
+    if (!somLigado) return;
+    if (tipo === 'garcom') { campainha(); jaChamouGarcom = true; return; }
     try {
       ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
       [0, .32, 1.0, 1.32].forEach(function(at, i){
@@ -1636,11 +2036,11 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     } catch(e){}
   }
   function chamadoChegou(c, local){
-    chVistos.push(c.id); bipChamado();
+    chVistos.push(c.id); bipChamado(c.tipo);
     var el = document.querySelector('[data-ch="' + c.id + '"]'); if (el) el.classList.add('chegou');
     var msg = 'Mesa ' + c.mesa + (c.tipo === 'conta' ? ' pediu a conta.' : ' chamou o garçom.');
-    if (aba === 'cliente' && window.matchMedia('(max-width:1060px)').matches) { naoVistos++; var bl = $('bolinha'); bl.hidden = false; bl.textContent = naoVistos; toast(msg + ' Toque em "Painel da padaria" para ver.'); }
-    else if (local && c.tipo === 'conta') toast(msg + ' Veja no painel da padaria.');
+    if (aba === 'cliente' && !SO_CLIENTE && window.matchMedia('(max-width:1060px)').matches) { naoVistos++; var bl = $('bolinha'); bl.hidden = false; bl.textContent = naoVistos; toast(msg + ' Toque em "Painel da loja" para ver.'); }
+    else if (local && c.tipo === 'conta') toast(msg + ' Veja no painel da loja.');
     else if (!local) toast(msg);
   }
   var PAGP = {pix:'PIX', credito:'CARTÃO DE CRÉDITO', debito:'CARTÃO DE DÉBITO', dinheiro:'DINHEIRO'};
@@ -1663,7 +2063,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     if (!lista.length) { box.innerHTML = ''; return; }
     var h = '<section class="chamados" aria-label="Chamados das mesas"><h3>Chamados <b>' + lista.length + '</b></h3><div class="ch-lista">';
     lista.forEach(function(c){
-      h += '<article class="ch ' + c.tipo + '" data-ch="' + c.id + '"><div class="ch-topo"><b>MESA ' + c.mesa + '</b><span>' + haQuanto(c.t) + '</span></div>';
+      h += '<article class="ch ' + c.tipo + (Date.now() - c.t >= 2 * 60000 ? ' atrasado' : '') + '" data-ch="' + c.id + '"><div class="ch-topo"><b>MESA ' + c.mesa + '</b><span>' + haQuanto(c.t) + '</span></div>';
       if (c.tipo === 'conta') h += '<div class="ch-tipo">' + RECIBO + 'Pediu a conta · <span class="ch-val">' + fmt(c.total) + '</span></div><small><b>' + PAGP[c.pagamento] + '</b>' + (trocoConta(c) ? ' · ' + trocoConta(c) : '') + (c.pessoas > 1 ? ' · ' + c.pessoas + ' pessoas (' + fmt(c.porPessoa) + ' cada)' : '') + (c.servico ? ' · com 10%' : '') + '</small>' +
         '<div class="ch-acoes"><button type="button" data-chp="pre" data-id="' + c.id + '">Imprimir pré-conta</button><button type="button" class="prim" data-chp="fechado" data-id="' + c.id + '">Conta fechada</button></div>';
       else h += '<div class="ch-tipo">' + SINO + 'Chamou o garçom</div><div class="ch-acoes"><button type="button" class="prim" data-chp="atendido" data-id="' + c.id + '">Atendido</button></div>';
@@ -1671,12 +2071,27 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     });
     box.innerHTML = h + '</div></section>';
   }
-  setInterval(function(){ if ($('chamadosBox') && $('chamadosBox').innerHTML) renderChamados(); }, 20000);
+  // Lembrete: se ninguém marcar o chamado, o painel toca de novo a cada 2 minutos (até 3 vezes)
+  var LEMBRETE_MS = 2 * 60000, MAX_LEMBRETES = 3, lembretes = {}, inicioPainel = Date.now();
+  function verLembretes(){
+    if (SO_CLIENTE) return;
+    var agora = Date.now();
+    dados.chamados.forEach(function(c){
+      if (c.status !== 'aberto') return;
+      var l = lembretes[c.id] || (lembretes[c.id] = {ult: Math.max(c.t, inicioPainel), n: 0});
+      if (l.n >= MAX_LEMBRETES || agora - l.ult < LEMBRETE_MS) return;
+      l.ult = agora; l.n++; bipChamado(c.tipo);
+      toast('Mesa ' + c.mesa + ' está esperando há ' + Math.round((agora - c.t) / 60000) + ' min (' + (c.tipo === 'conta' ? 'conta' : 'garçom') + ').');
+    });
+    renderChamados();
+  }
+  setInterval(function(){ if ($('chamadosBox') && $('chamadosBox').innerHTML) verLembretes(); }, 10000);
   $('chamadosBox').addEventListener('click', function(e){
     var b = e.target.closest('[data-chp]'); if (!b) return;
     var c = chDe(+b.dataset.id); if (!c) return;
     if (b.dataset.chp === 'pre') {
       $('saida').innerHTML = '<div class="papel saindo">' + preContaHTML(c) + '</div>';
+      imprimirDeVerdade(preContaHTML(c));
       var led = $('led'); led.classList.add('imprimindo'); setTimeout(function(){ led.classList.remove('imprimindo'); }, 2400);
       ultimoImpresso = -1; toast('Pré-conta da Mesa ' + c.mesa + ' impressa.'); return;
     }
@@ -1697,12 +2112,12 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
       h += '<section class="coluna" aria-label="' + c[1] + '"><h3>' + c[1] + ' <b>' + lista.length + '</b></h3>';
       if (!lista.length) h += '<p class="vazio-col">' + (c[0] === 'novo' ? 'Nenhum pedido em preparo. Faça um pedido no celular.' : 'Nada por aqui ainda.') + '</p>';
       lista.forEach(function(o){
-        h += '<article class="pedido' + (o.status === 'entregue' ? ' entregue' : '') + '" data-pedido="' + o.id + '"><div class="pedido-cab" style="background:' + dest(o).cor + '"><b>' + destinoTitulo(o) + (o.modo === 'balcao' ? '<em>' + (o.consumo === 'viagem' ? 'PARA VIAGEM' : 'COMER AQUI') + '</em>' : '') + (!P().auto && !o.impresso && o.status === 'novo' ? '<span class="imp-pend">NÃO IMPRESSO</span>' : '') + '</b><span>nº ' + o.id + ' · ' + hora(o.t) + '</span></div><div class="pedido-corpo"><div class="cli">Cliente: <b>' + esc(o.nome) + '</b></div><ul>';
+        h += '<article class="pedido' + (o.status === 'entregue' ? ' entregue' : '') + '" data-pedido="' + o.id + '"><div class="pedido-cab" style="background:' + dest(o).cor + '"><b>' + destinoTitulo(o) + (o.modo === 'balcao' ? '<em>' + (o.consumo === 'viagem' ? 'PARA VIAGEM' : 'COMER AQUI') + '</em>' : '') + (!P().auto && !o.impresso && o.status === 'novo' ? '<span class="imp-pend">NÃO IMPRESSO</span>' : '') + '</b><span>nº ' + o.id + ' · ' + hora(o.t) + '</span></div><div class="pedido-corpo"><div class="cli">Cliente: <b>' + esc(o.nome) + '</b></div>' + (o.end ? '<div class="end">' + esc(o.end) + '</div>' : '') + '<ul>';
         Object.keys(o.itens).forEach(function(id){ if (infoPed(o, id)) h += '<li>' + esc(linhaPed(o, id)) + '</li>'; });
         h += '</ul>' + (o.obs ? '<div class="obs">Obs.: ' + esc(o.obs) + '</div>' : '') + '<div class="tot"><span>Total</span><span>' + fmt(totalPed(o)) + '</span></div></div><div class="pedido-acoes">';
         if (!P().auto && !o.impresso && o.status === 'novo') h += '<button type="button" class="b-imp" data-p="reimprimir" data-id="' + o.id + '">Imprimir</button>';
-        if (o.status === 'novo') h += '<button type="button" class="b-prim" data-p="pronto" data-id="' + o.id + '">Marcar como pronto</button>';
-        if (o.status === 'pronto') h += '<button type="button" class="b-prim" data-p="entregue" data-id="' + o.id + '">' + (o.modo === 'mesa' ? 'Entregue na mesa' : (o.consumo === 'viagem' ? 'Cliente retirou' : 'Entregue no balcão')) + '</button>';
+        if (o.status === 'novo') h += '<button type="button" class="b-prim" data-p="pronto" data-id="' + o.id + '">' + (o.modo === 'delivery' ? 'Saiu para entrega' : 'Marcar como pronto') + '</button>';
+        if (o.status === 'pronto') h += '<button type="button" class="b-prim" data-p="entregue" data-id="' + o.id + '">' + (o.modo === 'mesa' ? 'Entregue na mesa' : o.modo === 'delivery' ? 'Entregue no endereço' : (o.consumo === 'viagem' ? 'Cliente retirou' : 'Entregue no balcão')) + '</button>';
         if (P().auto || o.impresso || o.status !== 'novo') h += '<button type="button" class="b-sec" data-p="reimprimir" data-id="' + o.id + '">Reimprimir</button>';
         h += '</div></article>';
       });
@@ -1769,7 +2184,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     var h = '<div class="ed"><p class="ed-intro"><b>Área de atualização do dono.</b> Tudo o que você salvar aqui aparece na hora no cardápio do cliente.</p>' + (P().produtos && PRODUTOS.length > P().produtos ? '<p class="limite-aviso">Este cardápio de exemplo tem ' + PRODUTOS.length + ' produtos. No plano ' + P().nome + ', o limite é ' + P().produtos + ': um cliente desse plano precisaria tirar alguns ou subir de plano.</p>' : '');
     // dados da loja
     h += '<section class="ed-bloco"><h3>Dados do estabelecimento</h3><div class="ed-corpo"><div class="dois">' +
-      '<div class="campo"><label for="ed-loja-nome">Nome da padaria</label><input id="ed-loja-nome" type="text" value="' + esc(card.loja.nome) + '" maxlength="40"></div>' +
+      '<div class="campo"><label for="ed-loja-nome">Nome da loja</label><input id="ed-loja-nome" type="text" value="' + esc(card.loja.nome) + '" maxlength="40"></div>' +
       '<div class="campo"><label for="ed-loja-whats">WhatsApp das encomendas</label><input id="ed-loja-whats" type="tel" inputmode="tel" value="' + esc(card.loja.whats) + '" placeholder="55 + DDD + número"></div></div>' +
       '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><button type="button" class="ed-btn prim" data-ed="salvar-loja">Salvar dados da loja</button><span class="ed-salvo" id="salvoLoja" hidden>Salvo</span></div>' +
       (P().conta ? '<div style="border-top:1px solid var(--linha);padding-top:12px">' + chave('ed-servico', dados.servico, 'Cobrar taxa de serviço (10%) na conta da mesa', false, ' data-ed="servico"') + '<p style="margin:6px 0 0;color:var(--suave);font-size:12.5px">Ligada, a conta pedida pelo celular mostra os 10% já marcados, e o cliente pode desmarcar (a taxa é opcional).</p></div>' : '') + '</div></section>';
@@ -1832,7 +2247,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     var a = b.dataset.ed, id = b.dataset.id;
     if (a === 'salvar-loja') {
       var nome = $('ed-loja-nome').value.trim(), w = $('ed-loja-whats').value.replace(/\D/g, '');
-      if (!nome) { toast('Coloque o nome da padaria.'); $('ed-loja-nome').focus(); return; }
+      if (!nome) { toast('Coloque o nome da loja.'); $('ed-loja-nome').focus(); return; }
       if (w.length < 12) { toast('WhatsApp incompleto: use 55 + DDD + número, só os dígitos.'); $('ed-loja-whats').focus(); return; }
       card.loja.nome = nome; card.loja.whats = w;
       if (aposMudarCardapio('Dados da loja salvos.')) { var sv = $('salvoLoja'); if (sv) sv.hidden = false; }
@@ -2035,6 +2450,11 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
   }
   $('abaCliente').addEventListener('click', function(){ trocarAba('cliente'); });
   $('abaPainel').addEventListener('click', function(){ trocarAba('painel'); });
+  document.addEventListener('click', function(e){
+    if (e.target.closest('[data-ir-painel]')) { trocarAba('painel'); var lp = $('ladoPainel'); if (lp) lp.scrollTop = 0; }
+    else if (e.target.closest('[data-voltar-cel]')) trocarAba('cliente');
+  });
+  document.addEventListener('keydown', function(e){ if ((e.key === 'Enter' || e.key === ' ') && e.target.closest && e.target.closest('[data-ir-painel]')) { e.preventDefault(); trocarAba('painel'); } });
   $('som').addEventListener('click', function(){
     somLigado = !somLigado; this.setAttribute('aria-pressed', somLigado); this.textContent = somLigado ? 'Som ligado' : 'Som desligado';
     if (somLigado) bip();
@@ -2054,15 +2474,16 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
 
   // ---------- seletor de plano e QR code lido ----------
   function montarQR(){
-    var sel = $('qrLocal'), n = P().mesas || 12, h = '<option value="balcao">Balcão</option>';
+    var sel = $('qrLocal'), n = P().mesas || 12, h = '<option value="balcao">Balcão</option><option value="delivery">Delivery (link da loja)</option>';
     for (var m = 1; m <= n; m++) h += '<option value="' + m + '">Mesa ' + m + '</option>';
-    sel.innerHTML = h; sel.value = cli.modo === 'mesa' ? String(cli.mesa) : 'balcao';
+    sel.innerHTML = h; sel.value = cli.modo === 'mesa' ? String(cli.mesa) : cli.modo === 'delivery' ? 'delivery' : 'balcao';
     $('qrLimite').textContent = P().mesas ? 'até ' + P().mesas + ' mesas' : 'mesas sem limite';
   }
   $('qrLocal').addEventListener('change', function(){
     var v = this.value, enc = cli.enc; cli = novoCliente(); cli.enc = enc;
-    if (v !== 'balcao') { cli.modo = 'mesa'; cli.mesa = +v; }
-    renderCliente(); toast(v === 'balcao' ? 'O celular leu o QR code do balcão.' : 'O celular leu o QR code da Mesa ' + v + '.');
+    if (v === 'delivery') { cli.modo = 'delivery'; cli.consumo = 'entrega'; }
+    else if (v !== 'balcao') { cli.modo = 'mesa'; cli.mesa = +v; }
+    renderCliente(); toast(v === 'delivery' ? 'O cliente abriu o link de delivery da loja.' : v === 'balcao' ? 'O celular leu o QR code do balcão.' : 'O celular leu o QR code da Mesa ' + v + '.');
   });
   function aplicarPlano(){
     var p = P();

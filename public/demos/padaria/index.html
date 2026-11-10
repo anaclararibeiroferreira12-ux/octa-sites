@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
+<meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Casa do Pão Pedidos</title>
 <meta name="description" content="Demonstração do sistema de pedidos para padarias, com a padaria modelo Casa do Pão: o cliente pede na mesa ou para viagem e a comanda sai impressa na padaria.">
@@ -846,18 +847,54 @@ button,input,select,textarea{font-family:inherit}
 .toast{bottom:auto;top:calc(14px + env(safe-area-inset-top,0px));padding:10px 16px;font-size:13.5px;border-radius:999px;background:#0B2B26;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:0 10px 24px -10px rgba(5,31,32,.7);transform:translate(-50%,-30px)}
 .toast.on{transform:translate(-50%,0)}
 @media (max-width:340px){.lst b{font-size:14.5px}.lst img{width:64px;height:64px}}
+.planos-bar{display:none!important}
 </style>
 </head>
-<body><div class="faixa-plano">Demonstração do plano <b>PRO</b></div><style id="so-cliente">
+<body><div class="faixa-plano"><span class="fp-txt">Exemplo do sistema <b>Octa Completo</b></span><div class="fp-abas" role="tablist" aria-label="Telas do exemplo"><button type="button" role="tab" id="abaCliente" aria-selected="true" aria-controls="ladoCliente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg>Celular do cliente</button><button type="button" role="tab" id="abaPainel" aria-selected="false" aria-controls="ladoPainel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>Painel da loja<span class="bolinha" id="bolinha" hidden>0</span></button></div></div><style id="so-cliente">
+@media (max-width:1060px){
 html,body{margin:0;background:#051F20;height:100%;overflow:hidden}
-body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-plano){display:none!important}
-.topo,.guia,.planos-bar,.abas,.rodape-demo,.rotulo-lado,.qr-local,.lado-painel,.dica-painel{display:none!important}
-.palco{display:block!important;padding:0!important;margin:0!important;max-width:none!important;height:calc(100dvh - 34px);margin-top:34px!important}
-.lado-cliente{position:static!important;padding:0!important;height:calc(100dvh - 34px)}
-.aparelho{width:100%!important;max-width:480px;margin:0 auto!important;padding:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;height:calc(100dvh - 34px)}
-.tela{border-radius:0!important;border:0!important;height:calc(100dvh - 34px)!important;min-height:0!important}
+body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-plano):not(.folha-fundo){display:none!important}
+.topo,.guia,.planos-bar,.abas,.rodape-demo,.rotulo-lado,.qr-local{display:none!important}
+.palco{display:block!important;padding:0!important;margin:0!important;max-width:none!important;height:calc(100dvh - 50px);margin-top:50px!important}
+.lado-cliente{position:static!important;padding:0!important;height:calc(100dvh - 50px)}
+.aparelho{width:100%!important;max-width:480px;margin:0 auto!important;padding:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;height:calc(100dvh - 50px)}
+.tela{border-radius:0!important;border:0!important;height:calc(100dvh - 50px)!important;min-height:0!important}
 .abertura{inset:0!important;border-radius:0!important}
-.toast{top:calc(44px + env(safe-area-inset-top,0px))!important;bottom:auto!important}
+.toast{top:calc(60px + env(safe-area-inset-top,0px))!important;bottom:auto!important}
+.palco[data-aba="cliente"] .lado-painel{display:none!important}
+.palco[data-aba="painel"] .lado-cliente{display:none!important}
+.palco[data-aba="painel"] .lado-painel{display:block!important;height:calc(100dvh - 50px);overflow-y:auto;overscroll-behavior:contain;background:var(--creme-2,#F4ECDD);padding:0 0 24px}
+.faixa-plano{height:50px!important;padding:0 8px!important}
+.faixa-plano .fp-txt{display:none}
+.lado-painel .dica-mob{display:block}
+}
+@media (min-width:1061px){
+.planos-bar,.abas,.rodape-demo{display:none!important}
+body{padding-top:34px}
+.lado-cliente{top:50px}
+.faixa-plano .fp-abas{display:none}
+}
+</style><style>
+.ch.atrasado{box-shadow:0 0 0 3px #C8102E,0 10px 24px -12px rgba(200,16,46,.6);animation:chEspera 1.6s ease-in-out infinite}
+.ch.atrasado .ch-topo span{color:#C8102E;font-weight:800}
+@keyframes chEspera{0%,100%{box-shadow:0 0 0 3px #C8102E}50%{box-shadow:0 0 0 6px rgba(200,16,46,.35)}}
+@media (prefers-reduced-motion:reduce){.ch.atrasado{animation:none}}
+html.so-cliente-loja .fp-abas,html.so-cliente-loja .lado-painel,html.so-cliente-loja .guia,html.so-cliente-loja .dica-painel{display:none!important}
+html.so-cliente-loja .faixa-plano .fp-txt{display:inline!important}
+html.so-cliente-loja .palco{grid-template-columns:minmax(0,420px)!important;justify-content:center}
+.fp-abas{display:flex;gap:4px;width:100%;max-width:480px;background:rgba(255,255,255,.08);padding:4px;border-radius:12px}
+.fp-abas button{flex:1;position:relative;height:36px;border:0;border-radius:9px;background:none;color:#D9CCF7;font:700 13.5px/1 Inter,system-ui,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+.fp-abas button svg{width:16px;height:16px;flex:none}
+.fp-abas button[aria-selected="true"]{background:#fff;color:#1E1533}
+.fp-abas .bolinha{position:static!important;min-width:20px;height:20px;border-radius:10px;background:#E8B23A;color:#2E2203;font-size:11.5px;font-weight:900;display:inline-flex;align-items:center;justify-content:center;padding:0 6px;animation:fpPulso 1.2s ease-in-out infinite}
+.fp-abas .bolinha[hidden]{display:none}
+@keyframes fpPulso{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+@media (prefers-reduced-motion:reduce){.fp-abas .bolinha{animation:none}}
+.dica-mob{display:none;margin:12px 12px 0;padding:12px 14px;border-radius:14px;background:#1E1533;color:#EDE7FB;font:600 13.5px/1.4 Inter,system-ui,sans-serif}
+.dica-mob b{color:#fff}
+.dica-mob button{margin-top:8px;border:0;border-radius:999px;background:#E8B23A;color:#2E2203;font:800 13px Inter,system-ui,sans-serif;padding:8px 14px;cursor:pointer}
+.dica-painel[data-ir-painel]{cursor:pointer}
+@media (max-width:1060px){.dica-painel[data-ir-painel]{color:#5B21B6;font-weight:700;text-decoration:underline;text-underline-offset:3px}}
 .faixa-plano{position:fixed;top:0;left:0;right:0;z-index:9999;height:34px;display:flex;align-items:center;justify-content:center;gap:8px;padding:0 10px;font:600 12px/1.2 Inter,system-ui,sans-serif;color:#EDE7FB;background:#1E1533;text-align:center;white-space:nowrap;overflow:hidden}
 .faixa-plano b{font-weight:800}
 .faixa-plano i{font-style:normal;font-size:10px;font-weight:800;letter-spacing:.06em;padding:2px 6px;border-radius:5px;background:#C9A227;color:#2E2203}
@@ -876,9 +913,9 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
 <div class="guia">
   <div class="guia-in">
     <strong>Experimente:</strong>
-    <span class="curto">escolha o plano em "Ver como", faça um pedido e veja ele chegar no painel.</span>
+    <span class="curto">faça um pedido e veja ele chegar no painel.</span>
     <ol>
-      <li><span>1</span>Escolha o plano em "Ver como" e o QR code lido</li>
+      <li><span>1</span>Escolha o QR code lido</li>
       <li><span>2</span>Monte o pedido e envie</li>
       <li><span>3</span>Veja a comanda sair na impressora</li>
       <li><span>4</span>Marque como pronto e entregue</li>
@@ -892,10 +929,6 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
   <p class="planos-desc" id="planoDesc" aria-live="polite"></p>
 </div></div>
 
-<div class="abas" role="tablist" aria-label="Telas da demonstração">
-  <button type="button" role="tab" id="abaCliente" aria-selected="true" aria-controls="ladoCliente">Celular do cliente</button>
-  <button type="button" role="tab" id="abaPainel" aria-selected="false" aria-controls="ladoPainel">Painel da padaria<span class="bolinha" id="bolinha" hidden>0</span></button>
-</div>
 
 <main class="palco" id="palco" data-aba="cliente">
   <section class="lado-cliente" id="ladoCliente" aria-label="Celular do cliente">
@@ -905,6 +938,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
   </section>
 
   <section class="lado-painel" id="ladoPainel" aria-label="Painel da padaria">
+    <div class="dica-mob"><b>Este é o painel da loja</b>, a tela que fica no computador ou tablet do balcão. Os pedidos feitos no celular chegam aqui. Mude o status do pedido e veja o celular do cliente atualizar.<br><button type="button" data-voltar-cel>Voltar ao celular do cliente</button></div>
     <div class="rotulo-lado">Painel da padaria · computador do balcão</div>
     <div class="painel">
       <div class="painel-topo">
@@ -939,7 +973,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
       <div id="vistaCardapio" role="tabpanel" aria-labelledby="vCardapio" hidden></div>
     </div>
     <section class="tv-demo" id="tvDemo" aria-label="TV do salão" hidden></section>
-    <p class="tv-legenda" id="tvLegenda" hidden>Plano MAX: a TV do salão chama os pedidos do balcão quando ficam prontos.</p>
+    <p class="tv-legenda" id="tvLegenda" hidden>A TV do salão chama os pedidos do balcão quando ficam prontos.</p>
   </section>
 </main>
 <p class="rodape-demo">Demonstração para apresentação. Pedidos, nomes e preços são fictícios e ficam só neste navegador. No sistema real, o pedido feito no celular do cliente chega pela internet ao computador da padaria e sai na impressora térmica.</p>
@@ -948,6 +982,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
   <div class="folha" role="dialog" aria-modal="true" aria-labelledby="folhaTitulo" id="folhaCaixa"></div>
 </div>
 
+<script src="../sincronia.js"></script>
 <script>
 (function(){
   'use strict';
@@ -1115,6 +1150,11 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
 
   // ---------- estado (fica só neste navegador) ----------
   var CHAVE = 'padaria-demo-v4';
+  var LOJA = window.OctaSync ? OctaSync.loja() : null;
+  // link de cliente (?loja= sem &chave=): o aparelho mostra só o celular do cliente
+  var SO_CLIENTE = !!(LOJA && !OctaSync.chave());
+  if (SO_CLIENTE) document.documentElement.classList.add('so-cliente-loja');
+  if (LOJA) CHAVE += '-loja-' + LOJA;
   function semente(){
     var agora = Date.now();
     var ped = [
@@ -1132,7 +1172,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
   }
   var dados;
   try { dados = JSON.parse(localStorage.getItem(CHAVE) || 'null'); } catch(e) { dados = null; }
-  if (!dados || !Array.isArray(dados.pedidos)) dados = semente();
+  if (!dados || !Array.isArray(dados.pedidos)) dados = LOJA ? {prox:1, pedidos:[], meus:[], chamados:[], proxCh:1, servico:true} : semente();
   if (!Array.isArray(dados.meus)) dados.meus = [];
   if (!Array.isArray(dados.chamados)) { dados.chamados = []; dados.proxCh = 1; }
   function salvar(){ try { localStorage.setItem(CHAVE, JSON.stringify(dados)); } catch(e){} }
@@ -1142,23 +1182,26 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
   var somLigado = true, aba = 'cliente', naoVistos = 0, ultimoImpresso = null;
   // ---------- planos (a demonstração muda conforme o plano escolhido no topo) ----------
   var PLANOS = {
-    pro:{nome:'PRO', mesas:6, produtos:30, auto:true, lista:false, meus:false, selo:true, enc:false, tv:false, data:false, conta:false, garcom:false, dst:false, obs:false,
+    pro:{nome:'PRO', mesas:6, produtos:30, auto:true, lista:false, meus:false, selo:true, enc:false, tv:false, data:false, conta:false, garcom:false, dst:false, obs:true,
       desc:'<b>PRO · R$ 129,90/mês.</b> Até 6 mesas e 30 produtos. Comanda impressa automaticamente. O cliente vê só o número do pedido. Selo "Feito por Octa Sites" no cardápio.'},
     premium:{nome:'PREMIUM', mesas:10, produtos:45, auto:true, lista:false, meus:true, selo:false, enc:true, tv:false, data:false, conta:false, garcom:false, dst:false, obs:true,
       desc:'<b>PREMIUM · R$ 189,90/mês.</b> Até 10 mesas e 45 produtos. Adicionais e combos e encomendas com data. O cliente acompanha o preparo do pedido pelo celular.'},
-    max:{nome:'MAX', mesas:0, produtos:0, auto:true, lista:true, meus:true, selo:false, enc:true, tv:false, data:true, conta:true, garcom:true, dst:true, obs:true,
-      desc:'<b>MAX · R$ 249,90/mês.</b> Tudo do Premium, sem limite de mesas e produtos, pedir a conta dividida e chamar o garçom pelo celular.'}
+    max:{nome:'OCTA COMPLETO', mesas:0, produtos:0, auto:true, lista:true, meus:true, selo:false, enc:true, tv:false, data:true, conta:true, garcom:true, dst:true, obs:true,
+      desc:'<b>Octa Completo · R$ 199,90/mês.</b> Todos os recursos liberados, sem limite de mesas e produtos.'}
   };
-  var plano = 'premium';
+  var plano = 'max';
   function P(){ return PLANOS[plano]; }
 
   var canal = null;
   try { canal = new BroadcastChannel('padaria-demo-v2'); } catch(e) {}
   if (canal) canal.onmessage = function(ev){
     if (ev.data && ev.data.tipo === 'cardapio') { card = ev.data.card; aplicarCardapio(); limparCarrinho(); renderCliente(); renderEditor(); atualizarNomeLoja(); return; }
+    receberDados(ev.data.dados || ev.data);
+  };
+  function receberDados(novo){
     var antes = dados.pedidos.map(function(p){ return p.id; });
     var stAntes = {}; dados.pedidos.forEach(function(p){ stAntes[p.id] = p.status; });
-    dados = ev.data.dados || ev.data;
+    dados = novo;
     if (!Array.isArray(dados.meus)) dados.meus = [];
     if (!Array.isArray(dados.chamados)) dados.chamados = [];
     var chNovos = dados.chamados.filter(function(c){ return chVistos.indexOf(c.id) < 0 && c.status === 'aberto'; });
@@ -1169,7 +1212,20 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     if (novos.length) chegou(novos[novos.length - 1], false);
     if (chNovos.length) chamadoChegou(chNovos[chNovos.length - 1]);
   };
-  function publicar(){ salvar(); if (canal) try { canal.postMessage({tipo:'pedidos', dados:dados}); } catch(e){} }
+  function publicar(){ salvar(); if (canal) try { canal.postMessage({tipo:'pedidos', dados:dados}); } catch(e){} if (sync) sync.enviar(); }
+  // Modo online (?loja=CODIGO): pedidos feitos no celular chegam no painel de outro aparelho.
+  var sync = LOJA ? OctaSync.iniciar({loja:LOJA, dados:function(){ return dados; }, receber:function(r){
+    (r.remap || []).forEach(function(m){
+      if (m.t === 'p') { dados.meus = dados.meus.map(function(id){ return id === m.de ? m.para : id; }); if (cli.pedidoId === m.de) cli.pedidoId = m.para; }
+      else { if (cli.chGarcom === m.de) cli.chGarcom = m.para; if (cli.chConta === m.de) cli.chConta = m.para; if (chVistos.indexOf(m.de) >= 0) chVistos.push(m.para); }
+    });
+    var novo = {prox:r.prox, proxCh:r.proxCh, pedidos:r.pedidos, chamados:r.chamados, meus:dados.meus, servico:dados.servico};
+    if (r.primeiro) {
+      dados = novo; dados.chamados.forEach(function(c){ chVistos.push(c.id); });
+      renderPainel(); atualizarCliente();
+    } else receberDados(novo);
+    salvar();
+  }}) : null;
   function salvarCardapio(){
     try { localStorage.setItem(CHAVE_CARD, JSON.stringify(card)); }
     catch(e) { toast('Não foi possível salvar: o espaço do navegador acabou. Use fotos menores ou restaure o cardápio.'); return false; }
@@ -1319,7 +1375,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
         '<h3>' + (fechada ? 'Conta fechada' : 'Conta pedida!') + '</h3><p>' + (fechada ? 'Obrigado pela visita! Volte sempre.' : 'O garçom já vai até a Mesa ' + cli.mesa + (c.pagamento === 'dinheiro' ? ' com o troco.' : c.pagamento === 'pix' ? ' com o Pix.' : ' com a maquininha.')) + '</p>' +
         '<div class="c-resumo"><div><span>Total' + (c.servico ? ' (com 10% de serviço)' : '') + '</span><b>' + fmt(c.total) + '</b></div>' + (c.pessoas > 1 ? '<div><span>Dividido por ' + c.pessoas + '</span><b>' + fmt(c.porPessoa) + ' cada</b></div>' : '') +
         '<div><span>Pagamento</span><b>' + PAGC[c.pagamento] + '</b></div>' + (c.troco ? '<div><span>Troco para</span><b>' + trocoFmt(c.troco) + '</b></div>' : '') + '</div>' +
-        (fechada ? '' : '<p class="dica-painel">Na demonstração, toque em "Conta fechada" no painel da padaria e veja esta tela atualizar.</p>') +
+        (fechada ? '' : '<p class="dica-painel" data-ir-painel role="button" tabindex="0">Na demonstração, toque em "Conta fechada" no painel da padaria e veja esta tela atualizar.</p>') +
         '<button type="button" class="btn-sec" data-acao="' + (fechada ? 'c-nova' : 'voltar') + '">Voltar ao cardápio</button></div></div>';
     }
     h += '<h3 style="font-size:15px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--vinho);margin:4px 0 6px;padding-bottom:8px;border-bottom:2px solid var(--ouro)">Conta da Mesa ' + cli.mesa + '</h3>';
@@ -1470,7 +1526,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
       var mesa = o.modo === 'mesa';
       if (!P().meus) {
         h += '<div class="rolagem"><div class="confirma so-numero"><div class="check"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></div><h3>Pedido enviado!</h3><p>O número do seu pedido é</p><span class="grande-num">' + o.id + '</span><p>' + (mesa ? 'Vamos levar até a Mesa ' + o.mesa + ' quando estiver pronto.' : 'Quando estiver pronto, chamamos ' + esc(o.nome) + ' pelo nome no balcão.') + '</p>' +
-          '<p class="dica-painel">No plano PRO, o cliente vê só o número do pedido. No Premium e no MAX, ele acompanha o preparo pelo celular.</p><button type="button" class="btn-sec" data-acao="novo">Fazer outro pedido</button></div></div>';
+          '<p class="dica-painel">O cliente acompanha o preparo do pedido pelo celular.</p><button type="button" class="btn-sec" data-acao="novo">Fazer outro pedido</button></div></div>';
         $('tela').innerHTML = h; mostrarAviso(); return;
       }
       var etapas = [
@@ -1487,7 +1543,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
         h += '<li class="' + cls + '"><span class="bola">' + (i < nivel ? '✓' : i + 1) + '</span><div><b>' + e[0] + '</b><span>' + e[1] + '</span></div></li>';
       });
       var nMeus = meusPedidos().length;
-      h += '</ol><p class="dica-painel">Na demonstração, mude o status no painel da padaria e veja esta tela atualizar.</p><button type="button" class="btn-sec" data-acao="novo">Fazer outro pedido</button>' +
+      h += '</ol><p class="dica-painel" data-ir-painel role="button" tabindex="0">Na demonstração, mude o status no painel da padaria e veja esta tela atualizar.</p><button type="button" class="btn-sec" data-acao="novo">Fazer outro pedido</button>' +
         (P().lista && nMeus > 1 ? '<button type="button" class="btn-sec" data-acao="meus" style="border-color:var(--borda)">Ver todos os meus pedidos (' + nMeus + ')</button>' : '') + '</div></div>';
     }
     else if (cli.tela === 'meus' && !P().lista) { cli.tela = 'cardapio'; return renderCliente(); }
@@ -1602,7 +1658,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     else if (a === 'c-pmais' || a === 'c-pmenos') { cli.conta.pessoas = Math.max(1, Math.min(30, cli.conta.pessoas + (a === 'c-pmais' ? 1 : -1))); var yp = guardarRolagem(); renderCliente(); restaurarRolagem(yp); return; }
     else if (a === 'c-pag') { cli.conta.pag = b.dataset.v; var yg = guardarRolagem(); renderCliente(); restaurarRolagem(yg); return; }
     else if (a === 'c-enviar') { pedirConta(); return; }
-    else if (a === 'novo') { var enc = cli.enc; cli = novoCliente(); cli.enc = enc; }
+    else if (a === 'novo') { var enc = cli.enc, mdA = cli.modo, msA = cli.mesa; cli = novoCliente(); cli.enc = enc; if (mdA === 'mesa') { cli.modo = 'mesa'; cli.mesa = msA; } }
     renderCliente();
   });
   $('tela').addEventListener('keydown', function(e){ var b = e.target.closest('[role="button"][data-acao]'); if (b && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); b.click(); } });
@@ -1642,21 +1698,77 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     h += '<div class="lin"></div><div class="dupla"><b>TOTAL</b><b>' + fmt(totalPed(o)) + '</b></div><div>Pagamento no caixa</div>';
     return h;
   }
+  // Impressão real na impressora térmica (80 mm). Só liga com ?impressora=1 no link,
+  // para o exemplo público continuar só com a animação.
+  var impressoraReal = /[?&]impressora=1\b/.test(location.search) && !SO_CLIENTE;
+  function imprimirDeVerdade(html){
+    if (!impressoraReal) return;
+    var f = document.createElement('iframe');
+    f.setAttribute('aria-hidden', 'true');
+    f.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden';
+    document.body.appendChild(f);
+    var d = f.contentWindow.document;
+    d.open();
+    d.write('<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Comanda</title><style>' +
+      '@page{size:80mm auto;margin:0}' +
+      'html,body{margin:0;background:#fff;color:#000}' +
+      'body{width:72mm;padding:2mm 3mm 6mm;font-family:"Courier New",Courier,monospace;font-size:13px;line-height:1.35}' +
+      '.faixa{background:#000;color:#fff;text-align:center;font-family:Arial,Helvetica,sans-serif;font-weight:800;font-size:24px;padding:6px 4px;margin-bottom:8px;-webkit-print-color-adjust:exact;print-color-adjust:exact}' +
+      '.faixa small{display:block;font-size:12px;letter-spacing:.1em}' +
+      '.dupla{display:flex;justify-content:space-between;gap:6px}' +
+      '.lin{border-top:1px dashed #000;margin:6px 0}' +
+      '.grande{font-weight:700;font-size:15px}' +
+      '.centro{text-align:center;font-weight:700}' +
+      '</style></head><body>' + html + '</body></html>');
+    d.close();
+    setTimeout(function(){
+      try { f.contentWindow.focus(); f.contentWindow.print(); } catch(e){}
+      setTimeout(function(){ f.remove(); }, 60000);
+    }, 150);
+  }
   function imprimir(o){
     ultimoImpresso = o.id; o.impresso = true;
     $('saida').innerHTML = '<div class="papel saindo">' + comandaHTML(o) + '</div>';
+    imprimirDeVerdade(comandaHTML(o));
     var led = $('led'); led.classList.add('imprimindo'); setTimeout(function(){ led.classList.remove('imprimindo'); }, 2400);
   }
-  function chegou(o, local){ if (true) { if (P().auto) imprimir(o); else renderPainel(); return; }
+  function chegou(o, local){
     bip(); if (P().auto) imprimir(o); else renderPainel();
     var card = document.querySelector('[data-pedido="' + o.id + '"]'); if (card) card.classList.add('novo-chegou');
-    if (aba === 'cliente' && window.matchMedia('(max-width:1060px)').matches) {
+    if (aba === 'cliente' && !SO_CLIENTE && window.matchMedia('(max-width:1060px)').matches) {
       naoVistos++; var bl = $('bolinha'); bl.hidden = false; bl.textContent = naoVistos;
       toast('Pedido nº ' + o.id + ' chegou na padaria. Toque em "Painel da padaria" para ver.');
     } else if (local) toast(P().auto ? 'Pedido nº ' + o.id + ' chegou no painel e a comanda foi impressa.' : 'Pedido nº ' + o.id + ' chegou no painel. No PRO, toque em "Imprimir" para a comanda sair.');
   }
-  function bipChamado(){
+  // campainha de balcão ("trim"), tocada duas vezes, para o chamado do garçom
+  function campainha(){
     if (!somLigado) return;
+    try {
+      ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+      var saida = ctx.createGain(); saida.gain.value = .5; saida.connect(ctx.destination);
+      [0, .42].forEach(function(at){
+        var t0 = ctx.currentTime + at;
+        // parciais de um sino de metal pequeno (não harmônicas), cada uma some num tempo
+        [[2093, .55, 1.6], [2093 * 2.32, .22, .9], [2093 * 4.07, .12, .5], [2093 * 6.21, .06, .3], [2099, .35, 1.6]].forEach(function(pz){
+          var o = ctx.createOscillator(), g = ctx.createGain();
+          o.type = 'sine'; o.frequency.value = pz[0];
+          g.gain.setValueAtTime(.0001, t0);
+          g.gain.exponentialRampToValueAtTime(pz[1], t0 + .004);
+          g.gain.exponentialRampToValueAtTime(.0001, t0 + pz[2]);
+          o.connect(g); g.connect(saida); o.start(t0); o.stop(t0 + pz[2] + .05);
+        });
+        // batida do martelinho
+        var n = ctx.createBuffer(1, Math.floor(ctx.sampleRate * .02), ctx.sampleRate), dd = n.getChannelData(0);
+        for (var i = 0; i < dd.length; i++) dd[i] = (Math.random() * 2 - 1) * (1 - i / dd.length);
+        var src = ctx.createBufferSource(), f = ctx.createBiquadFilter(), gn = ctx.createGain();
+        src.buffer = n; f.type = 'highpass'; f.frequency.value = 3000; gn.gain.value = .25;
+        src.connect(f); f.connect(gn); gn.connect(saida); src.start(t0);
+      });
+    } catch(e){}
+  }
+  function bipChamado(tipo){
+    if (!somLigado) return;
+    if (tipo === 'garcom') { campainha(); return; }
     try {
       ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
       [0, .32, 1.0, 1.32].forEach(function(at, i){
@@ -1670,10 +1782,10 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     } catch(e){}
   }
   function chamadoChegou(c, local){
-    chVistos.push(c.id); bipChamado();
+    chVistos.push(c.id); bipChamado(c.tipo);
     var el = document.querySelector('[data-ch="' + c.id + '"]'); if (el) el.classList.add('chegou');
     var msg = 'Mesa ' + c.mesa + (c.tipo === 'conta' ? ' pediu a conta.' : ' chamou o garçom.');
-    if (aba === 'cliente' && window.matchMedia('(max-width:1060px)').matches) { naoVistos++; var bl = $('bolinha'); bl.hidden = false; bl.textContent = naoVistos; toast(msg + ' Toque em "Painel da padaria" para ver.'); }
+    if (aba === 'cliente' && !SO_CLIENTE && window.matchMedia('(max-width:1060px)').matches) { naoVistos++; var bl = $('bolinha'); bl.hidden = false; bl.textContent = naoVistos; toast(msg + ' Toque em "Painel da padaria" para ver.'); }
     else if (local && c.tipo === 'conta') toast(msg + ' Veja no painel da padaria.');
     else if (!local) toast(msg);
   }
@@ -1697,7 +1809,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     if (!lista.length) { box.innerHTML = ''; return; }
     var h = '<section class="chamados" aria-label="Chamados das mesas"><h3>Chamados <b>' + lista.length + '</b></h3><div class="ch-lista">';
     lista.forEach(function(c){
-      h += '<article class="ch ' + c.tipo + '" data-ch="' + c.id + '"><div class="ch-topo"><b>MESA ' + c.mesa + '</b><span>' + haQuanto(c.t) + '</span></div>';
+      h += '<article class="ch ' + c.tipo + (Date.now() - c.t >= 2 * 60000 ? ' atrasado' : '') + '" data-ch="' + c.id + '"><div class="ch-topo"><b>MESA ' + c.mesa + '</b><span>' + haQuanto(c.t) + '</span></div>';
       if (c.tipo === 'conta') h += '<div class="ch-tipo">' + RECIBO + 'Pediu a conta · <span class="ch-val">' + fmt(c.total) + '</span></div><small><b>' + PAGP[c.pagamento] + '</b>' + (trocoConta(c) ? ' · ' + trocoConta(c) : '') + (c.pessoas > 1 ? ' · ' + c.pessoas + ' pessoas (' + fmt(c.porPessoa) + ' cada)' : '') + (c.servico ? ' · com 10%' : '') + '</small>' +
         '<div class="ch-acoes"><button type="button" data-chp="pre" data-id="' + c.id + '">Imprimir pré-conta</button><button type="button" class="prim" data-chp="fechado" data-id="' + c.id + '">Conta fechada</button></div>';
       else h += '<div class="ch-tipo">' + SINO + 'Chamou o garçom</div><div class="ch-acoes"><button type="button" class="prim" data-chp="atendido" data-id="' + c.id + '">Atendido</button></div>';
@@ -1705,12 +1817,27 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     });
     box.innerHTML = h + '</div></section>';
   }
-  setInterval(function(){ if ($('chamadosBox') && $('chamadosBox').innerHTML) renderChamados(); }, 20000);
+  // Lembrete: se ninguém marcar o chamado, o painel toca de novo a cada 2 minutos (até 3 vezes)
+  var LEMBRETE_MS = 2 * 60000, MAX_LEMBRETES = 3, lembretes = {}, inicioPainel = Date.now();
+  function verLembretes(){
+    if (SO_CLIENTE) return;
+    var agora = Date.now();
+    dados.chamados.forEach(function(c){
+      if (c.status !== 'aberto') return;
+      var l = lembretes[c.id] || (lembretes[c.id] = {ult: Math.max(c.t, inicioPainel), n: 0});
+      if (l.n >= MAX_LEMBRETES || agora - l.ult < LEMBRETE_MS) return;
+      l.ult = agora; l.n++; bipChamado(c.tipo);
+      toast('Mesa ' + c.mesa + ' está esperando há ' + Math.round((agora - c.t) / 60000) + ' min (' + (c.tipo === 'conta' ? 'conta' : 'garçom') + ').');
+    });
+    renderChamados();
+  }
+  setInterval(function(){ if ($('chamadosBox') && $('chamadosBox').innerHTML) verLembretes(); }, 10000);
   $('chamadosBox').addEventListener('click', function(e){
     var b = e.target.closest('[data-chp]'); if (!b) return;
     var c = chDe(+b.dataset.id); if (!c) return;
     if (b.dataset.chp === 'pre') {
       $('saida').innerHTML = '<div class="papel saindo">' + preContaHTML(c) + '</div>';
+      imprimirDeVerdade(preContaHTML(c));
       var led = $('led'); led.classList.add('imprimindo'); setTimeout(function(){ led.classList.remove('imprimindo'); }, 2400);
       ultimoImpresso = -1; toast('Pré-conta da Mesa ' + c.mesa + ' impressa.'); return;
     }
@@ -2069,6 +2196,11 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
   }
   $('abaCliente').addEventListener('click', function(){ trocarAba('cliente'); });
   $('abaPainel').addEventListener('click', function(){ trocarAba('painel'); });
+  document.addEventListener('click', function(e){
+    if (e.target.closest('[data-ir-painel]')) { trocarAba('painel'); var lp = $('ladoPainel'); if (lp) lp.scrollTop = 0; }
+    else if (e.target.closest('[data-voltar-cel]')) trocarAba('cliente');
+  });
+  document.addEventListener('keydown', function(e){ if ((e.key === 'Enter' || e.key === ' ') && e.target.closest && e.target.closest('[data-ir-painel]')) { e.preventDefault(); trocarAba('painel'); } });
   $('som').addEventListener('click', function(){
     somLigado = !somLigado; this.setAttribute('aria-pressed', somLigado); this.textContent = somLigado ? 'Som ligado' : 'Som desligado';
     if (somLigado) bip();
@@ -2140,7 +2272,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
 })();
 </script>
 <script>window.addEventListener('load',function(){setTimeout(function(){
- var b=document.querySelector('[data-plano="pro"]'); if(b) b.click();
+ var b=document.querySelector('[data-plano="max"]'); if(b) b.click();
  var sel=document.getElementById('qrLocal'); if(sel){ for(var i=0;i<sel.options.length;i++){ if(sel.options[i].value==="4"){ sel.selectedIndex=i; sel.dispatchEvent(new Event('change',{bubbles:true})); break; } } }
  var t=document.getElementById('toast'); if(t){ t.classList.remove('on'); }
 },30);});</script>

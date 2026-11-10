@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
+<meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Marmita da Dona Rosa · Cardápio</title>
 <meta name="description" content="Exemplo de cardápio com pedido pelo celular: Marmita da Dona Rosa, marmitaria só de delivery.">
@@ -11,7 +12,7 @@
 <style>
 body{margin:0}img{max-width:100%}[hidden]{display:none!important}
 
-/* Layout: à esquerda o celular do cliente (coluna de categorias + cardápio em linhas), à direita o painel da padaria.
+/* Layout: à esquerda o celular do cliente (coluna de categorias + cardápio em linhas), à direita o painel da loja.
    No celular, abas alternam as duas telas. Visual único da marca (sem tema escuro), por decisão. */
 :root{
   color-scheme:light;
@@ -642,6 +643,7 @@ button,input,select,textarea{font-family:inherit}
 .app-topo img{width:44px;height:44px;border-radius:50%;object-fit:cover;box-shadow:0 6px 14px -6px rgba(35,39,15,.6)}
 .app-local{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--borda);background:#fff;color:var(--vinho-esc);font-weight:800;font-size:13px;border-radius:999px;padding:8px 12px;cursor:pointer}
 .app-local svg{width:16px;height:16px}
+.app-local:disabled,.chip-local:disabled{cursor:default;opacity:1}
 .app-oi{padding:16px 18px 4px}
 .app-oi span{display:block;font-weight:800;font-size:17px;color:var(--vinho-esc)}
 .app-oi h2{margin:2px 0 0;font-family:var(--titulo);font-size:28px;line-height:1.12;color:var(--vinho-esc)}
@@ -858,9 +860,10 @@ button,input,select,textarea{font-family:inherit}
 .zap-aviso{margin-top:6px;font-weight:600;color:#14532D;background:#DCFCE7;border-radius:12px;padding:10px 12px}
 .b-zap{background:#15803D!important;color:#fff!important;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
 @media (prefers-reduced-motion:reduce){#zapNotif{transition:none}}
+.planos-bar{display:none!important}
 </style>
 </head>
-<body><div class="faixa-plano">Demonstração do plano <b>Octa Delivery</b> · só delivery</div><style id="so-cliente">
+<body><div class="faixa-plano">Exemplo do sistema <b>Octa Completo</b></div><style id="so-cliente">
 html,body{margin:0;background:#23270F;height:100%;overflow:hidden}
 body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNotif):not(.faixa-plano){display:none!important}
 .topo,.guia,.planos-bar,.abas,.rodape-demo,.rotulo-lado,.qr-local,.lado-painel,.dica-painel{display:none!important}
@@ -889,9 +892,9 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
 <div class="guia">
   <div class="guia-in">
     <strong>Experimente:</strong>
-    <span class="curto">escolha o plano em "Ver como", faça um pedido e veja ele chegar no painel.</span>
+    <span class="curto">faça um pedido e veja ele chegar no painel.</span>
     <ol>
-      <li><span>1</span>Escolha o plano em "Ver como" e o QR code lido</li>
+      <li><span>1</span>Escolha o QR code lido</li>
       <li><span>2</span>Monte o pedido e envie</li>
       <li><span>3</span>Veja a comanda sair na impressora</li>
       <li><span>4</span>Marque como pronto e entregue</li>
@@ -907,7 +910,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
 
 <div class="abas" role="tablist" aria-label="Telas da demonstração">
   <button type="button" role="tab" id="abaCliente" aria-selected="true" aria-controls="ladoCliente">Celular do cliente</button>
-  <button type="button" role="tab" id="abaPainel" aria-selected="false" aria-controls="ladoPainel">Painel da padaria<span class="bolinha" id="bolinha" hidden>0</span></button>
+  <button type="button" role="tab" id="abaPainel" aria-selected="false" aria-controls="ladoPainel">Painel da loja<span class="bolinha" id="bolinha" hidden>0</span></button>
 </div>
 
 <main class="palco" id="palco" data-aba="cliente">
@@ -917,8 +920,8 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
     <div class="aparelho"><div class="tela" id="tela"></div></div>
   </section>
 
-  <section class="lado-painel" id="ladoPainel" aria-label="Painel da padaria">
-    <div class="rotulo-lado">Painel da padaria · computador do balcão</div>
+  <section class="lado-painel" id="ladoPainel" aria-label="Painel da loja">
+    <div class="rotulo-lado">Painel da loja · computador do balcão</div>
     <div class="painel">
       <div class="painel-topo">
         <div class="painel-abas" role="tablist" aria-label="Áreas do painel">
@@ -952,10 +955,10 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
       <div id="vistaCardapio" role="tabpanel" aria-labelledby="vCardapio" hidden></div>
     </div>
     <section class="tv-demo" id="tvDemo" aria-label="TV do salão" hidden></section>
-    <p class="tv-legenda" id="tvLegenda" hidden>Plano MAX: a TV do salão chama os pedidos do balcão quando ficam prontos.</p>
+    <p class="tv-legenda" id="tvLegenda" hidden>A TV do salão chama os pedidos do balcão quando ficam prontos.</p>
   </section>
 </main>
-<p class="rodape-demo">Demonstração para apresentação. Pedidos, nomes e preços são fictícios e ficam só neste navegador. No sistema real, o pedido feito no celular do cliente chega pela internet ao computador da padaria e sai na impressora térmica.</p>
+<p class="rodape-demo">Demonstração para apresentação. Pedidos, nomes e preços são fictícios e ficam só neste navegador. No sistema real, o pedido feito no celular do cliente chega pela internet ao computador da loja e sai na impressora térmica.</p>
 <div class="toast" id="toast" role="status"></div>
 <div class="folha-fundo" id="folha" hidden>
   <div class="folha" role="dialog" aria-modal="true" aria-labelledby="folhaTitulo" id="folhaCaixa"></div>
@@ -1119,13 +1122,13 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
   var somLigado = true, aba = 'cliente', naoVistos = 0, ultimoImpresso = null;
   // ---------- planos (a demonstração muda conforme o plano escolhido no topo) ----------
   var PLANOS = {
-    delivery:{nome:'OCTA DELIVERY', mesas:0, produtos:30, auto:true, lista:false, meus:true, selo:true, enc:false, tv:false, data:false, conta:false, garcom:false, desc:''},
+    delivery:{nome:'OCTA COMPLETO', mesas:0, produtos:0, auto:true, lista:true, meus:true, selo:false, enc:true, tv:false, data:true, conta:false, garcom:false, desc:''},
     pro:{nome:'PRO', mesas:6, produtos:30, auto:true, lista:false, meus:false, selo:true, enc:false, tv:false, data:false, conta:false, garcom:false,
       desc:'<b>PRO · R$ 129,90/mês.</b> Até 6 mesas e 30 produtos. Comanda impressa automaticamente. O cliente vê só o número do pedido. Selo "Feito por Octa Sites" no cardápio.'},
     premium:{nome:'PREMIUM', mesas:10, produtos:45, auto:true, lista:false, meus:true, selo:false, enc:true, tv:false, data:false, conta:false, garcom:false,
       desc:'<b>PREMIUM · R$ 189,90/mês.</b> Até 10 mesas e 45 produtos. Adicionais e combos, promoções em destaque e encomendas com data. O cliente acompanha o pedido.'},
-    max:{nome:'MAX', mesas:0, produtos:0, auto:true, lista:true, meus:true, selo:false, enc:true, tv:false, data:true, conta:true, garcom:true,
-      desc:'<b>MAX · R$ 249,90/mês.</b> Tudo do Premium, sem limite de mesas e produtos, pedir a conta dividida, chamar o garçom pelo celular e relatório mensal.'}
+    max:{nome:'OCTA COMPLETO', mesas:0, produtos:0, auto:true, lista:true, meus:true, selo:false, enc:true, tv:false, data:true, conta:true, garcom:true,
+      desc:'<b>Octa Completo · R$ 199,90/mês.</b> Todos os recursos liberados, sem limite de mesas e produtos.'}
   };
   var plano = 'delivery';
   function P(){ return PLANOS[plano]; }
@@ -1228,7 +1231,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
   }
   function blocoEncomenda(){
     var e = cli.enc, h = '<section class="encomenda" id="sec-encomendas" data-cat="encomendas" aria-labelledby="t-enc"><h3 id="t-enc">Encomendas com data marcada</h3>' +
-      '<p class="intro">Bolos inteiros, tortas, salgados e panetones para o seu dia especial. Preencha e envie: combinamos tudo pelo WhatsApp.</p><div class="campos">' +
+      '<p class="intro">Marmitas para eventos e encomendas da semana. Preencha e envie: combinamos tudo pelo WhatsApp.</p><div class="campos">' +
       campo('enc', 'nome', 'Seu nome', 'text', '', 'given-name') + campo('enc', 'tel', 'Telefone', 'tel', '(35) 9 0000-0000', 'tel') +
       '<div class="campo"><label for="c-enc-item">O que deseja encomendar</label><select id="c-enc-item" data-obj="enc" data-campo="item"><option value="">Escolha</option>' +
       itensEncomenda().map(function(x){ return '<option' + (e.item === x ? ' selected' : '') + '>' + esc(x) + '</option>'; }).join('') + '</select></div>' +
@@ -1297,7 +1300,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
         '<h3>' + (fechada ? 'Conta fechada' : 'Conta pedida!') + '</h3><p>' + (fechada ? 'Obrigado pela visita! Volte sempre.' : 'O garçom já vai até a Mesa ' + cli.mesa + (c.pagamento === 'dinheiro' ? ' com o troco.' : c.pagamento === 'pix' ? ' com o Pix.' : ' com a maquininha.')) + '</p>' +
         '<div class="c-resumo"><div><span>Total' + (c.servico ? ' (com 10% de serviço)' : '') + '</span><b>' + fmt(c.total) + '</b></div>' + (c.pessoas > 1 ? '<div><span>Dividido por ' + c.pessoas + '</span><b>' + fmt(c.porPessoa) + ' cada</b></div>' : '') +
         '<div><span>Pagamento</span><b>' + PAGC[c.pagamento] + '</b></div>' + (c.troco ? '<div><span>Troco para</span><b>' + trocoFmt(c.troco) + '</b></div>' : '') + '</div>' +
-        (fechada ? '' : '<p class="dica-painel">Na demonstração, toque em "Conta fechada" no painel da padaria e veja esta tela atualizar.</p>') +
+        (fechada ? '' : '<p class="dica-painel">Na demonstração, toque em "Conta fechada" no painel da loja e veja esta tela atualizar.</p>') +
         '<button type="button" class="btn-sec" data-acao="' + (fechada ? 'c-nova' : 'voltar') + '">Voltar ao cardápio</button></div></div>';
     }
     h += '<h3 style="font-size:15px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--vinho);margin:4px 0 6px;padding-bottom:8px;border-bottom:2px solid var(--ouro)">Conta da Mesa ' + cli.mesa + '</h3>';
@@ -1335,7 +1338,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
   function capaHTML(){
     return '<header class="capa" style="--capa:url(\'' + (card.loja.capa || 'img/capa.jpg') + '\')"><div class="capa-topo"><img src="' + IMG.logo + '" alt=""><div><b>' + esc(card.loja.nome) + '</b><small>Marmitas caseiras</small></div></div>' +
       '<div class="capa-txt"><span class="sobre">Fornadas o dia todo</span><h1>Feito hoje, do jeito que você gosta</h1><p>Pães quentinhos, cafés especiais, lanches e doces da casa.</p></div>' + CAMADAS + '</header>' +
-      '<div class="capa-acoes"><button type="button" class="btn-ouro" data-acao="ver-cardapio">Ver cardápio' + SETA + '</button><button type="button" class="chip-local" data-acao="trocar" title="Local lido pelo QR code">' + QRI + (cli.modo === 'mesa' ? 'Mesa ' + cli.mesa : 'Delivery') + '</button></div>' + saudacao();
+      '<div class="capa-acoes"><button type="button" class="btn-ouro" data-acao="ver-cardapio">Ver cardápio' + SETA + '</button><button type="button" class="chip-local" data-acao="trocar" title="Local lido pelo QR code"' + (P().mesas ? '' : ' disabled') + '>' + QRI + (cli.modo === 'mesa' ? 'Mesa ' + cli.mesa : 'Delivery') + '</button></div>' + saudacao();
   }
   var CAMADAS = '<svg class="camadas" viewBox="0 0 400 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 30 C60 8 110 40 170 24 S290 4 400 22 V70 H0Z" fill="#D9661F" opacity=".55"/><path d="M0 40 C70 22 120 52 200 34 S320 18 400 36 V70 H0Z" fill="#5F6B2E" opacity=".9"/><path d="M0 50 C80 36 140 62 220 46 S330 34 400 48 V70 H0Z" fill="#B7C27F"/><path d="M0 60 C90 50 150 70 240 58 S340 50 400 58 V70 H0Z" fill="#FBF8F1"/></svg>';
   function saudacao(){ var h = new Date().getHours(), t = h < 12 ? 'Bom dia!' : h < 18 ? 'Boa tarde!' : 'Boa noite!'; return '<div class="saudacao"><span>' + t + '</span><h2>O que vai querer hoje?</h2></div>'; }
@@ -1388,14 +1391,14 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
         h += '</div></div>';
       }
       h += '<button type="button" class="opcao" data-acao="modo" data-modo="viagem"><span class="ic" style="background:var(--viagem)">' + ICON.viagem + '</span><span><b>Para viagem</b><span>Peça e aguarde: chamamos você pelo nome</span></span></button>' +
-        '</div>' + (P().enc ? '<button type="button" class="ir-encomenda" data-acao="ir-encomenda">' + ICON.agenda + '<span><b>Encomendas com data marcada</b><span>Bolos inteiros, tortas e salgados para festas</span></span></button>' : '') + '</div>';
+        '</div>' + (P().enc ? '<button type="button" class="ir-encomenda" data-acao="ir-encomenda">' + ICON.agenda + '<span><b>Encomendas com data marcada</b><span>Marmitas para eventos e encomendas da semana</span></span></button>' : '') + '</div>';
     }
     else if (cli.tela === 'cardapio') {
       var visiveis = CATS.filter(function(c){ return c.visivel && PRODUTOS.some(function(p){ return p.cat === c.id; }); });
       if (!cli.aba || (cli.aba !== 'encomendas' && !visiveis.some(function(c){ return c.id === cli.aba; }))) cli.aba = (visiveis.filter(function(c){ return c.id === 'cafes'; })[0] || visiveis[0] || {}).id;
       var hr = new Date().getHours(), oi = hr < 12 ? 'Bom dia!' : hr < 18 ? 'Boa tarde!' : 'Boa noite!';
       h += '<div class="app" id="lista">';
-      h += '<div class="app-topo"><img src="' + IMG.logo + '" alt="' + esc(card.loja.nome) + '"><button type="button" class="app-local" data-acao="trocar">' + QRI + (cli.modo === 'mesa' ? 'Mesa ' + cli.mesa : 'Delivery') + '</button></div>';
+      h += '<div class="app-topo"><img src="' + IMG.logo + '" alt="' + esc(card.loja.nome) + '"><button type="button" class="app-local" data-acao="trocar"' + (P().mesas ? '' : ' disabled') + '>' + QRI + (cli.modo === 'mesa' ? 'Mesa ' + cli.mesa : 'Delivery') + '</button></div>';
       h += '<div class="app-oi"><span>' + oi + '</span><h2>O que vai querer hoje?</h2></div>';
       h += '<label class="app-busca">' + LUPA + '<input id="busca" type="search" placeholder="Buscar no cardápio" autocomplete="off" value="' + esc(cli.busca || '') + '" aria-label="Buscar no cardápio"></label>';
       h += extras;
@@ -1450,7 +1453,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
       if (!P().meus) {
         h += '<div class="rolagem"><div class="confirma so-numero"><div class="check"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></div><h3>Pedido enviado!</h3><p>O número do seu pedido é</p><span class="grande-num">' + o.id + '</span><p>' + (mesa ? 'Vamos levar até a Mesa ' + o.mesa + ' quando estiver pronto.' : (o.consumo === 'entrega' ? 'Quando estiver pronto, o pedido sai para entrega no endereço informado.' : 'Quando estiver pronto, ' + esc(o.nome) + ' pode retirar na loja.')) + '</p>' +
           (o.zap ? '<p class="zap-aviso">As atualizações do pedido chegam no seu WhatsApp ' + esc(zapFmt(o.zap)) + '.</p>' : '') +
-          '<p class="dica-painel">No plano PRO, o cliente vê só o número do pedido. No Premium e no MAX, ele acompanha o preparo pelo celular.</p><button type="button" class="btn-sec" data-acao="novo">Fazer outro pedido</button></div></div>';
+          '<p class="dica-painel">' + (plano === 'delivery' ? 'Só delivery: o cliente vê o número do pedido e recebe as atualizações pelo WhatsApp.' : 'O cliente acompanha o preparo do pedido pelo celular.') + '</p><button type="button" class="btn-sec" data-acao="novo">Fazer outro pedido</button></div></div>';
         $('tela').innerHTML = h; mostrarAviso(); return;
       }
       var etapas = [
@@ -1467,7 +1470,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
         h += '<li class="' + cls + '"><span class="bola">' + (i < nivel ? '✓' : i + 1) + '</span><div><b>' + e[0] + '</b><span>' + e[1] + '</span></div></li>';
       });
       var nMeus = meusPedidos().length;
-      h += '</ol><p class="dica-painel">Na demonstração, mude o status no painel da padaria e veja esta tela atualizar.</p><button type="button" class="btn-sec" data-acao="novo">Fazer outro pedido</button>' +
+      h += '</ol><p class="dica-painel">Na demonstração, mude o status no painel da loja e veja esta tela atualizar.</p><button type="button" class="btn-sec" data-acao="novo">Fazer outro pedido</button>' +
         (P().lista && nMeus > 1 ? '<button type="button" class="btn-sec" data-acao="meus" style="border-color:var(--borda)">Ver todos os meus pedidos (' + nMeus + ')</button>' : '') + '</div></div>';
     }
     else if (cli.tela === 'meus' && !P().lista) { cli.tela = 'cardapio'; return renderCliente(); }
@@ -1616,7 +1619,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
       cli.modo = 'viagem'; cli.mesa = null; cli.tela = 'cardapio';
     }
     else if (a === 'mesa') { cli.modo = 'mesa'; cli.mesa = +b.dataset.mesa; cli.tela = 'cardapio'; cli.escolhendoMesa = false; }
-    else if (a === 'trocar') { cli.tela = 'inicio'; cli.escolhendoMesa = cli.modo === 'mesa'; }
+    else if (a === 'trocar' && P().mesas) { cli.tela = 'inicio'; cli.escolhendoMesa = cli.modo === 'mesa'; }
     else if (a === 'ir-encomenda') { if (!cli.modo) { cli.modo = 'viagem'; } cli.tela = 'cardapio'; renderCliente(); cli.verEnc = true; renderCliente(); return; }
     else if (a === 'cat') { cli.aba = b.dataset.cat; renderCliente(); return; }
     else if (a === 'ver-cardapio') { var c1 = document.querySelector('#cats button'); if (c1) irPara(c1.dataset.cat, true); return; }
@@ -1709,7 +1712,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
     var card = document.querySelector('[data-pedido="' + o.id + '"]'); if (card) card.classList.add('novo-chegou');
     if (aba === 'cliente' && window.matchMedia('(max-width:1060px)').matches) {
       naoVistos++; var bl = $('bolinha'); bl.hidden = false; bl.textContent = naoVistos;
-      toast('Pedido nº ' + o.id + ' chegou no estabelecimento. Toque em "Painel da padaria" para ver.');
+      toast('Pedido nº ' + o.id + ' chegou no estabelecimento. Toque em "Painel da loja" para ver.');
     } else if (local) toast(P().auto ? 'Pedido nº ' + o.id + ' chegou no painel e a comanda foi impressa.' : 'Pedido nº ' + o.id + ' chegou no painel. No PRO, toque em "Imprimir" para a comanda sair.');
   }
   function bipChamado(){
@@ -1730,8 +1733,8 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
     chVistos.push(c.id); bipChamado();
     var el = document.querySelector('[data-ch="' + c.id + '"]'); if (el) el.classList.add('chegou');
     var msg = 'Mesa ' + c.mesa + (c.tipo === 'conta' ? ' pediu a conta.' : ' chamou o garçom.');
-    if (aba === 'cliente' && window.matchMedia('(max-width:1060px)').matches) { naoVistos++; var bl = $('bolinha'); bl.hidden = false; bl.textContent = naoVistos; toast(msg + ' Toque em "Painel da padaria" para ver.'); }
-    else if (local && c.tipo === 'conta') toast(msg + ' Veja no painel da padaria.');
+    if (aba === 'cliente' && window.matchMedia('(max-width:1060px)').matches) { naoVistos++; var bl = $('bolinha'); bl.hidden = false; bl.textContent = naoVistos; toast(msg + ' Toque em "Painel da loja" para ver.'); }
+    else if (local && c.tipo === 'conta') toast(msg + ' Veja no painel da loja.');
     else if (!local) toast(msg);
   }
   var PAGP = {pix:'PIX', credito:'CARTÃO DE CRÉDITO', debito:'CARTÃO DE DÉBITO', dinheiro:'DINHEIRO'};
@@ -1861,7 +1864,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
     var h = '<div class="ed"><p class="ed-intro"><b>Área de atualização do dono.</b> Tudo o que você salvar aqui aparece na hora no cardápio do cliente.</p>' + (P().produtos && PRODUTOS.length > P().produtos ? '<p class="limite-aviso">Este cardápio de exemplo tem ' + PRODUTOS.length + ' produtos. No plano ' + P().nome + ', o limite é ' + P().produtos + ': um cliente desse plano precisaria tirar alguns ou subir de plano.</p>' : '');
     // dados da loja
     h += '<section class="ed-bloco"><h3>Dados do estabelecimento</h3><div class="ed-corpo"><div class="dois">' +
-      '<div class="campo"><label for="ed-loja-nome">Nome da padaria</label><input id="ed-loja-nome" type="text" value="' + esc(card.loja.nome) + '" maxlength="40"></div>' +
+      '<div class="campo"><label for="ed-loja-nome">Nome da loja</label><input id="ed-loja-nome" type="text" value="' + esc(card.loja.nome) + '" maxlength="40"></div>' +
       '<div class="campo"><label for="ed-loja-whats">WhatsApp das encomendas</label><input id="ed-loja-whats" type="tel" inputmode="tel" value="' + esc(card.loja.whats) + '" placeholder="55 + DDD + número"></div></div>' +
       '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><button type="button" class="ed-btn prim" data-ed="salvar-loja">Salvar dados da loja</button><span class="ed-salvo" id="salvoLoja" hidden>Salvo</span></div>' +
       (P().conta ? '<div style="border-top:1px solid var(--linha);padding-top:12px">' + chave('ed-servico', dados.servico, 'Cobrar taxa de serviço (10%) na conta da mesa', false, ' data-ed="servico"') + '<p style="margin:6px 0 0;color:var(--suave);font-size:12.5px">Ligada, a conta pedida pelo celular mostra os 10% já marcados, e o cliente pode desmarcar (a taxa é opcional).</p></div>' : '') + '</div></section>';
@@ -1924,7 +1927,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(#zapNoti
     var a = b.dataset.ed, id = b.dataset.id;
     if (a === 'salvar-loja') {
       var nome = $('ed-loja-nome').value.trim(), w = $('ed-loja-whats').value.replace(/\D/g, '');
-      if (!nome) { toast('Coloque o nome da padaria.'); $('ed-loja-nome').focus(); return; }
+      if (!nome) { toast('Coloque o nome da loja.'); $('ed-loja-nome').focus(); return; }
       if (w.length < 12) { toast('WhatsApp incompleto: use 55 + DDD + número, só os dígitos.'); $('ed-loja-whats').focus(); return; }
       card.loja.nome = nome; card.loja.whats = w;
       if (aposMudarCardapio('Dados da loja salvos.')) { var sv = $('salvoLoja'); if (sv) sv.hidden = false; }

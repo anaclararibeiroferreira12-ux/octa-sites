@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="Octa Sites">
 <meta property="og:url" content="https://octasites.com.br/">
 <meta property="og:title" content="Octa Sites · Transforme seu cardápio em pedidos automáticos">
-<meta property="og:description" content="O cliente pede pelo celular e o pedido chega direto na cozinha. Sem comissão por pedido e com 30 dias de garantia.">
+<meta property="og:description" content="O cliente pede pelo celular e o pedido chega direto na cozinha. Sem comissão por pedido e com 30 dias grátis para testar.">
 <meta property="og:image" content="https://octasites.com.br/img/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -140,6 +140,7 @@ h1 em{font-style:normal;color:var(--roxo)}
 .demo-aviso svg{color:var(--ouro-esc);margin-top:1px}
 .trilho{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:26px 20px 18px;margin:0 -20px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .trilho::-webkit-scrollbar{display:none}
+.trilho{justify-content:center}.trilho .demo{width:min(260px,70vw)}
 .demo{flex:0 0 auto;width:min(230px,62vw);scroll-snap-align:center;text-align:center}
 .demo button{display:block;width:100%;border-radius:44px;transition:transform .25s}
 .demo button:hover{transform:translateY(-4px)}
@@ -204,6 +205,7 @@ h1 em{font-style:normal;color:var(--roxo)}
 .ver-rel svg{width:16px!important;height:16px!important;margin:0!important;color:currentColor!important}
 .destaques li>span{display:flex;flex-direction:column;align-items:flex-start}
 @media(min-width:700px){.janela.larga iframe{width:min(920px,calc(100% - 32px))}}
+@media(min-width:1100px){.janela.cheia iframe{width:calc(100% - 32px);max-width:1480px;border-radius:18px}}
 .plano details{margin-top:16px;border-top:1px solid var(--linha);padding-top:12px}
 .plano summary{list-style:none;display:flex;align-items:center;justify-content:space-between;min-height:44px;font-size:14.5px;font-weight:700;color:var(--roxo-esc);cursor:pointer}
 .plano summary::-webkit-details-marker{display:none}
@@ -217,6 +219,10 @@ h1 em{font-style:normal;color:var(--roxo)}
 .max .btn-roxo{background:linear-gradient(90deg,#C9A227,#E3C25A);color:#2A1F02;box-shadow:0 10px 22px -10px rgba(160,123,18,.8)}
 .max .btn-roxo:hover{background:linear-gradient(90deg,#B8901C,#D4B13F)}
 .contratar-cta{margin-top:24px;text-align:center}
+.contratar-cta .local{margin:14px 0 0;font-size:14px;color:var(--tinta-2)}
+.compara{display:flex;gap:12px;align-items:flex-start;background:#FFFFFF;border:1.5px solid var(--roxo);border-radius:16px;padding:14px 16px;margin:12px 0 18px;font-size:14.5px;line-height:1.5;color:var(--tinta-2)}
+.compara b{color:var(--tinta)}
+.compara svg{width:22px;height:22px;flex:none;color:var(--roxo);margin-top:2px}
 .condicoes{margin-top:18px;font-size:13px;color:var(--suave);text-align:center}
 
 
@@ -365,7 +371,53 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
 .imp-info small{display:block;font-size:12.5px;color:#6B5A1E}
 @media (prefers-reduced-motion:reduce){.ao-vivo{animation:none}.papel{transition:none}.ped{transition:none}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.surge{opacity:1;transform:none;transition:none}.aviso{animation:none}}
+
+/* Cartão do extra: estilo "jogo", coral, flutuando devagar */
+.extra{--coral:#0E8FA8;--coral-2:#0B6E8A;--coral-esc:#07485C;position:relative;margin:34px 0 14px;border-radius:28px;padding:24px 20px;color:#fff;
+ background:radial-gradient(110% 70% at 0% 0%,#2BB5C9 0%,transparent 60%),linear-gradient(160deg,var(--coral),var(--coral-2));
+ border:3px solid #fff;box-shadow:0 8px 0 var(--coral-esc),0 24px 40px -14px rgba(7,72,92,.55);animation:extra-flutua 3.6s ease-in-out infinite}
+@keyframes extra-flutua{0%,100%{transform:translateY(0) rotate(-.4deg)}50%{transform:translateY(-10px) rotate(.4deg)}}
+.extra::after{content:"";position:absolute;inset:10px 10px auto;height:38%;border-radius:20px 20px 60% 60%/20px 20px 30px 30px;background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,0));pointer-events:none}
+.extra .fita{background:#fff;color:var(--coral-esc);box-shadow:0 3px 0 rgba(7,72,92,.35)}
+.ver-ex{position:relative;z-index:1;display:inline-flex;align-items:center;gap:10px;margin-top:16px;min-height:44px;padding:0 16px 0 6px;border-radius:999px;background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.85);color:#fff;font:700 14.5px var(--f);cursor:pointer}
+.ver-ex .play{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:#fff;color:var(--coral-2)}
+.ver-ex .play svg{width:14px;height:14px;margin-left:2px}
+.ver-ex:hover{background:rgba(255,255,255,.3)}
+.ver-ex:focus-visible{outline:3px solid var(--ouro);outline-offset:2px}
+.extra-top{display:flex;gap:16px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.extra h3{font-size:22px;font-weight:800;text-shadow:0 2px 0 rgba(7,72,92,.35)}
+.extra .para{margin-top:6px;color:#E6FAFD;font-size:15px;line-height:1.5;max-width:520px}
+.extra .preco{margin-top:0}
+.extra .preco b{font-size:28px;color:#fff;text-shadow:0 2px 0 rgba(7,72,92,.35)}
+.extra .preco .per{color:#C9F1F7}
+.mini-cartela{display:flex;gap:6px;margin-top:16px}
+.mini-cartela i{width:26px;height:26px;border-radius:50%;border:2px dashed rgba(255,255,255,.6);background:rgba(255,255,255,.12)}
+.mini-cartela i.on{border:0;background:#fff;box-shadow:0 3px 0 rgba(7,72,92,.45);animation:extra-pula 2.4s ease-in-out infinite}
+.mini-cartela i.on:nth-child(2){animation-delay:.12s}.mini-cartela i.on:nth-child(3){animation-delay:.24s}.mini-cartela i.on:nth-child(4){animation-delay:.36s}
+.mini-cartela i.on:nth-child(5){animation-delay:.48s}.mini-cartela i.on:nth-child(6){animation-delay:.6s}.mini-cartela i.on:nth-child(7){animation-delay:.72s}
+@keyframes extra-pula{0%,30%,100%{transform:translateY(0)}15%{transform:translateY(-7px)}}
+.mini-cartela i.pr{border:2px solid #fff;background:rgba(255,255,255,.25);display:grid;place-items:center;font-size:13px;font-style:normal;animation:extra-premio 2.4s ease-in-out infinite}
+@keyframes extra-premio{0%,60%,100%{transform:scale(1)}75%{transform:scale(1.25) rotate(-10deg)}}
+.extra-b .ver-ex{width:100%;justify-content:center}
+.extra-it{list-style:none;padding:0;margin:18px 0 0;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.extra-it li{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;font-size:13px;font-weight:700;line-height:1.25;color:#fff;background:rgba(255,255,255,.14);border:1.5px solid rgba(255,255,255,.35);border-radius:16px;padding:12px 6px}
+.extra-it .ic{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#fff;color:var(--coral-2);box-shadow:0 3px 0 rgba(7,72,92,.45)}
+.extra-it .ic svg{width:22px;height:22px}
+.extra .para{font-size:16px!important;font-weight:600}
+.extra .btn{position:relative;z-index:1;width:100%;margin-top:20px;border-radius:999px;background:#fff;border:0;color:var(--coral-esc);font-weight:800;box-shadow:0 5px 0 var(--coral-esc);transition:transform .1s,box-shadow .1s}
+.extra .btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--coral-esc)}
+@media (prefers-reduced-motion:reduce){.extra,.mini-cartela i{animation:none!important}}
+@media(min-width:900px){.extra{display:grid;grid-template-columns:1fr 1fr;gap:10px 40px;padding:28px 32px;align-items:center}.extra-it{margin-top:0}}
+.planos.unico{grid-template-columns:1fr;max-width:560px;margin-left:auto;margin-right:auto}
+.planos.unico .extra{margin-top:14px}
+@media(min-width:900px){.planos.unico{grid-template-columns:1.05fr 1fr;max-width:none;align-items:start;gap:28px}.planos.unico .extra{display:block;margin-top:0;padding:24px 22px}.planos.unico .extra-it{margin-top:18px}}
 </style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+ {"@type":"Organization","@id":"https://octasites.com.br/#org","name":"Octa Sites","url":"https://octasites.com.br/","logo":"https://octasites.com.br/img/logo.png","areaServed":{"@type":"AdministrativeArea","name":"Sul de Minas, Minas Gerais, Brasil"},"contactPoint":{"@type":"ContactPoint","telephone":"+55-35-99994-5992","contactType":"sales","availableLanguage":"Portuguese"}},
+ {"@type":"SoftwareApplication","name":"Octa Completo","applicationCategory":"BusinessApplication","operatingSystem":"Web","description":"Sistema de pedidos por QR code para estabelecimentos de comida: o cliente pede pelo celular e o pedido chega no painel da loja, com comanda impressa automaticamente.","url":"https://octasites.com.br/#planos","provider":{"@id":"https://octasites.com.br/#org"},"offers":{"@type":"Offer","price":"149.90","priceCurrency":"BRL","url":"https://octasites.com.br/#planos","availability":"https://schema.org/InStock","description":"Mensal, com 30 dias grátis para testar. Anual: R$ 1.499,00."}}
+]}
+</script>
 </head>
 <body>
 
@@ -378,7 +430,7 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
       <a href="#planos">Planos</a>
       <a href="#duvidas">Dúvidas</a>
     </nav>
-    <a class="btn btn-roxo" href="#planos">Ver planos</a>
+    <a class="btn btn-roxo" href="#planos">Ver preço</a>
   </div>
 </header>
 
@@ -390,15 +442,15 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
     <div>
       <span class="selo-topo"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 21h-4v-4"/></svg></i>Pedido pelo QR code da mesa</span>
       <h1 id="titulo">Transforme seu cardápio em <em>pedidos automáticos.</em></h1>
-      <p class="lead">Seus clientes pedem pelo celular. Você recebe tudo organizado e pronto para atender.</p>
+      <p class="lead">Seus clientes pedem pelo celular. Nada de anotar no papel e nada de comissão: tudo chega organizado e pronto para atender.</p>
       <div class="acoes">
         <a class="btn btn-roxo" href="#exemplos">Testar um cardápio<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        <a class="btn btn-borda" href="#planos">Ver planos e preços</a>
+        <a class="btn btn-borda" href="#planos">Ver o plano e o preço</a>
       </div>
       <div class="provas">
         <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Sem comissão por pedido</span>
-        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>30 dias de garantia</span>
-        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Planos a partir de R$ 3,33 por dia</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>30 dias grátis para testar</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Tudo incluso por R$ 5 por dia</span>
       </div>
     </div>
     <div class="topo-visual" aria-hidden="true">
@@ -419,7 +471,7 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
       <div class="passo surge"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 21h-4v-4"/></svg></div><h3>Lê o QR code</h3><p>Cada mesa tem o seu QR code. O pedido já chega com o número da mesa.</p></div>
       <div class="passo surge"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg></div><h3>Escolhe e pede</h3><p>O cliente vê as fotos, escolhe as opções e envia o pedido pelo celular.</p></div>
       <div class="passo surge"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></div><h3>Chega no painel</h3><p>A loja recebe o pedido na hora, com aviso sonoro, em ordem de chegada.</p></div>
-      <div class="passo surge"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></div><h3>Sai a comanda</h3><p>A comanda é impressa para a cozinha começar o preparo.</p><small>Automática em todos os planos</small></div>
+      <div class="passo surge"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></div><h3>Sai a comanda</h3><p>A comanda é impressa para a cozinha começar o preparo.</p><small>Sai automaticamente</small></div>
     </div>
     <div class="nota-delivery"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 17h4V5H2v12h3"/><path d="M14 9h4l4 4v4h-3"/><circle cx="7.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg><span><b>Só faz delivery?</b> O cliente pede pelo link da loja, para entregar ou retirar, e o pedido chega no mesmo painel.</span></div>
   </div>
@@ -434,7 +486,7 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
       <div class="v surge"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg></div><div><h3>Pedido direto para o preparo</h3><p>Sem anotar no papel e sem erro de pedido: o que o cliente escolheu é o que chega na cozinha.</p></div></div>
       <div class="v surge"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><h3>Equipe livre no pico</h3><p>Os funcionários deixam de ir de mesa em mesa anotar pedidos e focam em preparar e entregar.</p></div></div>
       <div class="v surge"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><div><h3>Cozinha organizada</h3><p>Os pedidos chegam em ordem, separados por mesa e já impressos.</p></div></div>
-      <div class="v surge"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></div><div><h3>Pequenas automações <span class="so-max">Plano MAX</span></h3><p>Além do cliente poder chamar o garçom pelo celular, também poderá solicitar a conta, já dividida por pessoa.</p></div></div>
+      <div class="v surge"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></div><div><h3>Pequenas automações</h3><p>O cliente chama o garçom pelo celular e uma campainha toca no painel da loja. Também pede a conta, já dividida por pessoa.</p></div></div>
     </div>
   </div>
 </section>
@@ -443,16 +495,12 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
 <section id="exemplos" aria-labelledby="ex-t">
   <div class="cx">
     <span class="etq">Exemplos</span>
-    <h2 id="ex-t">Toque em um celular e faça um pedido de teste.</h2>
-    <p class="intro">Cada exemplo é um estabelecimento fictício, com as cores e o cardápio dele. O cardápio do seu negócio fica com a sua marca.</p>
-    <div class="demo-aviso"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span>Cada exemplo mostra um plano: <b>Octa Delivery</b>, <b>PRO</b>, <b>Premium</b> e <b>MAX</b>. No MAX, a etiqueta <b>MAX</b> marca o que só existe nele.</span></div>
+    <h2 id="ex-t">Toque no celular e faça um pedido de teste.</h2>
+    <p class="intro">A Mineiro Burger é uma hamburgueria fictícia, com as cores e o cardápio dela. O cardápio do seu negócio fica com a sua marca.</p>
+    <div class="demo-aviso"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span><b>O exemplo mostra todas as funções do plano Octa Completo:</b> pedido pela mesa, balcão e delivery, adicionais e combos, encomendas com data, promoções em destaque, pedir a conta e chamar o garçom.</span></div>
     <div class="trilho" id="trilho">
-      <div class="demo" data-demo="marmitaria"><button type="button" aria-label="Abrir o exemplo da Marmita da Dona Rosa"><div class="celular"><div class="ilha"></div><div class="tela"><div class="status"><b>9:41</b><span><svg viewBox="0 0 18 12" fill="#111"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" fill="#111"><path d="M8 2.5c2.3 0 4.4.9 6 2.4l1.3-1.3A10.3 10.3 0 0 0 8 .6 10.3 10.3 0 0 0 .7 3.6L2 4.9a8.5 8.5 0 0 1 6-2.4zm0 3.6c1.3 0 2.5.5 3.4 1.3l1.3-1.3A6.6 6.6 0 0 0 8 4.2c-1.8 0-3.5.7-4.7 1.9l1.3 1.3c.9-.8 2.1-1.3 3.4-1.3zM8 9.6l2-2a2.8 2.8 0 0 0-4 0z"/></svg><svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="#111" opacity=".5"/><rect x="2" y="2" width="17" height="8" rx="1.8" fill="#111"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" fill="#111" opacity=".5"/></svg></span></div><img src="demos/marmitaria/tela.jpg" alt="" loading="lazy"></div><span class="tocar"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>Toque para testar</span></div></button><h3>Marmita da Dona Rosa</h3><p>Marmitaria · só delivery</p><span class="plano-tag dl">OCTA DELIVERY</span></div>
-      <div class="demo" data-demo="padaria"><button type="button" aria-label="Abrir o exemplo da Casa do Pão"><div class="celular"><div class="ilha"></div><div class="tela"><div class="status"><b>9:41</b><span><svg viewBox="0 0 18 12" fill="#111"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" fill="#111"><path d="M8 2.5c2.3 0 4.4.9 6 2.4l1.3-1.3A10.3 10.3 0 0 0 8 .6 10.3 10.3 0 0 0 .7 3.6L2 4.9a8.5 8.5 0 0 1 6-2.4zm0 3.6c1.3 0 2.5.5 3.4 1.3l1.3-1.3A6.6 6.6 0 0 0 8 4.2c-1.8 0-3.5.7-4.7 1.9l1.3 1.3c.9-.8 2.1-1.3 3.4-1.3zM8 9.6l2-2a2.8 2.8 0 0 0-4 0z"/></svg><svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="#111" opacity=".5"/><rect x="2" y="2" width="17" height="8" rx="1.8" fill="#111"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" fill="#111" opacity=".5"/></svg></span></div><img src="demos/padaria/tela.jpg" alt="" loading="lazy"></div><span class="tocar"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>Toque para testar</span></div></button><h3>Casa do Pão</h3><p>Padaria e café</p><span class="plano-tag pro">PLANO PRO</span></div>
-      <div class="demo" data-demo="pizzaria"><button type="button" aria-label="Abrir o exemplo do Forno da Vila"><div class="celular"><div class="ilha"></div><div class="tela"><div class="status"><b>9:41</b><span><svg viewBox="0 0 18 12" fill="#111"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" fill="#111"><path d="M8 2.5c2.3 0 4.4.9 6 2.4l1.3-1.3A10.3 10.3 0 0 0 8 .6 10.3 10.3 0 0 0 .7 3.6L2 4.9a8.5 8.5 0 0 1 6-2.4zm0 3.6c1.3 0 2.5.5 3.4 1.3l1.3-1.3A6.6 6.6 0 0 0 8 4.2c-1.8 0-3.5.7-4.7 1.9l1.3 1.3c.9-.8 2.1-1.3 3.4-1.3zM8 9.6l2-2a2.8 2.8 0 0 0-4 0z"/></svg><svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="#111" opacity=".5"/><rect x="2" y="2" width="17" height="8" rx="1.8" fill="#111"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" fill="#111" opacity=".5"/></svg></span></div><img src="demos/pizzaria/tela.jpg" alt="" loading="lazy"></div><span class="tocar"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>Toque para testar</span></div></button><h3>Forno da Vila</h3><p>Pizzaria</p><span class="plano-tag prem">PLANO PREMIUM</span></div>
-      <div class="demo" data-demo="hamburgueria"><button type="button" aria-label="Abrir o exemplo da Mineiro Burger"><div class="celular"><div class="ilha"></div><div class="tela"><div class="status"><b>9:41</b><span><svg viewBox="0 0 18 12" fill="#111"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" fill="#111"><path d="M8 2.5c2.3 0 4.4.9 6 2.4l1.3-1.3A10.3 10.3 0 0 0 8 .6 10.3 10.3 0 0 0 .7 3.6L2 4.9a8.5 8.5 0 0 1 6-2.4zm0 3.6c1.3 0 2.5.5 3.4 1.3l1.3-1.3A6.6 6.6 0 0 0 8 4.2c-1.8 0-3.5.7-4.7 1.9l1.3 1.3c.9-.8 2.1-1.3 3.4-1.3zM8 9.6l2-2a2.8 2.8 0 0 0-4 0z"/></svg><svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="#111" opacity=".5"/><rect x="2" y="2" width="17" height="8" rx="1.8" fill="#111"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" fill="#111" opacity=".5"/></svg></span></div><img src="demos/hamburgueria/tela.jpg" alt="" loading="lazy"></div><span class="tocar"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>Toque para testar</span></div></button><h3>Mineiro Burger</h3><p>Hamburgueria</p><span class="plano-tag">PLANO MAX</span></div>
+      <div class="demo" data-demo="hamburgueria"><button type="button" aria-label="Abrir o exemplo da Mineiro Burger"><div class="celular"><div class="ilha"></div><div class="tela"><div class="status"><b>9:41</b><span><svg viewBox="0 0 18 12" fill="#111"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" fill="#111"><path d="M8 2.5c2.3 0 4.4.9 6 2.4l1.3-1.3A10.3 10.3 0 0 0 8 .6 10.3 10.3 0 0 0 .7 3.6L2 4.9a8.5 8.5 0 0 1 6-2.4zm0 3.6c1.3 0 2.5.5 3.4 1.3l1.3-1.3A6.6 6.6 0 0 0 8 4.2c-1.8 0-3.5.7-4.7 1.9l1.3 1.3c.9-.8 2.1-1.3 3.4-1.3zM8 9.6l2-2a2.8 2.8 0 0 0-4 0z"/></svg><svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="#111" opacity=".5"/><rect x="2" y="2" width="17" height="8" rx="1.8" fill="#111"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" fill="#111" opacity=".5"/></svg></span></div><img src="demos/hamburgueria/tela.jpg" alt="" loading="lazy"></div><span class="tocar"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>Toque para testar</span></div></button><h3>Mineiro Burger</h3><p>Hamburgueria</p></div>
     </div>
-    <div class="pontos" id="pontos" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></div>
   </div>
 </section>
 
@@ -478,7 +526,7 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
           <div class="papel-janela" aria-hidden="true"><div class="papel" id="papel"></div></div>
           <div class="corpo-imp" aria-hidden="true"><span>80 mm</span></div>
         </div>
-        <p class="legenda">Em todos os planos, a comanda sai sozinha.</p>
+        <p class="legenda">A comanda sai sozinha, sem ninguém tocar em nada.</p>
         <a class="imp-info imp-link" href="#equipamentos"><span>A impressora não está inclusa: ela fica por conta do negócio. A Octa Sites ajuda a escolher um modelo compatível. <u>Ver o que é preciso</u></span><i aria-hidden="true">→</i></a>
         <p class="bobina-info"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg><span><b>Para manter a impressora, é necessário bobina térmica.</b> Uma única bobina (80 mm x 40 m) dura entre 200 e 400 comandas. A impressora não usa tinta.</span></p>
       </div>
@@ -489,152 +537,74 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
 <!-- planos -->
 <section id="planos" class="alt" aria-labelledby="pl-t">
   <div class="cx">
-    <span class="etq">Planos</span>
-    <h2 id="pl-t">Escolha o plano do tamanho do seu negócio.</h2>
-    <div class="garantia-selo"><span class="sel">30<br>dias</span><span><b>Garantia de 30 dias</b>Se não gostar, o estabelecimento recebe 100% do valor de volta. Contados a partir de quando o sistema entra no ar.</span></div>
+    <span class="etq">Plano</span>
+    <h2 id="pl-t">Um plano só, com tudo incluso.</h2>
+    <div class="garantia-selo"><span class="sel">30<br>dias</span><span><b>Teste grátis por 30 dias</b>Sem cartão e sem compromisso. Se não gostar, é só não continuar.</span></div>
     <div class="ciclo" role="group" aria-label="Forma de pagamento">
       <button type="button" aria-pressed="true" data-ciclo="mes">Mensal</button>
       <button type="button" aria-pressed="false" data-ciclo="ano">Anual <small>2 meses grátis</small></button>
     </div>
 
-    <div class="todos-planos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span><b>Você altera o cardápio quando quiser, em todos os planos.</b> Preços, fotos, produtos e o que está esgotado mudam na hora, pelo painel, sem pagar nada a mais.</span></div>
-    <div class="planos">
-      <!-- OCTA DELIVERY -->
-      <article class="plano dl" aria-labelledby="p-dl">
-        <span class="fita">Só delivery</span>
-        <h3 id="p-dl">OCTA DELIVERY</h3>
-        <p class="para">Para marmitaria, lanchonete ou cozinha que atende só por entrega e retirada.</p>
-        <p class="resultado">Os pedidos de entrega chegam prontos na cozinha, sem anotar nada pelo WhatsApp.</p>
-        <div class="preco" data-mes="R$ 99,90" data-ano="R$ 999,00"><b>R$ 99,90</b><span class="per">/mês</span></div>
-        <p class="dia" data-mes="Apenas R$ 3,33 por dia" data-ano="Economia de R$ 199,80 no ano">Apenas R$ 3,33 por dia</p>
+    <div class="todos-planos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span><b>Você altera o cardápio quando quiser.</b> Preços, fotos, produtos e o que está esgotado mudam na hora, pelo painel, sem pagar nada a mais.</span></div>
+    <div class="compara"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h8M8 14h3M8 18h3M14 14h2M14 18h2"/></svg><span><b>Faça a conta.</b> Nos aplicativos de entrega, um pedido de R$ 40 pode deixar até R$ 10 em taxas. Na Octa, o estabelecimento paga R$ 5 por dia e recebe quantos pedidos quiser, pelo QR code da mesa e pelo próprio link de delivery.</span></div>
+    <div class="planos unico">
+      <article class="plano prem" aria-labelledby="p-oc">
+        <span class="fita">Tudo incluso</span>
+        <h3 id="p-oc">OCTA COMPLETO</h3>
+        <p class="para">Para restaurante, lanchonete, pizzaria, padaria, café ou marmitaria.</p>
+        <p class="resultado">Mesas, balcão e delivery no mesmo sistema, com todos os recursos liberados.</p>
+        <div class="preco" data-mes="R$ 149,90" data-ano="R$ 1.499,00"><b>R$ 149,90</b><span class="per">/mês</span></div>
+        <p class="dia" data-mes="Apenas R$ 5 por dia" data-ano="Economia de R$ 299,80 no ano">Apenas R$ 5 por dia</p>
         <ul class="destaques">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Mesas e produtos sem limite, com QR code</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Comanda impressa automaticamente</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Delivery e retirada com taxa por bairro</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Comanda impressa automaticamente</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Avisos do pedido pelo WhatsApp</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Endereço preenchido pelo CEP</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Adicionais, combos e encomendas com data</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Pedir a conta dividida e chamar o garçom pelo celular, com campainha no painel</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Relatório mensal de vendas<button type="button" class="ver-rel" id="verRelatorio">Ver exemplo do relatório<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Suporte com resposta em até 24 horas</li>
           </ul>
         <details>
           <summary>Ver todos os recursos<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></summary>
           <ul class="todos">
             <li class="grupo">Também inclui</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Até 30 produtos com fotos</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Opções do produto e observações</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Painel com aviso sonoro</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Produto esgotado com 1 toque</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Links do Instagram e do WhatsApp</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Suporte com resposta em até 2 dias úteis</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Selo "Feito por Octa Sites" no cardápio</li>
-            <li class="grupo">Não inclui</li>
-            <li class="nao"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Adicionais e combos</li>
-          </ul>
-        </details>
-        <a class="btn btn-borda" href="https://wa.me/5535999945992?text=Ol%C3%A1!%20Tenho%20interesse%20no%20Octa%20Delivery." target="_blank" rel="noopener">Quero o Octa Delivery</a>
-      </article>
-
-      <!-- PRO -->
-      <article class="plano" aria-labelledby="p-pro">
-        <h3 id="p-pro">PRO</h3>
-        <p class="para">Para lanchonete, café ou quiosque com balcão e poucas mesas.</p>
-        <p class="resultado">Chega de anotar pedido no papel: tudo cai direto na cozinha.</p>
-        <div class="preco" data-mes="R$ 129,90" data-ano="R$ 1.299,00"><b>R$ 129,90</b><span class="per">/mês</span></div>
-        <p class="dia" data-mes="Apenas R$ 4,33 por dia" data-ano="Economia de R$ 259,80 no ano">Apenas R$ 4,33 por dia</p>
-        <ul class="destaques">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Até 6 mesas com QR code, mais o balcão</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Comanda impressa automaticamente</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Delivery e retirada com taxa fixa</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Avisos do pedido pelo WhatsApp</li>
-          </ul>
-        <details>
-          <summary>Ver todos os recursos<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></summary>
-          <ul class="todos">
-            <li class="grupo">Também inclui</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Até 30 produtos com fotos</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Endereço preenchido pelo CEP</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Opções do produto e observações</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Painel com aviso sonoro</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Produto esgotado com 1 toque</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Acompanhar o pedido e “Meus pedidos”</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Visor de combos e promoções no topo do cardápio</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Links do Instagram e do WhatsApp</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Suporte com resposta em até 2 dias úteis</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Selo "Feito por Octa Sites" no cardápio</li>
-            <li class="grupo">Não inclui</li>
-            <li class="nao"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Adicionais e combos</li>
-            <li class="nao"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Promoções em destaque e encomendas com data</li>
-            <li class="nao"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Taxa de entrega por bairro</li>
-            <li class="nao"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Alterações e funções novas (orçamento à parte)</li>
-          </ul>
-        </details>
-        <a class="btn btn-borda" href="https://wa.me/5535999945992?text=Ol%C3%A1!%20Tenho%20interesse%20no%20plano%20PRO%20da%20Octa%20Sites." target="_blank" rel="noopener">Quero o PRO</a>
-      </article>
-
-      <!-- PREMIUM -->
-      <article class="plano prem" aria-labelledby="p-prem">
-        <h3 id="p-prem">PREMIUM</h3>
-        <p class="para">Para restaurante, pizzaria ou padaria com mesas e delivery.</p>
-        <p class="resultado">Venda mais: adicionais, combos e encomendas com data.</p>
-        <div class="preco" data-mes="R$ 189,90" data-ano="R$ 1.899,00"><b>R$ 189,90</b><span class="per">/mês</span></div>
-        <p class="dia" data-mes="Apenas R$ 6,33 por dia" data-ano="Economia de R$ 379,80 no ano">Apenas R$ 6,33 por dia</p>
-        <ul class="destaques">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Tudo do PRO, com até 10 mesas e 45 produtos</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Adicionais e combos, para pedidos maiores</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Encomendas com data</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Taxa de entrega por bairro</li>
-          </ul>
-        <details>
-          <summary>Ver todos os recursos<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></summary>
-          <ul class="todos">
-            <li class="grupo">Também inclui</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Acompanhar o pedido</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Sem o selo da Octa no cardápio</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Suporte com resposta em até 1 dia útil</li>
-            <li class="grupo">Não inclui</li>
-            <li class="nao"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Pedir a conta, chamar garçom e visor de combos e promoções</li>
-            <li class="nao"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Alterações e funções novas (orçamento à parte)</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Melhorias: apresente suas ideias e a Octa Sites coloca em prática no seu sistema</li>
           </ul>
         </details>
-        <a class="btn btn-roxo" href="https://wa.me/5535999945992?text=Ol%C3%A1!%20Tenho%20interesse%20no%20plano%20Premium%20da%20Octa%20Sites." target="_blank" rel="noopener">Quero o Premium</a>
+        <a class="btn btn-roxo" href="https://wa.me/5535999945992?text=Ol%C3%A1!%20Quero%20come%C3%A7ar%20o%20teste%20gr%C3%A1tis%20da%20Octa%20Sites." target="_blank" rel="noopener">Começar meu teste grátis</a>
       </article>
-
-      <!-- MAX -->
-      <article class="plano max" aria-labelledby="p-max">
-        <span class="fita">Completo</span>
-        <h3 id="p-max">MAX</h3>
-        <p class="para">Para a casa movimentada, que quer tudo e prioridade no atendimento.</p>
-        <p class="resultado">O salão roda sozinho: o cliente pede, chama o garçom e pede a conta pelo celular.</p>
-        <div class="preco" data-mes="R$ 249,90" data-ano="R$ 2.499,00"><b>R$ 249,90</b><span class="per">/mês</span></div>
-        <p class="dia" data-mes="Apenas R$ 8,33 por dia" data-ano="Economia de R$ 499,80 no ano">Apenas R$ 8,33 por dia</p>
-        <ul class="destaques">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Tudo do Premium, sem limite de mesas e produtos</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Pedir a conta, já dividida por pessoa</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Chamar garçom pelo celular</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Visor de combos e promoções do dia e do mês, em destaque no topo do cardápio</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Relatório mensal de vendas, com sugestões de melhorias e promoções<button type="button" class="ver-rel" id="verRelatorio">Ver exemplo do relatório<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Suporte com resposta no mesmo dia</li>
-          </ul>
-        <details>
-          <summary>Ver todos os recursos<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></summary>
-          <ul class="todos">
-            <li class="grupo">Também inclui</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>"Meus pedidos": o cliente vê todos os pedidos que fez</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Melhorias ilimitadas: apresente suas ideias e a Octa Sites coloca em prática no seu sistema</li>
-          </ul>
-        </details>
-        <a class="btn btn-roxo" href="https://wa.me/5535999945992?text=Ol%C3%A1!%20Tenho%20interesse%20no%20plano%20MAX%20da%20Octa%20Sites." target="_blank" rel="noopener">Quero o MAX</a>
-      </article>
+    <article class="extra" aria-labelledby="ex-fid">
+      <span class="fita">Extra opcional</span>
+      <div class="extra-a">
+        <div class="extra-top"><h3 id="ex-fid">Cartela de fidelidade</h3><div class="preco"><b>+ R$ 29,90</b><span class="per">/mês</span></div></div>
+        <p class="para">O cliente junta selos e volta para ganhar o prêmio.</p>
+        <div class="mini-cartela" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i class="pr">🎁</i></div>
+      </div>
+      <div class="extra-b">
+        <ul class="extra-it">
+          <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg></span>1 selo por pedido</li>
+          <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7M7.5 8a2.5 2.5 0 0 1 0-5C10 3 12 8 12 8s2-5 4.5-5a2.5 2.5 0 0 1 0 5"/></svg></span>Prêmio escolhido pela loja</li>
+          <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"/><path d="M9 10h.01M12 10h.01M15 10h.01"/></svg></span>Chame quem sumiu</li>
+        </ul>
+        <button type="button" class="ver-ex" id="verCartela"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg></span>Ver exemplo no celular</button>
+        <a class="btn btn-borda" href="https://wa.me/5535999945992?text=Ol%C3%A1!%20Tenho%20interesse%20na%20cartela%20de%20fidelidade%20da%20Octa%20Sites." target="_blank" rel="noopener">Quero a cartela de fidelidade</a>
+      </div>
+    </article>
     </div>
-
-    <p class="condicoes">Todos os planos, inclusive o Octa Delivery, incluem a montagem do sistema em até 15 dias, os QR codes prontos para impressão, a visita no dia da inauguração e o treinamento básico do dono. Fidelidade de 6 meses ou plano anual com 12 meses pelo preço de 10.</p>
+    <p class="condicoes">O plano inclui a montagem do sistema em até 15 dias, os QR codes prontos para impressão, a visita no dia da inauguração e o treinamento do dono, inclusive no teste grátis. Sem fidelidade no plano mensal. Quem preferir pode escolher o plano anual, com 12 meses pelo preço de 10.</p>
   </div>
 </section>
 
-<!-- questionário -->
-<section id="questionario" aria-labelledby="qz-t">
-  <div class="cx">
-    <span class="etq">Questionário</span>
-    <h2 id="qz-t">Ficou em dúvida sobre seu plano?</h2>
-    <p class="intro">Responda 4 perguntas rápidas e veja o plano indicado para o seu negócio.</p>
-    <div class="quiz" id="quiz" aria-live="polite"></div>
-  </div>
-</section>
+
 
 <!-- o que fica com o estabelecimento e com a Octa -->
 <section id="equipamentos" class="alt" aria-labelledby="eq-t">
@@ -661,12 +631,12 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
     <span class="etq">Como contratar</span>
     <h2 id="ct-t">Do primeiro contato ao sistema no ar.</h2>
     <div class="passos">
-      <div class="passo"><span class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.6A8.4 8.4 0 1 1 21 11.5z"/></svg></span><h3>Conversa</h3><p>Pelo WhatsApp, a Octa Sites entende o seu negócio e indica o plano certo.</p></div>
-      <div class="passo"><span class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg></span><h3>Cardápio</h3><p>A loja envia os produtos, os preços e as fotos.</p></div>
+      <div class="passo"><span class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.6A8.4 8.4 0 1 1 21 11.5z"/></svg></span><h3>Conversa e amostra</h3><p>Pelo WhatsApp, a Octa Sites entende o seu negócio e monta um cardápio de amostra com alguns produtos da loja, antes de qualquer compromisso.</p></div>
+      <div class="passo"><span class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg></span><h3>Cardápio</h3><p>A loja manda o cardápio como tiver: foto, PDF ou lista. A Octa Sites organiza os produtos, os preços e as fotos.</p></div>
       <div class="passo"><span class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><h3>Montagem</h3><p>A Octa Sites monta o sistema e os QR codes em até 15 dias.</p></div>
       <div class="passo"><span class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><h3>Inauguração</h3><p>No primeiro dia, a Octa Sites vai até o estabelecimento, instala, testa e treina a equipe.</p></div>
     </div>
-    <div class="contratar-cta"><a class="btn btn-roxo" href="https://wa.me/5535999945992?text=Ol%C3%A1!%20Quero%20conhecer%20a%20Octa%20Sites." target="_blank" rel="noopener">Falar no WhatsApp</a></div>
+    <div class="contratar-cta"><a class="btn btn-roxo" href="https://wa.me/5535999945992?text=Ol%C3%A1!%20Quero%20conhecer%20a%20Octa%20Sites." target="_blank" rel="noopener">Falar no WhatsApp</a><p class="local">A Octa Sites é do Sul de Minas e vai até o estabelecimento no dia da inauguração.</p></div>
   </div>
 </section>
 
@@ -678,17 +648,18 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
     <div class="faq">
       <details><summary>A Octa cobra comissão por pedido?<i>+</i></summary><p>Não. Você paga só a mensalidade do plano, não importa quantos pedidos receba.</p></details>
       <details><summary>O cliente precisa baixar algum aplicativo?<i>+</i></summary><p>Não. O cardápio abre direto no navegador do celular, ao ler o QR code da mesa ou tocar no link da loja.</p></details>
-      <details><summary>O dono consegue mudar preços e produtos?<i>+</i></summary><p>Sim. Em todos os planos, o próprio dono altera preços, fotos e produtos pelo painel, e marca o que está esgotado com 1 toque.</p></details>
+      <details><summary>O dono consegue mudar preços e produtos?<i>+</i></summary><p>Sim. O próprio dono altera preços, fotos e produtos pelo painel, e marca o que está esgotado com 1 toque.</p></details>
       <details><summary>Em quanto tempo o sistema fica pronto?<i>+</i></summary><p>Em até 15 dias depois que o estabelecimento envia o cardápio, com fotos e preços.</p></details>
       <details><summary>Como o cliente paga o pedido?<i>+</i></summary><p>Normalmente, no caixa da loja, como já acontece hoje. O sistema organiza os pedidos e não faz cobrança.</p></details>
-      <details><summary>Como funciona a garantia?<i>+</i></summary><p>São 30 dias, contados a partir de quando o sistema entra no ar. Se o estabelecimento não ficar satisfeito, recebe 100% do valor pago de volta, inclusive no plano anual. Equipamentos, como impressoras, não entram na garantia.</p></details>
-      <details><summary>O que é a fidelidade e o plano anual?<i>+</i></summary><p>No pagamento mensal, a fidelidade é de 6 meses. No plano anual, o estabelecimento paga 10 meses e usa 12.</p></details>
-      <details><summary>Posso cancelar?<i>+</i></summary><p>Sim. Nos primeiros 30 dias depois da inauguração, o cancelamento é livre e o estabelecimento recebe 100% do valor de volta (garantia). Depois disso, antes de completar os 6 meses de fidelidade, é cobrada uma multa de 30% das mensalidades que faltam.</p></details>
+      <details><summary>Como funciona o teste grátis?<i>+</i></summary><p>São 30 dias para usar o sistema na loja, sem pagar nada e sem cartão. A montagem, a visita no dia da inauguração e o treinamento estão inclusos. Se gostar, é só contratar; se não gostar, basta não continuar. Equipamentos, como impressoras, não estão inclusos.</p></details>
+      <details><summary>Como funciona a cartela de fidelidade?<i>+</i></summary><p>É um extra opcional de R$ 29,90 por mês, contratado junto com o plano. O cliente informa o celular depois do pedido e ganha 1 selo a cada pedido confirmado pela loja. Com a cartela completa, ganha o prêmio que a loja escolheu. A loja define quantos selos, qual é o prêmio, o valor mínimo do pedido e por quanto tempo os selos valem.</p></details>
+      <details><summary>Tem contrato de fidelidade ou multa?<i>+</i></summary><p>Não. No pagamento mensal não há fidelidade nem multa. Quem preferir pode escolher o plano anual: o estabelecimento paga 10 meses e usa 12.</p></details>
+      <details><summary>Posso cancelar?<i>+</i></summary><p>Sim, sem multa. Basta avisar com 30 dias de antecedência.</p></details>
       <details><summary>A Octa vai até o estabelecimento?<i>+</i></summary><p>Sim, no dia da inauguração do sistema, para acompanhar o início e fazer o treinamento básico do dono. O restante do atendimento é feito pelo WhatsApp.</p></details>
-      <details><summary>Como funcionam as melhorias no plano MAX?<i>+</i></summary><p>No plano MAX, você apresenta suas ideias e a Octa Sites coloca em prática no seu sistema, sem limite de pedidos de melhoria.</p></details>
+      <details><summary>Como funcionam as melhorias?<i>+</i></summary><p>Você apresenta suas ideias e a Octa Sites coloca em prática no seu sistema, sem limite de pedidos de melhoria.</p></details>
       <details><summary>A Octa vende a impressora ou o tablet?<i>+</i></summary><p>Não. Tela e impressora são da loja. A Octa Sites ajuda a escolher um modelo compatível e faz a instalação e o teste no primeiro uso.</p></details>
-      <details><summary>E se a internet do estabelecimento cair?<i>+</i></summary><p>O cliente faz o pedido pela internet do próprio celular, então só a tela da loja fica sem conexão. Basta conectar o computador ou o tablet ao roteamento (hotspot) de um celular, e os pedidos continuam chegando.</p></details>
-      <details><summary>Preciso de impressora?<i>+</i></summary><p>Não é obrigatório. Sem impressora, os pedidos aparecem no painel. Para a comanda automática, que vem em todos os planos, é preciso uma impressora, que não está inclusa.</p></details>
+      <details><summary>E se a internet do estabelecimento cair?<i>+</i></summary><p>O cliente faz o pedido pela internet do próprio celular, então só a tela da loja fica sem conexão. Basta conectar o computador ou o tablet à internet de um celular, usando o roteador do celular (hotspot), e os pedidos continuam chegando.</p></details>
+      <details><summary>Preciso de impressora?<i>+</i></summary><p>Não é obrigatório. Sem impressora, os pedidos aparecem no painel. Para a comanda automática, é preciso uma impressora, que não está inclusa.</p></details>
     </div>
   </div>
 </section>
@@ -698,7 +669,7 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
 <footer>
   <div class="cx">
     <a class="marca" href="#inicio"><img src="img/logo.png" alt=""><span>OCTA <b>SITES</b></span></a>
-    <nav aria-label="Rodapé"><a href="#como-funciona">Como funciona</a><a href="#exemplos">Exemplos</a><a href="#planos">Planos</a><a href="#duvidas">Dúvidas</a><a href="https://wa.me/5535999945992" target="_blank" rel="noopener">WhatsApp</a></nav>
+    <nav aria-label="Rodapé"><a href="#como-funciona">Como funciona</a><a href="#exemplos">Exemplos</a><a href="#planos">Planos</a><a href="#duvidas">Dúvidas</a><a href="https://wa.me/5535999945992" target="_blank" rel="noopener">WhatsApp</a><a href="privacidade/">Privacidade</a></nav>
     <p class="contato-rodape">WhatsApp: <a href="https://wa.me/5535999945992" target="_blank" rel="noopener">(35) 99994-5992</a> · Atendimento no Sul de Minas</p>
     <p>© 2026 Octa Sites. Sistema de pedidos para estabelecimentos de comida.</p>
   </div>
@@ -744,17 +715,23 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
       var id=k.dataset.demo; ultimo=this;
       nome.textContent='Exemplo: '+k.querySelector('h3').textContent;
       if(DEMOS[id]) fr.srcdoc=DEMOS[id]; else fr.src='demos/'+id+'/';
-      jan.classList.add('aberta'); document.body.style.overflow='hidden';
+      jan.classList.add('aberta','cheia'); document.body.style.overflow='hidden';
       document.getElementById('fechar').focus();
     });
   });
   document.getElementById('verRelatorio').addEventListener('click',function(){
-    ultimo=this; nome.textContent='Relatório do plano MAX';
+    ultimo=this; nome.textContent='Exemplo de relatório mensal';
     fr.title='Exemplo de relatório mensal'; fr.src='relatorio-exemplo/';
     jan.classList.add('aberta','larga'); document.body.style.overflow='hidden';
     document.getElementById('fechar').focus();
   });
-  function fecha(){ jan.classList.remove('aberta','larga'); document.body.style.overflow=''; fr.removeAttribute('srcdoc'); fr.src='about:blank'; if(ultimo) ultimo.focus(); }
+  document.getElementById('verCartela').addEventListener('click',function(){
+    ultimo=this; nome.textContent='Exemplo da cartela de fidelidade';
+    fr.title='Exemplo da cartela de fidelidade'; fr.src='cartela-exemplo/';
+    jan.classList.add('aberta'); document.body.style.overflow='hidden';
+    document.getElementById('fechar').focus();
+  });
+  function fecha(){ jan.classList.remove('aberta','larga','cheia'); document.body.style.overflow=''; fr.removeAttribute('srcdoc'); fr.src='about:blank'; if(ultimo) ultimo.focus(); }
   document.getElementById('fechar').addEventListener('click',fecha);
   addEventListener('keydown',function(e){ if(e.key==='Escape'&&jan.classList.contains('aberta')) fecha(); });
 
@@ -764,10 +741,10 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
     var BASE=[
       {o:'Mesa 2',i:['1x Mineiro Clássico','1x Coca-Cola lata']},
       {o:'Balcão',i:['2x Cheese Salada'],obs:'para viagem'},
-      {o:'Mesa 4',i:['2x Uai Smash','1x Batata média'],obs:'sem cebola'},
-      {o:'Delivery',i:['1x Combo Clássico','1x Guaraná lata']},
-      {o:'Mesa 1',i:['1x Canastra Bacon','1x Suco natural']},
-      {o:'Balcão',i:['1x Brownie','1x Água sem gás']}
+      {o:'Mesa 4',i:['2x Uai Smash','1x Batata frita'],obs:'sem picles'},
+      {o:'Delivery',i:['1x Combo Clássico com Guaraná','1x Pudim de leite']},
+      {o:'Mesa 1',i:['1x Canastra Bacon','1x Suco de laranja']},
+      {o:'Balcão',i:['1x Brownie','1x Água mineral']}
     ];
     var n=21, min=40*1+19*60, k=0, lista=[], MAX=4;
     var reduz=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -804,47 +781,6 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
     });
   });
 
-  /* questionário */
-  var Q=[
-    {t:'O estabelecimento atende clientes em mesas?', o:[['Sim, tenho mesas','mesa'],['Não, só faço delivery ou retirada','delivery']]},
-    {t:'Quantas mesas o estabelecimento tem?', o:[['Até 6 mesas','m6'],['De 7 a 10 mesas','m10'],['Mais de 10 mesas','m11']]},
-    {t:'Quer vender adicionais, combos ou encomendas com data?', o:[['Sim','vende'],['Não, só o cardápio','sem']]},
-    {t:'O cliente precisa chamar o garçom ou pedir a conta pela mesa?', o:[['Sim, seria ótimo','extra'],['Não precisa','basico']]}
-  ];
-  var R={
-    delivery:{n:'Octa Delivery',p:'R$ 99,90/mês',t:'Para quem só faz delivery: cardápio online com taxa por bairro e avisos do pedido pelo WhatsApp, sem comissão por pedido.'},
-    pro:{n:'PRO',p:'R$ 129,90/mês',t:'Pedidos da mesa, do balcão e do delivery direto na cozinha, com a comanda impressa automaticamente.'},
-    premium:{n:'Premium',p:'R$ 189,90/mês',t:'Para vender mais: adicionais e combos, encomendas com data e taxa de entrega por bairro.'},
-    max:{n:'MAX',p:'R$ 249,90/mês',t:'Tudo liberado: pedir a conta dividida, chamar garçom, visor de combos e promoções do dia e do mês, relatório mensal, mesas sem limite e melhorias ilimitadas no seu sistema.'}
-  };
-  var quiz=document.getElementById('quiz'), resp=[], passo=0;
-  function desenha(){
-    var q=Q[passo];
-    quiz.innerHTML='<div class="quiz-barra"><i style="width:'+(passo/Q.length*100)+'%"></i></div><p class="quiz-n">Pergunta '+(passo+1)+' de '+Q.length+'</p><h3>'+q.t+'</h3><div class="opcoes">'+
-      q.o.map(function(o){ return '<button type="button" data-v="'+o[1]+'">'+o[0]+'</button>'; }).join('')+'</div>'+
-      (passo?'<button type="button" class="quiz-voltar" data-voltar>← Voltar</button>':'');
-  }
-  function calcula(){
-    if(resp[0]==='delivery') return 'delivery';
-    if(resp[3]==='extra'||resp[1]==='m11') return 'max';
-    if(resp[2]==='vende'||resp[1]==='m10') return 'premium';
-    return 'pro';
-  }
-  function final(){
-    var k=calcula(), r=R[k];
-    quiz.innerHTML='<div class="quiz-barra"><i style="width:100%"></i></div><div class="resultado"><p class="r-tag" style="margin-top:16px">O plano indicado para o seu negócio é</p><h3>'+r.n+'</h3><p><b>'+r.p+'</b></p><p>'+r.t+'</p><div class="acoes">'+
-      '<a class="btn btn-roxo" target="_blank" rel="noopener" href="'+Z+encodeURIComponent('Olá! Fiz o questionário no site e o plano indicado foi o '+r.n+'. Quero saber mais.')+'">Falar sobre o '+r.n+'</a>'+
-      '<a class="btn btn-borda" href="#planos">Comparar os planos</a><button type="button" class="quiz-voltar" data-refazer>Refazer o questionário</button></div></div>';
-  }
-  quiz.addEventListener('click',function(e){
-    var b=e.target.closest('button'); if(!b) return;
-    if(b.hasAttribute('data-refazer')){ resp=[]; passo=0; desenha(); return; }
-    if(b.hasAttribute('data-voltar')){ passo--; if(passo===1&&resp[0]==='delivery') passo=0; desenha(); return; }
-    resp[passo]=b.dataset.v;
-    if(passo===0&&b.dataset.v==='delivery'){ final(); return; }
-    passo++; if(passo<Q.length) desenha(); else final();
-  });
-  desenha();
 })();
 </script>
 </body>

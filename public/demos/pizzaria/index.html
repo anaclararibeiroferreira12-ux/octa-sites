@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
+<meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Forno da Vila · Cardápio</title>
 <meta name="description" content="Exemplo de cardápio com pedido pelo celular: Forno da Vila, pizzaria.">
@@ -11,7 +12,7 @@
 <style>
 body{margin:0}img{max-width:100%}[hidden]{display:none!important}
 
-/* Layout: à esquerda o celular do cliente (coluna de categorias + cardápio em linhas), à direita o painel da padaria.
+/* Layout: à esquerda o celular do cliente (coluna de categorias + cardápio em linhas), à direita o painel da loja.
    No celular, abas alternam as duas telas. Visual único da marca (sem tema escuro), por decisão. */
 :root{
   color-scheme:light;
@@ -846,9 +847,10 @@ button,input,select,textarea{font-family:inherit}
 .toast{bottom:auto;top:calc(14px + env(safe-area-inset-top,0px));padding:10px 16px;font-size:13.5px;border-radius:999px;background:#3A1712;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:0 10px 24px -10px rgba(36,12,8,.7);transform:translate(-50%,-30px)}
 .toast.on{transform:translate(-50%,0)}
 @media (max-width:340px){.lst b{font-size:14.5px}.lst img{width:64px;height:64px}}
+.planos-bar{display:none!important}
 </style>
 </head>
-<body><div class="faixa-plano">Demonstração do plano <b>Premium</b></div><style id="so-cliente">
+<body><div class="faixa-plano">Exemplo do sistema <b>Octa Completo</b></div><style id="so-cliente">
 html,body{margin:0;background:#240C08;height:100%;overflow:hidden}
 body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-plano){display:none!important}
 .topo,.guia,.planos-bar,.abas,.rodape-demo,.rotulo-lado,.qr-local,.lado-painel,.dica-painel{display:none!important}
@@ -877,9 +879,9 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
 <div class="guia">
   <div class="guia-in">
     <strong>Experimente:</strong>
-    <span class="curto">escolha o plano em "Ver como", faça um pedido e veja ele chegar no painel.</span>
+    <span class="curto">faça um pedido e veja ele chegar no painel.</span>
     <ol>
-      <li><span>1</span>Escolha o plano em "Ver como" e o QR code lido</li>
+      <li><span>1</span>Escolha o QR code lido</li>
       <li><span>2</span>Monte o pedido e envie</li>
       <li><span>3</span>Veja a comanda sair na impressora</li>
       <li><span>4</span>Marque como pronto e entregue</li>
@@ -895,7 +897,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
 
 <div class="abas" role="tablist" aria-label="Telas da demonstração">
   <button type="button" role="tab" id="abaCliente" aria-selected="true" aria-controls="ladoCliente">Celular do cliente</button>
-  <button type="button" role="tab" id="abaPainel" aria-selected="false" aria-controls="ladoPainel">Painel da padaria<span class="bolinha" id="bolinha" hidden>0</span></button>
+  <button type="button" role="tab" id="abaPainel" aria-selected="false" aria-controls="ladoPainel">Painel da loja<span class="bolinha" id="bolinha" hidden>0</span></button>
 </div>
 
 <main class="palco" id="palco" data-aba="cliente">
@@ -905,8 +907,8 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     <div class="aparelho"><div class="tela" id="tela"></div></div>
   </section>
 
-  <section class="lado-painel" id="ladoPainel" aria-label="Painel da padaria">
-    <div class="rotulo-lado">Painel da padaria · computador do balcão</div>
+  <section class="lado-painel" id="ladoPainel" aria-label="Painel da loja">
+    <div class="rotulo-lado">Painel da loja · computador do balcão</div>
     <div class="painel">
       <div class="painel-topo">
         <div class="painel-abas" role="tablist" aria-label="Áreas do painel">
@@ -940,10 +942,10 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
       <div id="vistaCardapio" role="tabpanel" aria-labelledby="vCardapio" hidden></div>
     </div>
     <section class="tv-demo" id="tvDemo" aria-label="TV do salão" hidden></section>
-    <p class="tv-legenda" id="tvLegenda" hidden>Plano MAX: a TV do salão chama os pedidos do balcão quando ficam prontos.</p>
+    <p class="tv-legenda" id="tvLegenda" hidden>A TV do salão chama os pedidos do balcão quando ficam prontos.</p>
   </section>
 </main>
-<p class="rodape-demo">Demonstração para apresentação. Pedidos, nomes e preços são fictícios e ficam só neste navegador. No sistema real, o pedido feito no celular do cliente chega pela internet ao computador da padaria e sai na impressora térmica.</p>
+<p class="rodape-demo">Demonstração para apresentação. Pedidos, nomes e preços são fictícios e ficam só neste navegador. No sistema real, o pedido feito no celular do cliente chega pela internet ao computador da loja e sai na impressora térmica.</p>
 <div class="toast" id="toast" role="status"></div>
 <div class="folha-fundo" id="folha" hidden>
   <div class="folha" role="dialog" aria-modal="true" aria-labelledby="folhaTitulo" id="folhaCaixa"></div>
@@ -1039,8 +1041,28 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     PRODUTOS.forEach(function(p){ PROD[p.id] = p; });
     Object.keys(VARIANTES).forEach(function(id){ var b = PROD[id]; if (!b) return;
       VARIANTES[id].ops.forEach(function(o){ var v = {}; for (var k in b) v[k] = b[k]; v.id = id + '~' + o.k; v.base = id; v.s = o.s; v.p = o.p; v.nome = o.s; v.preco = b.preco + o.mais; v.op = o.rot; PROD[v.id] = v; }); });
+    gerarAdicionais();
   }
   var VARIANTES = {"calabresa": {"rot": "Tamanho", "ops": [{"k": "broto", "rot": "Broto · 4 fatias", "mais": 0, "s": "Pizza de calabresa broto", "p": "Pizzas de calabresa broto"}, {"k": "media", "rot": "Média · 6 fatias", "mais": 16, "s": "Pizza de calabresa média", "p": "Pizzas de calabresa médias"}, {"k": "grande", "rot": "Grande · 8 fatias", "mais": 28, "s": "Pizza de calabresa grande", "p": "Pizzas de calabresa grandes"}]}, "mucarela": {"rot": "Tamanho", "ops": [{"k": "broto", "rot": "Broto · 4 fatias", "mais": 0, "s": "Pizza de muçarela broto", "p": "Pizzas de muçarela broto"}, {"k": "media", "rot": "Média · 6 fatias", "mais": 16, "s": "Pizza de muçarela média", "p": "Pizzas de muçarela médias"}, {"k": "grande", "rot": "Grande · 8 fatias", "mais": 28, "s": "Pizza de muçarela grande", "p": "Pizzas de muçarela grandes"}]}, "margherita": {"rot": "Tamanho", "ops": [{"k": "broto", "rot": "Broto · 4 fatias", "mais": 0, "s": "Pizza margherita broto", "p": "Pizzas margherita broto"}, {"k": "media", "rot": "Média · 6 fatias", "mais": 16, "s": "Pizza margherita média", "p": "Pizzas margherita médias"}, {"k": "grande", "rot": "Grande · 8 fatias", "mais": 28, "s": "Pizza margherita grande", "p": "Pizzas margherita grandes"}]}, "napolitana": {"rot": "Tamanho", "ops": [{"k": "broto", "rot": "Broto · 4 fatias", "mais": 0, "s": "Pizza napolitana broto", "p": "Pizzas napolitanas broto"}, {"k": "media", "rot": "Média · 6 fatias", "mais": 16, "s": "Pizza napolitana média", "p": "Pizzas napolitanas médias"}, {"k": "grande", "rot": "Grande · 8 fatias", "mais": 28, "s": "Pizza napolitana grande", "p": "Pizzas napolitanas grandes"}]}, "pepperoni": {"rot": "Tamanho", "ops": [{"k": "broto", "rot": "Broto · 4 fatias", "mais": 0, "s": "Pizza de pepperoni broto", "p": "Pizzas de pepperoni broto"}, {"k": "media", "rot": "Média · 6 fatias", "mais": 16, "s": "Pizza de pepperoni média", "p": "Pizzas de pepperoni médias"}, {"k": "grande", "rot": "Grande · 8 fatias", "mais": 28, "s": "Pizza de pepperoni grande", "p": "Pizzas de pepperoni grandes"}]}, "tomatecereja": {"rot": "Tamanho", "ops": [{"k": "broto", "rot": "Broto · 4 fatias", "mais": 0, "s": "Pizza de tomate-cereja broto", "p": "Pizzas de tomate-cereja broto"}, {"k": "media", "rot": "Média · 6 fatias", "mais": 16, "s": "Pizza de tomate-cereja média", "p": "Pizzas de tomate-cereja médias"}, {"k": "grande", "rot": "Grande · 8 fatias", "mais": 28, "s": "Pizza de tomate-cereja grande", "p": "Pizzas de tomate-cereja grandes"}]}, "suprema": {"rot": "Tamanho", "ops": [{"k": "broto", "rot": "Broto · 4 fatias", "mais": 0, "s": "Pizza suprema da casa broto", "p": "Pizzas supremas da casa broto"}, {"k": "media", "rot": "Média · 6 fatias", "mais": 16, "s": "Pizza suprema da casa média", "p": "Pizzas supremas da casa médias"}, {"k": "grande", "rot": "Grande · 8 fatias", "mais": 28, "s": "Pizza suprema da casa grande", "p": "Pizzas supremas da casa grandes"}]}};
+  var ADICIONAIS = {"rot": "Adicionais", "itens": {"calabresa": 1, "mucarela": 1, "margherita": 1, "napolitana": 1, "pepperoni": 1, "tomatecereja": 1, "suprema": 1}, "ops": [{"k": "borda", "rot": "Borda de catupiry", "mais": 8}, {"k": "queijo", "rot": "Queijo extra", "mais": 6}]};
+  function temAdic(id){ return plano !== 'pro' && !!ADICIONAIS.itens[id]; }
+  function gerarAdicionais(){
+    Object.keys(ADICIONAIS.itens).forEach(function(id){ if (!PROD[id]) return;
+      var bases = VARIANTES[id] ? VARIANTES[id].ops.map(function(o){ return PROD[id + '~' + o.k]; }) : [PROD[id]];
+      var ops = ADICIONAIS.ops, n = ops.length;
+      bases.forEach(function(b){
+        for (var m = 1; m < (1 << n); m++) {
+          var sel = ops.filter(function(o, i){ return m & (1 << i); });
+          var v = {}; for (var k in b) v[k] = b[k];
+          var suf = sel.map(function(o){ return o.k; }).join('+'), txt = sel.map(function(o){ return o.rot.toLowerCase(); }).join(' + ');
+          v.id = (b.id === id ? id + '~' : b.id) + '+' + suf; v.base = id;
+          v.s = b.s + ' + ' + txt; v.p = (b.p || b.s) + ' + ' + txt; v.nome = (b.nome || b.s) + ' + ' + txt;
+          v.preco = b.preco + sel.reduce(function(t, o){ return t + o.mais; }, 0);
+          PROD[v.id] = v;
+        }
+      });
+    });
+  }
   var RECORTES = [];
   function recorte(p){ var m = /img\/([\w-]+)\.jpg$/.exec(p.img || ''); return m && RECORTES.indexOf(m[1]) >= 0 ? (window.RECORTE_SRC ? window.RECORTE_SRC[m[1]] : 'img/r/' + m[1] + '.webp') : ''; }
   aplicarCardapio();
@@ -1107,14 +1129,14 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
   var somLigado = true, aba = 'cliente', naoVistos = 0, ultimoImpresso = null;
   // ---------- planos (a demonstração muda conforme o plano escolhido no topo) ----------
   var PLANOS = {
-    pro:{nome:'PRO', mesas:6, produtos:30, auto:true, combos:false, lista:false, meus:false, selo:true, enc:false, tv:false, data:false, conta:false, garcom:false, dst:false, obs:false,
+    pro:{nome:'PRO', mesas:6, produtos:30, auto:true, combos:false, lista:false, meus:false, selo:true, enc:false, tv:false, data:false, conta:false, garcom:false, dst:false, obs:true,
       desc:'<b>PRO · R$ 129,90/mês.</b> Até 6 mesas e 30 produtos. Comanda impressa automaticamente. O cliente vê só o número do pedido. Selo "Feito por Octa Sites" no cardápio.'},
     premium:{nome:'PREMIUM', mesas:10, produtos:45, auto:true, combos:true, lista:false, meus:true, selo:false, enc:true, tv:false, data:false, conta:false, garcom:false, dst:false, obs:true,
       desc:'<b>PREMIUM · R$ 189,90/mês.</b> Até 10 mesas e 45 produtos. Adicionais e combos e encomendas com data. O cliente acompanha o preparo do pedido pelo celular.'},
-    max:{nome:'MAX', mesas:0, produtos:0, auto:true, combos:true, lista:true, meus:true, selo:false, enc:true, tv:false, data:true, conta:true, garcom:true, dst:true, obs:true,
-      desc:'<b>MAX · R$ 249,90/mês.</b> Tudo do Premium, sem limite de mesas e produtos, pedir a conta dividida e chamar o garçom pelo celular.'}
+    max:{nome:'OCTA COMPLETO', mesas:0, produtos:0, auto:true, combos:true, lista:true, meus:true, selo:false, enc:true, tv:false, data:true, conta:true, garcom:true, dst:true, obs:true,
+      desc:'<b>Octa Completo · R$ 199,90/mês.</b> Todos os recursos liberados, sem limite de mesas e produtos.'}
   };
-  var plano = 'premium';
+  var plano = 'max';
   function P(){ return PLANOS[plano]; }
 
   var canal = null;
@@ -1215,7 +1237,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
   }
   function blocoEncomenda(){
     var e = cli.enc, h = '<section class="encomenda" id="sec-encomendas" data-cat="encomendas" aria-labelledby="t-enc"><h3 id="t-enc">Encomendas com data marcada</h3>' +
-      '<p class="intro">Bolos inteiros, tortas, salgados e panetones para o seu dia especial. Preencha e envie: combinamos tudo pelo WhatsApp.</p><div class="campos">' +
+      '<p class="intro">Pizzas para festas e cento de mini pizzas com data marcada. Preencha e envie: combinamos tudo pelo WhatsApp.</p><div class="campos">' +
       campo('enc', 'nome', 'Seu nome', 'text', '', 'given-name') + campo('enc', 'tel', 'Telefone', 'tel', '(35) 9 0000-0000', 'tel') +
       '<div class="campo"><label for="c-enc-item">O que deseja encomendar</label><select id="c-enc-item" data-obj="enc" data-campo="item"><option value="">Escolha</option>' +
       itensEncomenda().map(function(x){ return '<option' + (e.item === x ? ' selected' : '') + '>' + esc(x) + '</option>'; }).join('') + '</select></div>' +
@@ -1284,7 +1306,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
         '<h3>' + (fechada ? 'Conta fechada' : 'Conta pedida!') + '</h3><p>' + (fechada ? 'Obrigado pela visita! Volte sempre.' : 'O garçom já vai até a Mesa ' + cli.mesa + (c.pagamento === 'dinheiro' ? ' com o troco.' : c.pagamento === 'pix' ? ' com o Pix.' : ' com a maquininha.')) + '</p>' +
         '<div class="c-resumo"><div><span>Total' + (c.servico ? ' (com 10% de serviço)' : '') + '</span><b>' + fmt(c.total) + '</b></div>' + (c.pessoas > 1 ? '<div><span>Dividido por ' + c.pessoas + '</span><b>' + fmt(c.porPessoa) + ' cada</b></div>' : '') +
         '<div><span>Pagamento</span><b>' + PAGC[c.pagamento] + '</b></div>' + (c.troco ? '<div><span>Troco para</span><b>' + trocoFmt(c.troco) + '</b></div>' : '') + '</div>' +
-        (fechada ? '' : '<p class="dica-painel">Na demonstração, toque em "Conta fechada" no painel da padaria e veja esta tela atualizar.</p>') +
+        (fechada ? '' : '<p class="dica-painel">Na demonstração, toque em "Conta fechada" no painel da loja e veja esta tela atualizar.</p>') +
         '<button type="button" class="btn-sec" data-acao="' + (fechada ? 'c-nova' : 'voltar') + '">Voltar ao cardápio</button></div></div>';
     }
     h += '<h3 style="font-size:15px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--vinho);margin:4px 0 6px;padding-bottom:8px;border-bottom:2px solid var(--ouro)">Conta da Mesa ' + cli.mesa + '</h3>';
@@ -1334,25 +1356,27 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     return '<button type="button" class="mini" data-acao="ver-prod" data-id="' + p.id + '"><span class="mini-foto">' + (r ? '<img src="' + r + '" alt="">' : '<img class="cheia" src="' + p.img + '" alt="">') + '</span><span class="mini-nome">' + esc(p.nome) + '</span></button>';
   }
   function cartaoLista(p){
-    var q = qtdBase(p.id), v = VARIANTES[p.id], ctrl;
+    var q = qtdBase(p.id), v = VARIANTES[p.id] || temAdic(p.id), ctrl;
     if (p.esgotado) ctrl = '<span class="selo-esg">Esgotado</span>';
     else if (v || !q) ctrl = '<button type="button" class="lst-add" data-acao="' + (v ? 'ver-prod' : 'mais') + '" data-id="' + p.id + '" aria-label="Adicionar ' + esc(p.nome) + '">' + (v && q ? '<span>' + q + '</span>' : '+') + '</button>';
     else ctrl = '<div class="lst-passo"><button type="button" data-acao="menos" data-id="' + p.id + '" aria-label="Remover um">−</button><output>' + q + '</output><button type="button" data-acao="mais" data-id="' + p.id + '" aria-label="Adicionar mais um">+</button></div>';
-    return '<article class="lst' + (p.esgotado ? ' esgotado' : '') + '"><div class="lst-abre" data-acao="ver-prod" data-id="' + p.id + '" role="button" tabindex="0" aria-label="Ver ' + esc(p.nome) + '"><img src="' + p.img + '" alt="" loading="lazy"><span class="lst-txt"><b>' + esc(p.nome) + '</b>' + (p.desc ? '<small>' + esc(p.desc) + '</small>' : '') + '<span class="lst-preco">' + (v ? 'a partir de ' : '') + fmt(p.preco) + '</span></span></div>' + ctrl + '</article>';
+    return '<article class="lst' + (p.esgotado ? ' esgotado' : '') + '"><div class="lst-abre" data-acao="ver-prod" data-id="' + p.id + '" role="button" tabindex="0" aria-label="Ver ' + esc(p.nome) + '"><img src="' + p.img + '" alt="" loading="lazy"><span class="lst-txt"><b>' + esc(p.nome) + '</b>' + (p.desc ? '<small>' + esc(p.desc) + '</small>' : '') + '<span class="lst-preco">' + (VARIANTES[p.id] ? 'a partir de ' : '') + fmt(p.preco) + '</span></span></div>' + ctrl + '</article>';
   }
   function cartao3d(p){
-    var r = recorte(p), q = qtdBase(p.id), v = VARIANTES[p.id];
+    var r = recorte(p), q = qtdBase(p.id), v = VARIANTES[p.id] || temAdic(p.id);
     var btn = p.esgotado ? '<span class="selo-esg">Esgotado</span>' : '<button type="button" class="c3-add" data-acao="' + (v ? 'ver-prod' : 'mais') + '" data-id="' + p.id + '" aria-label="Adicionar ' + esc(p.nome) + '">' + (q ? '<span>' + q + '</span>' : '+') + '</button>';
     return '<article class="c3' + (p.esgotado ? ' esgotado' : '') + '" data-cat="' + p.cat + '"><div class="c3-cartao" data-acao="ver-prod" data-id="' + p.id + '" role="button" tabindex="0" aria-label="Ver ' + esc(p.nome) + '">' +
       (r ? '<img class="c3-foto" src="' + r + '" alt="">' : '<img class="c3-foto cheia" src="' + p.img + '" alt="">') +
-      '<div class="c3-txt"><b>' + esc(p.nome) + '</b><small>' + esc(p.desc) + '</small><span class="c3-preco">' + (v ? 'a partir de ' : '') + fmt(p.preco) + '</span></div></div>' + btn + '</article>';
+      '<div class="c3-txt"><b>' + esc(p.nome) + '</b><small>' + esc(p.desc) + '</small><span class="c3-preco">' + (VARIANTES[p.id] ? 'a partir de ' : '') + fmt(p.preco) + '</span></div></div>' + btn + '</article>';
   }
   function telaProduto(){
     var p = PROD[cli.verProd]; if (!p) { cli.verProd = null; return ''; }
-    var v = VARIANTES[p.id], op = v ? (cli.opProd || v.ops[0].k) : null, alvo = v ? PROD[p.id + '~' + op] : p, qt = cli.qtdProd || 1;
+    var v = VARIANTES[p.id], op = v ? (cli.opProd || v.ops[0].k) : null, alvo = v ? PROD[p.id + '~' + op] : p, qt = cli.qtdProd || 1, ad = temAdic(p.id) ? (cli.adProd || []) : [];
+    if (ad.length) { var sufA = ADICIONAIS.ops.filter(function(o){ return ad.indexOf(o.k) >= 0; }).map(function(o){ return o.k; }).join('+'); alvo = PROD[(v ? alvo.id : p.id + '~') + '+' + sufA] || alvo; }
     var h = '<div class="prod-tela" role="dialog" aria-modal="true" aria-label="' + esc(p.nome) + '"><div class="prod-foto" style="background-image:url(\'' + p.img + '\')"><button type="button" class="voltar-prod" data-acao="fechar-prod" aria-label="Voltar ao cardápio">←</button></div>' +
       '<div class="prod-corpo"><h2>' + esc(p.nome) + '</h2><p>' + esc(p.desc) + '</p>';
     if (v) h += '<span class="rot">' + v.rot + '</span><div class="pilulas" role="group" aria-label="' + v.rot + '">' + v.ops.map(function(o){ return '<button type="button" data-acao="op" data-op="' + o.k + '" aria-pressed="' + (o.k === op) + '">' + o.rot + (o.mais ? ' <small>+' + fmt(o.mais) + '</small>' : '') + '</button>'; }).join('') + '</div>';
+    if (temAdic(p.id)) h += '<span class="rot">' + ADICIONAIS.rot + ' <small style="font-weight:600;text-transform:none;letter-spacing:0">(opcional)</small></span><div class="pilulas" role="group" aria-label="' + ADICIONAIS.rot + '">' + ADICIONAIS.ops.map(function(o){ return '<button type="button" data-acao="ad" data-op="' + o.k + '" aria-pressed="' + (ad.indexOf(o.k) >= 0) + '">' + o.rot + ' <small>+' + fmt(o.mais) + '</small></button>'; }).join('') + '</div>';
     if (!p.esgotado) h += '<span class="rot">Quantidade</span><div class="qtd-linha"><div class="passo"><button type="button" data-acao="qtd-menos" aria-label="Diminuir">−</button><output>' + qt + '</output><button type="button" data-acao="qtd-mais" aria-label="Aumentar">+</button></div><span class="preco-g">' + fmt(alvo.preco * qt) + '</span></div>';
     else h += '<p><b>Esgotado no momento.</b></p>';
     h += '</div>' + (p.esgotado ? '' : '<div class="prod-rodape"><button type="button" data-acao="add-prod" data-id="' + alvo.id + '">Adicionar ao pedido · ' + fmt(alvo.preco * qt) + '</button></div>') + '</div>';
@@ -1375,7 +1399,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
         h += '</div></div>';
       }
       h += '<button type="button" class="opcao" data-acao="modo" data-modo="viagem"><span class="ic" style="background:var(--viagem)">' + ICON.viagem + '</span><span><b>Para viagem</b><span>Peça e aguarde: chamamos você pelo nome</span></span></button>' +
-        '</div>' + (P().enc ? '<button type="button" class="ir-encomenda" data-acao="ir-encomenda">' + ICON.agenda + '<span><b>Encomendas com data marcada</b><span>Bolos inteiros, tortas e salgados para festas</span></span></button>' : '') + '</div>';
+        '</div>' + (P().enc ? '<button type="button" class="ir-encomenda" data-acao="ir-encomenda">' + ICON.agenda + '<span><b>Encomendas com data marcada</b><span>Pizzas para festas e cento de mini pizzas</span></span></button>' : '') + '</div>';
     }
     else if (cli.tela === 'cardapio') {
       var visiveis = CATS.filter(function(c){ return c.visivel && (c.id !== 'combos' || P().combos) && PRODUTOS.some(function(p){ return p.cat === c.id; }); });
@@ -1436,7 +1460,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
       var mesa = o.modo === 'mesa';
       if (!P().meus) {
         h += '<div class="rolagem"><div class="confirma so-numero"><div class="check"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></div><h3>Pedido enviado!</h3><p>O número do seu pedido é</p><span class="grande-num">' + o.id + '</span><p>' + (mesa ? 'Vamos levar até a Mesa ' + o.mesa + ' quando estiver pronto.' : 'Quando estiver pronto, chamamos ' + esc(o.nome) + ' pelo nome no balcão.') + '</p>' +
-          '<p class="dica-painel">No plano PRO, o cliente vê só o número do pedido. No Premium e no MAX, ele acompanha o preparo pelo celular.</p><button type="button" class="btn-sec" data-acao="novo">Fazer outro pedido</button></div></div>';
+          '<p class="dica-painel">O cliente acompanha o preparo do pedido pelo celular.</p><button type="button" class="btn-sec" data-acao="novo">Fazer outro pedido</button></div></div>';
         $('tela').innerHTML = h; mostrarAviso(); return;
       }
       var etapas = [
@@ -1453,7 +1477,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
         h += '<li class="' + cls + '"><span class="bola">' + (i < nivel ? '✓' : i + 1) + '</span><div><b>' + e[0] + '</b><span>' + e[1] + '</span></div></li>';
       });
       var nMeus = meusPedidos().length;
-      h += '</ol><p class="dica-painel">Na demonstração, mude o status no painel da padaria e veja esta tela atualizar.</p><button type="button" class="btn-sec" data-acao="novo">Fazer outro pedido</button>' +
+      h += '</ol><p class="dica-painel">Na demonstração, mude o status no painel da loja e veja esta tela atualizar.</p><button type="button" class="btn-sec" data-acao="novo">Fazer outro pedido</button>' +
         (P().lista && nMeus > 1 ? '<button type="button" class="btn-sec" data-acao="meus" style="border-color:var(--borda)">Ver todos os meus pedidos (' + nMeus + ')</button>' : '') + '</div></div>';
     }
     else if (cli.tela === 'meus' && !P().lista) { cli.tela = 'cardapio'; return renderCliente(); }
@@ -1551,9 +1575,10 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     else if (a === 'aba') { var ct = b.dataset.cat; if (ct === 'encomendas') { cli.yEnc = $('lista') ? $('lista').scrollTop : 0; cli.verEnc = true; renderCliente(); return; } var lt = $('lista'), sc = $('sec-' + ct), cs2 = $('cats'); if (lt) lt._alvo = ct; if (lt && sc) lt.scrollTo({top:sc.offsetTop - (cs2 ? cs2.offsetHeight : 0) - 6, behavior:'smooth'}); return; }
     else if (a === 'aba-inicio') { cli.painelMesa = false; cli.busca = ''; renderCliente(); var l0 = $('lista'); if (l0) l0.scrollTop = 0; return; }
     else if (a === 'mesa-painel') { cli.painelMesa = !cli.painelMesa; var ym = guardarRolagem(); renderCliente(); restaurarRolagem(ym); return; }
+    else if (a === 'ad') { cli.adProd = cli.adProd || []; var ik = cli.adProd.indexOf(b.dataset.op); if (ik >= 0) cli.adProd.splice(ik, 1); else cli.adProd.push(b.dataset.op); var yd = guardarRolagem(); renderCliente(); restaurarRolagem(yd); return; }
     else if (a === 'op') { cli.opProd = b.dataset.op; var yo = guardarRolagem(); renderCliente(); restaurarRolagem(yo); return; }
     else if (a === 'qtd-mais' || a === 'qtd-menos') { cli.qtdProd = Math.max(1, Math.min(20, (cli.qtdProd || 1) + (a === 'qtd-mais' ? 1 : -1))); var yq = guardarRolagem(); renderCliente(); restaurarRolagem(yq); return; }
-    else if (a === 'ver-prod') { cli.verProd = b.dataset.id; cli.opProd = null; cli.qtdProd = 1; var yv = guardarRolagem(); renderCliente(); restaurarRolagem(yv); var fv = document.querySelector('#tela .voltar-prod'); if (fv) fv.focus({preventScroll:true}); return; }
+    else if (a === 'ver-prod') { cli.verProd = b.dataset.id; cli.opProd = null; cli.adProd = []; cli.qtdProd = 1; var yv = guardarRolagem(); renderCliente(); restaurarRolagem(yv); var fv = document.querySelector('#tela .voltar-prod'); if (fv) fv.focus({preventScroll:true}); return; }
     else if (a === 'fechar-prod') { var idf = cli.verProd; cli.verProd = null; var yf = guardarRolagem(); renderCliente(); restaurarRolagem(yf); var vf = document.querySelector('#tela .nome-item[data-id="' + idf + '"]'); if (vf) vf.focus({preventScroll:true}); return; }
     else if (a === 'add-prod') { var ida = b.dataset.id; cli.carrinho[ida] = (cli.carrinho[ida] || 0) + (cli.qtdProd || 1); cli.verProd = null; toast(PROD[ida].nome + ' adicionado ao pedido.'); var ya = guardarRolagem(); renderCliente(); restaurarRolagem(ya); return; }
     else if (a === 'revisar') { cli.tela = 'revisao'; }
@@ -1568,7 +1593,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     else if (a === 'c-pmais' || a === 'c-pmenos') { cli.conta.pessoas = Math.max(1, Math.min(30, cli.conta.pessoas + (a === 'c-pmais' ? 1 : -1))); var yp = guardarRolagem(); renderCliente(); restaurarRolagem(yp); return; }
     else if (a === 'c-pag') { cli.conta.pag = b.dataset.v; var yg = guardarRolagem(); renderCliente(); restaurarRolagem(yg); return; }
     else if (a === 'c-enviar') { pedirConta(); return; }
-    else if (a === 'novo') { var enc = cli.enc; cli = novoCliente(); cli.enc = enc; }
+    else if (a === 'novo') { var enc = cli.enc, mdA = cli.modo, msA = cli.mesa; cli = novoCliente(); cli.enc = enc; if (mdA === 'mesa') { cli.modo = 'mesa'; cli.mesa = msA; } }
     renderCliente();
   });
   $('tela').addEventListener('keydown', function(e){ var b = e.target.closest('[role="button"][data-acao]'); if (b && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); b.click(); } });
@@ -1618,7 +1643,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     var card = document.querySelector('[data-pedido="' + o.id + '"]'); if (card) card.classList.add('novo-chegou');
     if (aba === 'cliente' && window.matchMedia('(max-width:1060px)').matches) {
       naoVistos++; var bl = $('bolinha'); bl.hidden = false; bl.textContent = naoVistos;
-      toast('Pedido nº ' + o.id + ' chegou no estabelecimento. Toque em "Painel da padaria" para ver.');
+      toast('Pedido nº ' + o.id + ' chegou no estabelecimento. Toque em "Painel da loja" para ver.');
     } else if (local) toast(P().auto ? 'Pedido nº ' + o.id + ' chegou no painel e a comanda foi impressa.' : 'Pedido nº ' + o.id + ' chegou no painel. No PRO, toque em "Imprimir" para a comanda sair.');
   }
   function bipChamado(){
@@ -1639,8 +1664,8 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     chVistos.push(c.id); bipChamado();
     var el = document.querySelector('[data-ch="' + c.id + '"]'); if (el) el.classList.add('chegou');
     var msg = 'Mesa ' + c.mesa + (c.tipo === 'conta' ? ' pediu a conta.' : ' chamou o garçom.');
-    if (aba === 'cliente' && window.matchMedia('(max-width:1060px)').matches) { naoVistos++; var bl = $('bolinha'); bl.hidden = false; bl.textContent = naoVistos; toast(msg + ' Toque em "Painel da padaria" para ver.'); }
-    else if (local && c.tipo === 'conta') toast(msg + ' Veja no painel da padaria.');
+    if (aba === 'cliente' && window.matchMedia('(max-width:1060px)').matches) { naoVistos++; var bl = $('bolinha'); bl.hidden = false; bl.textContent = naoVistos; toast(msg + ' Toque em "Painel da loja" para ver.'); }
+    else if (local && c.tipo === 'conta') toast(msg + ' Veja no painel da loja.');
     else if (!local) toast(msg);
   }
   var PAGP = {pix:'PIX', credito:'CARTÃO DE CRÉDITO', debito:'CARTÃO DE DÉBITO', dinheiro:'DINHEIRO'};
@@ -1769,7 +1794,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     var h = '<div class="ed"><p class="ed-intro"><b>Área de atualização do dono.</b> Tudo o que você salvar aqui aparece na hora no cardápio do cliente.</p>' + (P().produtos && PRODUTOS.length > P().produtos ? '<p class="limite-aviso">Este cardápio de exemplo tem ' + PRODUTOS.length + ' produtos. No plano ' + P().nome + ', o limite é ' + P().produtos + ': um cliente desse plano precisaria tirar alguns ou subir de plano.</p>' : '');
     // dados da loja
     h += '<section class="ed-bloco"><h3>Dados do estabelecimento</h3><div class="ed-corpo"><div class="dois">' +
-      '<div class="campo"><label for="ed-loja-nome">Nome da padaria</label><input id="ed-loja-nome" type="text" value="' + esc(card.loja.nome) + '" maxlength="40"></div>' +
+      '<div class="campo"><label for="ed-loja-nome">Nome da loja</label><input id="ed-loja-nome" type="text" value="' + esc(card.loja.nome) + '" maxlength="40"></div>' +
       '<div class="campo"><label for="ed-loja-whats">WhatsApp das encomendas</label><input id="ed-loja-whats" type="tel" inputmode="tel" value="' + esc(card.loja.whats) + '" placeholder="55 + DDD + número"></div></div>' +
       '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><button type="button" class="ed-btn prim" data-ed="salvar-loja">Salvar dados da loja</button><span class="ed-salvo" id="salvoLoja" hidden>Salvo</span></div>' +
       (P().conta ? '<div style="border-top:1px solid var(--linha);padding-top:12px">' + chave('ed-servico', dados.servico, 'Cobrar taxa de serviço (10%) na conta da mesa', false, ' data-ed="servico"') + '<p style="margin:6px 0 0;color:var(--suave);font-size:12.5px">Ligada, a conta pedida pelo celular mostra os 10% já marcados, e o cliente pode desmarcar (a taxa é opcional).</p></div>' : '') + '</div></section>';
@@ -1832,7 +1857,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
     var a = b.dataset.ed, id = b.dataset.id;
     if (a === 'salvar-loja') {
       var nome = $('ed-loja-nome').value.trim(), w = $('ed-loja-whats').value.replace(/\D/g, '');
-      if (!nome) { toast('Coloque o nome da padaria.'); $('ed-loja-nome').focus(); return; }
+      if (!nome) { toast('Coloque o nome da loja.'); $('ed-loja-nome').focus(); return; }
       if (w.length < 12) { toast('WhatsApp incompleto: use 55 + DDD + número, só os dígitos.'); $('ed-loja-whats').focus(); return; }
       card.loja.nome = nome; card.loja.whats = w;
       if (aposMudarCardapio('Dados da loja salvos.')) { var sv = $('salvoLoja'); if (sv) sv.hidden = false; }
@@ -2106,7 +2131,7 @@ body > *:not(.palco):not(.toast):not(script):not(style):not(#toast):not(.faixa-p
 })();
 </script>
 <script>window.addEventListener('load',function(){setTimeout(function(){
- var b=document.querySelector('[data-plano="premium"]'); if(b) b.click();
+ var b=document.querySelector('[data-plano="max"]'); if(b) b.click();
  var sel=document.getElementById('qrLocal'); if(sel){ for(var i=0;i<sel.options.length;i++){ if(sel.options[i].value==="4"){ sel.selectedIndex=i; sel.dispatchEvent(new Event('change',{bubbles:true})); break; } } }
  var t=document.getElementById('toast'); if(t){ t.classList.remove('on'); }
 },30);});</script>
