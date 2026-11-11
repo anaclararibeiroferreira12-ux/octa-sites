@@ -98,6 +98,33 @@ h1 em{font-style:normal;color:var(--roxo)}
 .aviso.a2 i{background:var(--verde-claro);color:var(--verde)}
 @keyframes flutua{50%{transform:translateY(-6px)}}
 @media(min-width:900px){.aviso.a1{right:-2%}.aviso.a2{left:4%}}
+/* topo: historia em 3 passos (QR code -> pedido -> cozinha), ciclo de 12s */
+.topo-visual{flex-direction:column;align-items:center;gap:18px}
+.aviso.a1{animation:hist-a 12s ease-in-out infinite}
+.aviso.a2{animation:hist-a 12s ease-in-out .7s infinite}
+@keyframes hist-a{0%,68%{opacity:0;transform:translateY(10px) scale(.94)}72%,96%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-6px)}}
+.hist-qr{position:absolute;inset:9px;border-radius:36px;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:linear-gradient(160deg,#2A1A52,#150D2B);color:#fff;text-align:center;animation:hist-qr 12s ease-in-out infinite}
+.hist-qr .cartao{position:relative;background:#fff;border-radius:18px;padding:14px;width:62%;box-shadow:0 18px 30px -14px rgba(0,0,0,.6);overflow:hidden}
+.hist-qr .cartao svg{display:block;width:100%;height:auto}
+.hist-qr .cartao::after{content:"";position:absolute;left:8%;right:8%;top:10%;height:3px;border-radius:3px;background:var(--roxo-claro);box-shadow:0 0 14px 3px rgba(139,92,246,.7);animation:hist-scan 1.6s ease-in-out infinite alternate}
+.hist-qr b{font-size:15px;letter-spacing:.14em}
+.hist-qr small{font-size:12.5px;opacity:.8;max-width:70%;line-height:1.35}
+@keyframes hist-scan{to{top:86%}}
+@keyframes hist-qr{0%,29%{opacity:1;transform:none}33%,96%{opacity:0;transform:scale(1.06)}100%{opacity:1;transform:none}}
+.hist-toque{position:absolute;right:16%;bottom:39%;width:44px;height:44px;border-radius:50%;z-index:2;border:3px solid #fff;background:rgba(255,255,255,.35);opacity:0;animation:hist-toque 12s ease-out infinite}
+@keyframes hist-toque{0%,37%{opacity:0;transform:scale(.5)}40%{opacity:1;transform:scale(1)}45%,100%{opacity:0;transform:scale(1.7)}}
+.hist-ok{position:absolute;left:9%;right:9%;bottom:13%;z-index:2;display:flex;align-items:center;gap:8px;justify-content:center;background:#16A34A;color:#fff;font-weight:700;font-size:13px;border-radius:14px;padding:11px 10px;box-shadow:0 12px 22px -10px rgba(22,163,74,.9);opacity:0;animation:hist-ok 12s ease-in-out infinite}
+.hist-ok svg{width:16px;height:16px;flex:none}
+@keyframes hist-ok{0%,43%{opacity:0;transform:translateY(14px)}47%,64%{opacity:1;transform:none}68%,100%{opacity:0;transform:translateY(-8px)}}
+.aviso.a2{bottom:130px}@media(min-width:900px){.aviso.a2{bottom:120px}}
+.hist-passos{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;list-style:none;padding:0;margin:0}
+.hist-passos li{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--tinta-2);background:#fff;border:1.5px solid var(--linha);border-radius:999px;padding:7px 12px 7px 7px;animation:hist-p 12s linear infinite}
+.hist-passos li i{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--lilas-1);color:var(--roxo);font-style:normal;font-size:12px}
+.hist-passos li:nth-child(2){animation-delay:4s}
+.hist-passos li:nth-child(3){animation-delay:8s}
+@keyframes hist-p{0%,31%{background:var(--roxo);border-color:var(--roxo);color:#fff}35%,100%{background:#fff;border-color:var(--linha);color:var(--tinta-2)}}
+@media(prefers-reduced-motion:reduce){.hist-qr,.hist-toque,.hist-ok{display:none}.aviso.a1,.aviso.a2,.hist-passos li,.hist-qr .cartao::after{animation:none}}
+
 
 /* celular realista */
 .celular{position:relative;aspect-ratio:9/19.5;border-radius:44px;padding:9px;background:linear-gradient(145deg,#2A2633,#0E0C12 60%,#24202C);box-shadow:inset 0 0 0 1.5px #4A4555,inset 0 0 0 3px #0B0A0E,0 24px 40px -18px rgba(30,21,51,.55)}
@@ -454,9 +481,10 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
       </div>
     </div>
     <div class="topo-visual" aria-hidden="true">
-      <div class="celular"><div class="ilha"></div><div class="tela"><div class="status"><b>9:41</b><span><svg viewBox="0 0 18 12" fill="#111"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" fill="#111"><path d="M8 2.5c2.3 0 4.4.9 6 2.4l1.3-1.3A10.3 10.3 0 0 0 8 .6 10.3 10.3 0 0 0 .7 3.6L2 4.9a8.5 8.5 0 0 1 6-2.4zm0 3.6c1.3 0 2.5.5 3.4 1.3l1.3-1.3A6.6 6.6 0 0 0 8 4.2c-1.8 0-3.5.7-4.7 1.9l1.3 1.3c.9-.8 2.1-1.3 3.4-1.3zM8 9.6l2-2a2.8 2.8 0 0 0-4 0z"/></svg><svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="#111" opacity=".5"/><rect x="2" y="2" width="17" height="8" rx="1.8" fill="#111"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" fill="#111" opacity=".5"/></svg></span></div><img src="demos/hamburgueria/tela.jpg" alt=""></div></div>
+      <div class="celular"><div class="ilha"></div><div class="hist-qr"><b>MESA 4</b><div class="cartao"><svg viewBox="0 0 21 21" shape-rendering="crispEdges" fill="#1E1533"><path d="M0 0h7v7H0zM1 1v5h5V1zM2 2h3v3H2zM14 0h7v7h-7zM15 1v5h5V1zM16 2h3v3h-3zM0 14h7v7H0zM1 15v5h5v-5zM2 16h3v3H2z" fill-rule="evenodd"/><path d="M8 0h1v2H8zM10 1h2v1h-2zM9 3h1v2H9zM11 3h2v1h-2zM8 6h2v1H8zM12 5h1v3h-1zM0 8h2v1H0zM3 9h2v1H3zM6 8h1v2H6zM8 8h3v1H8zM14 8h2v1h-2zM18 8h3v1h-3zM1 11h3v1H1zM5 11h2v2H5zM9 10h2v2H9zM13 10h1v3h-1zM16 10h2v1h-2zM19 11h2v1h-2zM8 13h2v1H8zM11 13h1v2h-1zM15 12h2v2h-2zM9 15h3v1H9zM14 15h1v2h-1zM17 15h4v1h-4zM8 17h2v2H8zM11 18h2v1h-2zM16 17h2v2h-2zM19 18h2v3h-2zM9 20h3v1H9zM13 19h2v2h-2z"/></svg></div><small>O cliente aponta a câmera para o QR code da mesa</small></div><i class="hist-toque"></i><div class="hist-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Pedido enviado</div><div class="tela"><div class="status"><b>9:41</b><span><svg viewBox="0 0 18 12" fill="#111"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" fill="#111"><path d="M8 2.5c2.3 0 4.4.9 6 2.4l1.3-1.3A10.3 10.3 0 0 0 8 .6 10.3 10.3 0 0 0 .7 3.6L2 4.9a8.5 8.5 0 0 1 6-2.4zm0 3.6c1.3 0 2.5.5 3.4 1.3l1.3-1.3A6.6 6.6 0 0 0 8 4.2c-1.8 0-3.5.7-4.7 1.9l1.3 1.3c.9-.8 2.1-1.3 3.4-1.3zM8 9.6l2-2a2.8 2.8 0 0 0-4 0z"/></svg><svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="#111" opacity=".5"/><rect x="2" y="2" width="17" height="8" rx="1.8" fill="#111"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" fill="#111" opacity=".5"/></svg></span></div><img src="demos/hamburgueria/tela.jpg" alt=""></div></div>
       <div class="aviso a1"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></i><span><b>Novo pedido · Mesa 4</b>2 smash + 1 refri</span></div>
       <div class="aviso a2"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></i><span><b>Comanda impressa</b>direto na cozinha</span></div>
+      <ol class="hist-passos"><li><i>1</i>Aponta o QR code</li><li><i>2</i>Pede pelo celular</li><li><i>3</i>Chega na cozinha</li></ol>
     </div>
   </div>
 </section>
