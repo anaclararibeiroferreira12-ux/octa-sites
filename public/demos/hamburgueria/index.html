@@ -54,6 +54,31 @@ button,input,select,textarea{font-family:inherit}
 .guia-in li{display:flex;align-items:center;gap:8px}
 .guia-in li span{width:24px;height:24px;border-radius:50%;background:var(--ouro);color:var(--vinho-esc);font-weight:700;font-size:12px;display:inline-flex;align-items:center;justify-content:center}
 .guia-in .curto{display:none}
+/* guia passo a passo (computador): acompanha o que a pessoa faz */
+.guia-vivo{display:none}
+@media (min-width:1061px){
+  .guia{position:sticky;top:64px;z-index:35;box-shadow:0 8px 16px -14px rgba(10,10,10,.5)}
+  .guia-in > strong,.guia-in > .curto,.guia-in > ol:not(.guia-vivo){display:none}
+  .guia-vivo{display:flex;align-items:center;gap:8px;width:100%;margin:0;padding:0;list-style:none}
+  .guia-vivo li{flex:1 1 0;display:flex;align-items:center;gap:10px;min-width:0;padding:9px 12px;border-radius:14px;border:1.5px solid transparent;font-size:13.5px;line-height:1.25;color:var(--suave);background:rgba(255,255,255,.5)}
+  .guia-vivo li i{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:13px;background:#E7DFCB;color:#6B6252}
+  .guia-vivo li span{display:block;width:auto;height:auto;min-width:0;border-radius:0;background:none;color:inherit;font-weight:400;font-size:inherit;text-align:left}
+  .guia-vivo li b{display:block;color:inherit}
+  .guia-vivo li.atual{background:#fff;border-color:var(--ouro);color:var(--texto);box-shadow:0 8px 18px -12px rgba(10,10,10,.45)}
+  .guia-vivo li.atual i{background:var(--ouro);color:var(--vinho-esc);animation:gv-pulso 1.4s ease-in-out infinite}
+  .guia-vivo li.feito{color:#1F6B45}
+  .guia-vivo li.feito i{background:#1F6B45;color:#fff;font-size:0}
+  .guia-vivo li.feito i::before{content:"✓";font-size:14px}
+  @keyframes gv-pulso{50%{box-shadow:0 0 0 7px rgba(232,177,58,.28)}}
+  .guia-fim{display:none;width:100%;align-items:center;gap:12px;font-size:14.5px;color:var(--texto)}
+  .guia-fim b{color:#1F6B45}
+  .guia-fim button{margin-left:auto;border:1.5px solid var(--borda);background:#fff;border-radius:999px;padding:8px 14px;font:inherit;font-weight:700;font-size:13px;cursor:pointer}
+  .guia.fim .guia-vivo{display:none}.guia.fim .guia-fim{display:flex}
+  body[data-gv="1"] .aparelho,body[data-gv="2"] .aparelho,body[data-gv="3"] .lado-painel .painel,body[data-gv="4"] .lado-painel .painel{outline:3px solid var(--ouro);outline-offset:5px;transition:outline-color .3s}
+  .lado-cliente{top:142px}
+  .tela{height:min(800px,calc(100vh - 250px));min-height:440px}
+}
+@media (prefers-reduced-motion:reduce){.guia-vivo li.atual i{animation:none}}
 .abas{display:none;position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--creme-2);padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));gap:8px}
 .abas button{flex:1;min-height:46px;border-radius:12px;border:1.5px solid var(--borda);background:var(--branco);font-weight:700;font-size:14px;color:var(--texto);cursor:pointer;position:relative}
 .abas button[aria-selected="true"]{background:var(--vinho);border-color:var(--vinho);color:#fff}
@@ -94,7 +119,7 @@ button,input,select,textarea{font-family:inherit}
 .qr-local select{flex:1;min-height:40px;border:1.5px solid var(--borda);border-radius:10px;background:#fff;padding:0 10px;font-weight:600;font-size:14px;color:var(--texto)}
 .qr-local small{font-weight:600;white-space:nowrap}
 @media (max-width:600px){.qr-local{padding:0 12px}}
-.selo-octa{margin:18px 12px 10px;text-align:center;font-size:12px;color:var(--suave);border-top:1px solid var(--linha);padding-top:12px}
+.selo-octa{margin:18px 12px 10px;text-align:center;font-size:11px;opacity:.6;color:var(--suave);border-top:1px solid var(--linha);padding-top:12px}
 .selo-octa b{color:#5B2A86}
 .faixa-data{margin:12px 12px 4px;border-radius:16px;padding:14px;background:linear-gradient(135deg,#7A1F1F,#B4372A);color:#fff;display:flex;gap:12px;align-items:center}
 .faixa-data .ic{font-size:26px;line-height:1}
@@ -1088,6 +1113,13 @@ html.so-cliente-loja .btn-ver-painel{display:none!important}
       <li><span>4</span>Marque como pronto e entregue</li>
       <li><span>5</span>Edite o cardápio na aba "Cardápio" do painel</li>
     </ol>
+    <ol class="guia-vivo" id="guiaVivo" aria-live="polite">
+      <li><i>1</i><span><b>Escolha um produto</b>no celular, aqui à esquerda</span></li>
+      <li><i>2</i><span><b>Envie o pedido</b>toque em "Ver pedido" e confirme</span></li>
+      <li><i>3</i><span><b>Veja chegar no painel</b>a comanda sai sozinha na impressora</span></li>
+      <li><i>4</i><span><b>Marque como pronto</b>no painel, à direita</span></li>
+    </ol>
+    <div class="guia-fim"><span><b>Pronto!</b> Foi assim que o pedido saiu do celular e chegou na cozinha, sem ninguém anotar nada.</span><button type="button" id="guiaDeNovo">Fazer outro pedido</button></div>
   </div>
 </div>
 
@@ -1336,10 +1368,10 @@ html.so-cliente-loja .btn-ver-painel{display:none!important}
   // ---------- planos (a demonstração muda conforme o plano escolhido no topo) ----------
   var PLANOS = {
     pro:{nome:'PRO', mesas:6, produtos:30, auto:true, lista:false, meus:false, selo:true, enc:false, tv:false, data:false, conta:false, garcom:false, dst:false, obs:true,
-      desc:'<b>PRO · R$ 129,90/mês.</b> Até 6 mesas e 30 produtos. Comanda impressa automaticamente. O cliente vê só o número do pedido. Selo "Feito por Octa Sites" no cardápio.'},
-    premium:{nome:'PREMIUM', mesas:10, produtos:45, auto:true, lista:false, meus:true, selo:false, enc:true, tv:false, data:false, conta:false, garcom:false, dst:false, obs:true,
+      desc:'<b>PRO · R$ 129,90/mês.</b> Até 6 mesas e 30 produtos. Comanda impressa automaticamente. O cliente vê só o número do pedido.'},
+    premium:{nome:'PREMIUM', mesas:10, produtos:45, auto:true, lista:false, meus:true, selo:true, enc:true, tv:false, data:false, conta:false, garcom:false, dst:false, obs:true,
       desc:'<b>PREMIUM · R$ 189,90/mês.</b> Até 10 mesas e 45 produtos. Adicionais e combos e encomendas com data. O cliente acompanha o preparo do pedido pelo celular.'},
-    max:{nome:'OCTA COMPLETO', mesas:0, produtos:0, auto:true, lista:true, meus:true, selo:false, enc:true, tv:false, data:true, conta:true, garcom:true, dst:true, obs:true,
+    max:{nome:'OCTA COMPLETO', mesas:0, produtos:0, auto:true, lista:true, meus:true, selo:true, enc:true, tv:false, data:true, conta:true, garcom:true, dst:true, obs:true,
       desc:'<b>Octa Completo · R$ 199,90/mês.</b> Todos os recursos liberados, sem limite de mesas e produtos.'}
   };
   var plano = 'max';
@@ -2524,6 +2556,28 @@ html.so-cliente-loja .btn-ver-painel{display:none!important}
     setTimeout(sair, reduz ? 900 : 1900);
   }
   abertura(false);
+  // ---------- guia passo a passo (computador) ----------
+  (function(){
+    var ol = $('guiaVivo'); if (!ol) return;
+    var guia = ol.closest('.guia'), lis = ol.querySelectorAll('li'), base = dados.prox, visto = 0, ant = -1;
+    function meu(){ var r = null; dados.pedidos.forEach(function(o){ if (o.id >= base && dados.meus.indexOf(o.id) >= 0) r = o; }); return r; }
+    function passo(){
+      if (dados.prox < base) { base = dados.prox; visto = 0; }
+      var o = meu();
+      if (!o) { visto = 0; return qtdCarrinho() > 0 ? 2 : 1; }
+      if (o.status !== 'novo') return 5;
+      if (!visto) visto = Date.now();
+      return Date.now() - visto < 5000 ? 3 : 4;
+    }
+    function pintar(){
+      var n = passo(); if (n === ant) return; ant = n;
+      for (var i = 0; i < lis.length; i++) lis[i].className = i + 1 < n ? 'feito' : (i + 1 === n ? 'atual' : '');
+      guia.classList.toggle('fim', n === 5);
+      if (n === 5) document.body.removeAttribute('data-gv'); else document.body.setAttribute('data-gv', n);
+    }
+    var bt = $('guiaDeNovo'); if (bt) bt.addEventListener('click', function(){ base = dados.prox; visto = 0; pintar(); });
+    pintar(); setInterval(pintar, 400);
+  })();
 })();
 </script>
 <script>window.addEventListener('load',function(){setTimeout(function(){
