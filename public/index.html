@@ -98,32 +98,61 @@ h1 em{font-style:normal;color:var(--roxo)}
 .aviso.a2 i{background:var(--verde-claro);color:var(--verde)}
 @keyframes flutua{50%{transform:translateY(-6px)}}
 @media(min-width:900px){.aviso.a1{right:-2%}.aviso.a2{left:4%}}
-/* topo: historia em 3 passos (QR code -> pedido -> cozinha), ciclo de 12s */
+/* topo: curta-metragem (QR code -> cardapio -> pedido -> cozinha), ciclo de 16s */
 .topo-visual{flex-direction:column;align-items:center;gap:18px}
-.aviso.a1{animation:hist-a 12s ease-in-out infinite}
-.aviso.a2{animation:hist-a 12s ease-in-out .7s infinite}
-@keyframes hist-a{0%,68%{opacity:0;transform:translateY(10px) scale(.94)}72%,96%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-6px)}}
-.hist-qr{position:absolute;inset:9px;border-radius:36px;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:linear-gradient(160deg,#2A1A52,#150D2B);color:#fff;text-align:center;animation:hist-qr 12s ease-in-out infinite}
-.hist-qr .cartao{position:relative;background:#fff;border-radius:18px;padding:14px;width:62%;box-shadow:0 18px 30px -14px rgba(0,0,0,.6);overflow:hidden}
-.hist-qr .cartao svg{display:block;width:100%;height:auto}
-.hist-qr .cartao::after{content:"";position:absolute;left:8%;right:8%;top:10%;height:3px;border-radius:3px;background:var(--roxo-claro);box-shadow:0 0 14px 3px rgba(139,92,246,.7);animation:hist-scan 1.6s ease-in-out infinite alternate}
-.hist-qr b{font-size:15px;letter-spacing:.14em}
-.hist-qr small{font-size:12.5px;opacity:.8;max-width:70%;line-height:1.35}
-@keyframes hist-scan{to{top:86%}}
-@keyframes hist-qr{0%,29%{opacity:1;transform:none}33%,96%{opacity:0;transform:scale(1.06)}100%{opacity:1;transform:none}}
-.hist-toque{position:absolute;right:16%;bottom:39%;width:44px;height:44px;border-radius:50%;z-index:2;border:3px solid #fff;background:rgba(255,255,255,.35);opacity:0;animation:hist-toque 12s ease-out infinite}
-@keyframes hist-toque{0%,37%{opacity:0;transform:scale(.5)}40%{opacity:1;transform:scale(1)}45%,100%{opacity:0;transform:scale(1.7)}}
-.hist-ok{position:absolute;left:9%;right:9%;bottom:13%;z-index:2;display:flex;align-items:center;gap:8px;justify-content:center;background:#16A34A;color:#fff;font-weight:700;font-size:13px;border-radius:14px;padding:11px 10px;box-shadow:0 12px 22px -10px rgba(22,163,74,.9);opacity:0;animation:hist-ok 12s ease-in-out infinite}
+.hist-qr,.hist-coz{position:absolute;inset:9px;border-radius:36px;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:#fff;text-align:center;overflow:hidden}
+.hist-qr{background:linear-gradient(160deg,#3B3345,#17141C);animation:hist-qr 16s ease-in-out infinite}
+.hist-qr .mesa{position:relative;background:#fff;color:#1E1533;border-radius:16px;padding:12px 12px 10px;width:58%;box-shadow:0 18px 30px -14px rgba(0,0,0,.7);transform:rotate(3deg)}
+.hist-qr .mesa svg{display:block;width:100%;height:auto}
+.hist-qr .mesa b{display:block;font-size:13px;letter-spacing:.14em;margin-top:8px}
+.hist-qr .mira{position:absolute;left:14%;right:14%;top:24%;bottom:30%;border-radius:22px;box-shadow:0 0 0 2000px rgba(10,8,14,.35)}
+.hist-qr .mira::before,.hist-qr .mira::after{content:"";position:absolute;inset:0;border-radius:22px;border:3px solid #fff;clip-path:polygon(0 0,22% 0,22% 100%,0 100%,0 0,78% 0,100% 0,100% 100%,78% 100%,78% 0);}
+.hist-qr .mira::after{border:0;inset:auto 6% auto 6%;top:8%;height:3px;border-radius:3px;background:var(--roxo-claro);box-shadow:0 0 14px 3px rgba(139,92,246,.8);clip-path:none;animation:hist-scan 1.3s ease-in-out infinite alternate}
+.hist-qr small{position:absolute;bottom:9%;left:8%;right:8%;font-size:12.5px;line-height:1.35}
+.hist-qr .link{position:absolute;top:7%;left:10%;right:10%;background:#fff;color:#1E1533;border-radius:12px;padding:8px 10px;font-size:11.5px;font-weight:700;box-shadow:0 10px 20px -10px rgba(0,0,0,.7);opacity:0;animation:hist-link 16s ease-out infinite}
+@keyframes hist-scan{to{top:88%}}
+@keyframes hist-qr{0%,19%{opacity:1;transform:none}23%,97%{opacity:0;transform:scale(1.08)}100%{opacity:1;transform:none}}
+@keyframes hist-link{0%,10%{opacity:0;transform:translateY(-12px)}13%,100%{opacity:1;transform:none}}
+.hist-toque{position:absolute;width:44px;height:44px;border-radius:50%;z-index:4;border:3px solid #fff;background:rgba(255,255,255,.4);box-shadow:0 0 0 2px rgba(30,21,51,.25);opacity:0}
+.hist-toque.t1{right:15%;bottom:40%;animation:hist-t1 16s ease-out infinite}
+.hist-toque.t2{right:20%;bottom:12.5%;animation:hist-t2 16s ease-out infinite}
+@keyframes hist-t1{0%,28%{opacity:0;transform:scale(.5)}31%,33%{opacity:1;transform:scale(1)}37%,100%{opacity:0;transform:scale(1.7)}}
+@keyframes hist-t2{0%,47%{opacity:0;transform:scale(.5)}50%,52%{opacity:1;transform:scale(1)}56%,100%{opacity:0;transform:scale(1.7)}}
+.hist-sacola{position:absolute;left:8%;right:8%;bottom:12%;z-index:2;display:flex;align-items:center;gap:8px;background:#7A1220;color:#fff;border-radius:16px;padding:11px 12px;font-size:12px;line-height:1.2;box-shadow:0 14px 24px -10px rgba(60,10,20,.9);opacity:0;animation:hist-sac 16s ease-in-out infinite}
+.hist-sacola b{display:block;font-size:13px}
+.hist-sacola span{flex:1;text-align:left}
+.hist-sacola em{font-style:normal;font-weight:800;background:#F2C14E;color:#3A1A08;border-radius:10px;padding:7px 9px;font-size:11.5px;white-space:nowrap}
+@keyframes hist-sac{0%,34%{opacity:0;transform:translateY(20px)}38%,54%{opacity:1;transform:none}57%,100%{opacity:0;transform:scale(.96)}}
+.hist-ok{position:absolute;left:9%;right:9%;bottom:12%;z-index:2;display:flex;align-items:center;gap:8px;justify-content:center;background:#16A34A;color:#fff;font-weight:700;font-size:13px;border-radius:14px;padding:12px 10px;box-shadow:0 12px 22px -10px rgba(22,163,74,.9);opacity:0;animation:hist-ok 16s ease-in-out infinite}
 .hist-ok svg{width:16px;height:16px;flex:none}
-@keyframes hist-ok{0%,43%{opacity:0;transform:translateY(14px)}47%,64%{opacity:1;transform:none}68%,100%{opacity:0;transform:translateY(-8px)}}
+@keyframes hist-ok{0%,55%{opacity:0;transform:translateY(14px)}58%,66%{opacity:1;transform:none}69%,100%{opacity:0;transform:translateY(-8px)}}
+.hist-coz{justify-content:flex-start;padding:22% 9% 0;gap:10px;background:linear-gradient(170deg,#211B3A,#120E22);opacity:0;animation:hist-coz 16s ease-in-out infinite}
+.hist-coz > b{font-size:11px;letter-spacing:.16em;opacity:.75}
+.hist-coz .card{width:100%;background:#fff;color:#1E1533;border-radius:14px;padding:10px 12px;text-align:left;font-size:11.5px;line-height:1.35;border:2px solid var(--roxo-claro);animation:hist-card 16s ease-out infinite}
+.hist-coz .card b{display:flex;align-items:center;gap:6px;font-size:13px}
+.hist-coz .card b i{font-style:normal;font-size:9.5px;font-weight:800;letter-spacing:.06em;background:var(--roxo);color:#fff;border-radius:6px;padding:2px 6px}
+.hist-coz .imp{position:relative;width:86%;margin-top:6px}
+.hist-coz .imp::before{content:"";display:block;height:26px;border-radius:10px;background:linear-gradient(#3A3644,#1B1822);box-shadow:inset 0 -9px 0 -6px #0B0A0E}
+.hist-coz .papel{margin:-6px auto 0;width:78%;background:#fff;color:#111;font:700 9.5px/1.5 ui-monospace,Menlo,Consolas,monospace;text-align:left;padding:8px 9px 10px;border-radius:0 0 4px 4px;transform-origin:top;animation:hist-papel 16s ease-out infinite}
+.hist-coz .papel b{display:block;text-align:center;font-size:12px;border-bottom:1px dashed #999;margin-bottom:4px;padding-bottom:3px}
+@keyframes hist-coz{0%,68%{opacity:0;transform:translateX(30px)}71%,96%{opacity:1;transform:none}100%{opacity:0}}
+@keyframes hist-card{0%,72%{opacity:0;transform:translateY(-14px)}76%,100%{opacity:1;transform:none}}
+@keyframes hist-papel{0%,78%{clip-path:inset(0 0 100% 0)}90%,100%{clip-path:inset(0 0 0 0)}}
+.aviso.a1{display:none}
+.aviso.a2{animation:hist-a2 16s ease-in-out infinite}
+@keyframes hist-a1{0%,73%{opacity:0;transform:translateY(10px) scale(.94)}77%,96%{opacity:1;transform:none}100%{opacity:0}}
+@keyframes hist-a2{0%,86%{opacity:0;transform:translateY(10px) scale(.94)}90%,96%{opacity:1;transform:none}100%{opacity:0}}
 .aviso.a2{bottom:130px}@media(min-width:900px){.aviso.a2{bottom:120px}}
 .hist-passos{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;list-style:none;padding:0;margin:0}
-.hist-passos li{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--tinta-2);background:#fff;border:1.5px solid var(--linha);border-radius:999px;padding:7px 12px 7px 7px;animation:hist-p 12s linear infinite}
+.hist-passos li{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--tinta-2);background:#fff;border:1.5px solid var(--linha);border-radius:999px;padding:7px 12px 7px 7px}
 .hist-passos li i{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--lilas-1);color:var(--roxo);font-style:normal;font-size:12px}
-.hist-passos li:nth-child(2){animation-delay:4s}
-.hist-passos li:nth-child(3){animation-delay:8s}
-@keyframes hist-p{0%,31%{background:var(--roxo);border-color:var(--roxo);color:#fff}35%,100%{background:#fff;border-color:var(--linha);color:var(--tinta-2)}}
-@media(prefers-reduced-motion:reduce){.hist-qr,.hist-toque,.hist-ok{display:none}.aviso.a1,.aviso.a2,.hist-passos li,.hist-qr .cartao::after{animation:none}}
+.hist-passos li:nth-child(1){animation:hist-p1 16s linear infinite}
+.hist-passos li:nth-child(2){animation:hist-p2 16s linear infinite}
+.hist-passos li:nth-child(3){animation:hist-p3 16s linear infinite}
+@keyframes hist-p1{0%,20%{background:var(--roxo);border-color:var(--roxo);color:#fff}23%,100%{background:#fff;border-color:var(--linha);color:var(--tinta-2)}}
+@keyframes hist-p2{0%,20%,69%,100%{background:#fff;border-color:var(--linha);color:var(--tinta-2)}23%,66%{background:var(--roxo);border-color:var(--roxo);color:#fff}}
+@keyframes hist-p3{0%,66%{background:#fff;border-color:var(--linha);color:var(--tinta-2)}69%,100%{background:var(--roxo);border-color:var(--roxo);color:#fff}}
+@media(prefers-reduced-motion:reduce){.hist-qr,.hist-coz,.hist-toque,.hist-ok,.hist-sacola{display:none}.aviso.a1{display:flex}.aviso.a2,.hist-passos li{animation:none}}
 
 
 /* celular realista */
@@ -481,10 +510,10 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
       </div>
     </div>
     <div class="topo-visual" aria-hidden="true">
-      <div class="celular"><div class="ilha"></div><div class="hist-qr"><b>MESA 4</b><div class="cartao"><svg viewBox="0 0 21 21" shape-rendering="crispEdges" fill="#1E1533"><path d="M0 0h7v7H0zM1 1v5h5V1zM2 2h3v3H2zM14 0h7v7h-7zM15 1v5h5V1zM16 2h3v3h-3zM0 14h7v7H0zM1 15v5h5v-5zM2 16h3v3H2z" fill-rule="evenodd"/><path d="M8 0h1v2H8zM10 1h2v1h-2zM9 3h1v2H9zM11 3h2v1h-2zM8 6h2v1H8zM12 5h1v3h-1zM0 8h2v1H0zM3 9h2v1H3zM6 8h1v2H6zM8 8h3v1H8zM14 8h2v1h-2zM18 8h3v1h-3zM1 11h3v1H1zM5 11h2v2H5zM9 10h2v2H9zM13 10h1v3h-1zM16 10h2v1h-2zM19 11h2v1h-2zM8 13h2v1H8zM11 13h1v2h-1zM15 12h2v2h-2zM9 15h3v1H9zM14 15h1v2h-1zM17 15h4v1h-4zM8 17h2v2H8zM11 18h2v1h-2zM16 17h2v2h-2zM19 18h2v3h-2zM9 20h3v1H9zM13 19h2v2h-2z"/></svg></div><small>O cliente aponta a câmera para o QR code da mesa</small></div><i class="hist-toque"></i><div class="hist-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Pedido enviado</div><div class="tela"><div class="status"><b>9:41</b><span><svg viewBox="0 0 18 12" fill="#111"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" fill="#111"><path d="M8 2.5c2.3 0 4.4.9 6 2.4l1.3-1.3A10.3 10.3 0 0 0 8 .6 10.3 10.3 0 0 0 .7 3.6L2 4.9a8.5 8.5 0 0 1 6-2.4zm0 3.6c1.3 0 2.5.5 3.4 1.3l1.3-1.3A6.6 6.6 0 0 0 8 4.2c-1.8 0-3.5.7-4.7 1.9l1.3 1.3c.9-.8 2.1-1.3 3.4-1.3zM8 9.6l2-2a2.8 2.8 0 0 0-4 0z"/></svg><svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="#111" opacity=".5"/><rect x="2" y="2" width="17" height="8" rx="1.8" fill="#111"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" fill="#111" opacity=".5"/></svg></span></div><img src="demos/hamburgueria/tela.jpg" alt=""></div></div>
-      <div class="aviso a1"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></i><span><b>Novo pedido · Mesa 4</b>2 smash + 1 refri</span></div>
+      <div class="celular"><div class="ilha"></div><div class="hist-qr"><div class="mesa"><svg viewBox="0 0 21 21" shape-rendering="crispEdges" fill="#1E1533"><path d="M0 0h7v7H0zM1 1v5h5V1zM2 2h3v3H2zM14 0h7v7h-7zM15 1v5h5V1zM16 2h3v3h-3zM0 14h7v7H0zM1 15v5h5v-5zM2 16h3v3H2z" fill-rule="evenodd"/><path d="M8 0h1v2H8zM10 1h2v1h-2zM9 3h1v2H9zM11 3h2v1h-2zM8 6h2v1H8zM12 5h1v3h-1zM0 8h2v1H0zM3 9h2v1H3zM6 8h1v2H6zM8 8h3v1H8zM14 8h2v1h-2zM18 8h3v1h-3zM1 11h3v1H1zM5 11h2v2H5zM9 10h2v2H9zM13 10h1v3h-1zM16 10h2v1h-2zM19 11h2v1h-2zM8 13h2v1H8zM11 13h1v2h-1zM15 12h2v2h-2zM9 15h3v1H9zM14 15h1v2h-1zM17 15h4v1h-4zM8 17h2v2H8zM11 18h2v1h-2zM16 17h2v2h-2zM19 18h2v3h-2zM9 20h3v1H9zM13 19h2v2h-2z"/></svg><b>MESA 4</b></div><div class="mira"></div><div class="link">Abrir cardápio · Mineiro Burger</div><small>O cliente aponta a câmera para o QR code da mesa</small></div><i class="hist-toque t1"></i><div class="hist-sacola"><span><b>Combo Clássico</b>1 item · R$ 39,00</span><em>Enviar pedido</em></div><i class="hist-toque t2"></i><div class="hist-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Pedido enviado</div><div class="hist-coz"><b>NA COZINHA</b><div class="card"><b>Pedido nº 24 · Mesa 4 <i>NOVO</i></b>1x Combo Clássico com Coca-Cola</div><div class="imp"><div class="papel"><b>MESA 4</b>Pedido nº 24 · 19:44<br>1x Combo Clássico<br>&nbsp;&nbsp;Coca-Cola</div></div></div><div class="tela"><div class="status"><b>9:41</b><span><svg viewBox="0 0 18 12" fill="#111"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" fill="#111"><path d="M8 2.5c2.3 0 4.4.9 6 2.4l1.3-1.3A10.3 10.3 0 0 0 8 .6 10.3 10.3 0 0 0 .7 3.6L2 4.9a8.5 8.5 0 0 1 6-2.4zm0 3.6c1.3 0 2.5.5 3.4 1.3l1.3-1.3A6.6 6.6 0 0 0 8 4.2c-1.8 0-3.5.7-4.7 1.9l1.3 1.3c.9-.8 2.1-1.3 3.4-1.3zM8 9.6l2-2a2.8 2.8 0 0 0-4 0z"/></svg><svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="#111" opacity=".5"/><rect x="2" y="2" width="17" height="8" rx="1.8" fill="#111"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" fill="#111" opacity=".5"/></svg></span></div><img src="demos/hamburgueria/tela.jpg" alt=""></div></div>
+      <div class="aviso a1"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></i><span><b>Novo pedido · Mesa 4</b>1 Combo Clássico</span></div>
       <div class="aviso a2"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></i><span><b>Comanda impressa</b>direto na cozinha</span></div>
-      <ol class="hist-passos"><li><i>1</i>Aponta o QR code</li><li><i>2</i>Pede pelo celular</li><li><i>3</i>Chega na cozinha</li></ol>
+      <ol class="hist-passos"><li><i>1</i>Lê o QR code</li><li><i>2</i>Pede pelo celular</li><li><i>3</i>Chega na cozinha</li></ol>
     </div>
   </div>
 </section>
