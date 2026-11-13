@@ -116,8 +116,9 @@ h2{font-size:19px;font-weight:800;letter-spacing:-.4px;line-height:1.15}
 .pontos i.atual::after{content:"";position:absolute;inset:0;background:#C9A6F0;transform-origin:left;animation:enche var(--dur) linear both}
 .pausado .pontos i.atual::after{animation-play-state:paused}
 @keyframes enche{from{transform:scaleX(0)}}
-.ctrl{display:flex;gap:8px}
-.ctrl button{min-height:40px;padding:0 16px;border-radius:12px;background:rgba(255,255,255,.1);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:6px}
+.ctrl{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.ctrl button[hidden]{display:none}
+.ctrl button{min-height:44px;padding:0 14px;border-radius:12px;background:rgba(255,255,255,.1);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:6px}
 .ctrl button:focus-visible,.fim a:focus-visible{outline:3px solid #F2B33D;outline-offset:2px}
 @media (prefers-reduced-motion:reduce){.cena{transition:opacity .2s;transform:none!important}.selo.carimbo,.ped{animation:none}.toque.vai::after{animation:none}.comanda{transition:none}}
 </style>
@@ -217,7 +218,10 @@ h2{font-size:19px;font-weight:800;letter-spacing:-.4px;line-height:1.15}
   <div class="pontos" id="pontos"></div>
 </div>
 <div class="ctrl">
+  <button type="button" id="volta" aria-label="Passo anterior">‹ Voltar</button>
   <button type="button" id="pausa">Pausar</button>
+  <button type="button" id="prox" aria-label="Próximo passo">Próximo ›</button>
+  <button type="button" id="pular">Pular ⏭</button>
   <button type="button" id="denovo">Ver de novo</button>
 </div>
 <a id="solicitar" href="https://wa.me/5535999945992?text=Ol%C3%A1!%20Quero%20solicitar%20a%20cartela%20de%20fidelidade%20da%20Octa%20Sites." target="_blank" rel="noopener" style="display:none"></a>
@@ -233,6 +237,7 @@ h2{font-size:19px;font-weight:800;letter-spacing:-.4px;line-height:1.15}
     {q:'Dono',t:'Todo mês, o dono vê o relatório e chama pelo WhatsApp quem sumiu e aceitou mensagens.',d:9000},
     {q:'',t:'',d:0}
   ];
+  var V=.65; function st(f,ms){ return setTimeout(f,ms*V); }
   var cenas=[].slice.call(document.querySelectorAll('.cena')), i=-1, tm=null, sub=[], pausado=false, resto=0, ini=0;
   var pts=document.getElementById('pontos');
   for(var k=0;k<6;k++){pts.appendChild(document.createElement('i'));}
@@ -242,23 +247,23 @@ h2{font-size:19px;font-weight:800;letter-spacing:-.4px;line-height:1.15}
   a.textContent='Solicitar cartela fidelidade'; fim.appendChild(a);
   document.querySelector('.celular').removeAttribute('aria-hidden');
 
-  function toque(id,at){ sub.push(setTimeout(function(){ var t=document.querySelector('#'+id+' .toque'); if(!t) return; t.classList.remove('vai'); void t.offsetWidth; t.classList.add('vai'); },at)); }
+  function toque(id,at){ sub.push(st(function(){ var t=document.querySelector('#'+id+' .toque'); if(!t) return; t.classList.remove('vai'); void t.offsetWidth; t.classList.add('vai'); },at)); }
   function extras(n){
     if(n===0) toque('b0',4200);
     if(n===1){ var alvo='(35) 99876-5432', el=document.getElementById('digita'), ac=document.getElementById('aceite'), ac2=document.getElementById('aceite2'); el.textContent=''; ac.classList.remove('ok'); ac2.classList.remove('ok');
-      for(var j=1;j<=alvo.length;j++)(function(j){ sub.push(setTimeout(function(){ el.textContent=alvo.slice(0,j); },900+j*150)); })(j);
-      sub.push(setTimeout(function(){ ac.classList.add('ok'); },4100)); sub.push(setTimeout(function(){ ac2.classList.add('ok'); },5200)); toque('b1',6600); }
+      for(var j=1;j<=alvo.length;j++)(function(j){ sub.push(st(function(){ el.textContent=alvo.slice(0,j); },900+j*150)); })(j);
+      sub.push(st(function(){ ac.classList.add('ok'); },4100)); sub.push(st(function(){ ac2.classList.add('ok'); },5200)); toque('b1',6600); }
     if(n===2){ var s=document.getElementById('selos'), h=''; for(var j=1;j<=10;j++){ h+= j<=6?'<div class="selo on">🍔</div>' : (j===10?'<div class="selo pr">🎁</div>':'<div class="selo" data-n="'+j+'">'+j+'</div>'); } s.innerHTML=h;
       document.getElementById('conta').textContent='6 de 10 selos'; document.getElementById('falta').textContent='Faltam 4'; document.getElementById('barra').style.width='60%';
-      sub.push(setTimeout(function(){ var n7=s.querySelector('[data-n="7"]'); n7.className='selo on carimbo'; n7.textContent='🍔';
+      sub.push(st(function(){ var n7=s.querySelector('[data-n="7"]'); n7.className='selo on carimbo'; n7.textContent='🍔';
         document.getElementById('conta').textContent='7 de 10 selos'; document.getElementById('falta').textContent='Faltam 3'; document.getElementById('barra').style.width='70%'; },1800)); }
     if(n===3) toque('b3',4300);
-    if(n===5){ var b=document.getElementById('bolha'); b.classList.remove('mostra'); toque('b5',3200); sub.push(setTimeout(function(){ b.classList.add('mostra'); },3900)); }
+    if(n===5){ var b=document.getElementById('bolha'); b.classList.remove('mostra'); toque('b5',3200); sub.push(st(function(){ b.classList.add('mostra'); },3900)); }
   }
   function legenda(n){
     var c=C[n], p=pts.children;
     for(var k=0;k<p.length;k++){ p[k].className= k<n?'feito':(k===n?'atual':''); }
-    if(n<6){ pts.style.setProperty('--dur',c.d+'ms'); document.getElementById('passo').textContent='Passo '+(n+1)+' de 6';
+    if(n<6){ pts.style.setProperty('--dur',(c.d*V)+'ms'); document.getElementById('passo').textContent='Passo '+(n+1)+' de 6';
       document.getElementById('quem').textContent=c.q; document.getElementById('quem').style.display=''; document.getElementById('texto').textContent=c.t; }
     else { document.getElementById('passo').textContent='Pronto'; document.getElementById('quem').style.display='none'; document.getElementById('texto').textContent='Simples para o cliente e útil para o dono.'; }
   }
@@ -266,9 +271,14 @@ h2{font-size:19px;font-weight:800;letter-spacing:-.4px;line-height:1.15}
     sub.forEach(clearTimeout); sub=[]; clearTimeout(tm);
     cenas.forEach(function(c,k){ c.classList.toggle('sai',k===i&&k!==n); c.classList.toggle('on',k===n); });
     i=n; legenda(n); extras(n); document.getElementById('tela').classList.toggle('escura',n>=4);
-    document.getElementById('pausa').style.display= n<6?'':'none';
-    if(C[n].d){ resto=C[n].d; ini=Date.now(); tm=setTimeout(function(){ vai(n+1); },resto); }
+    ['pausa','prox','pular'].forEach(function(id){ document.getElementById(id).hidden= n>=6; });
+    document.getElementById('volta').hidden= n===0||n>=6; document.getElementById('denovo').hidden= n<6;
+    if(C[n].d){ resto=C[n].d*V; ini=Date.now(); tm=setTimeout(function(){ vai(n+1); },resto); }
   }
+  function solta(){ pausado=false; document.body.classList.remove('pausado'); document.getElementById('pausa').textContent='Pausar'; }
+  document.getElementById('prox').addEventListener('click',function(){ solta(); vai(Math.min(i+1,6)); });
+  document.getElementById('volta').addEventListener('click',function(){ solta(); vai(Math.max(i-1,0)); });
+  document.getElementById('pular').addEventListener('click',function(){ solta(); vai(6); document.querySelector('.fim a').focus(); });
   document.getElementById('denovo').addEventListener('click',function(){ pausado=false; document.body.classList.remove('pausado'); document.getElementById('pausa').textContent='Pausar'; vai(0); });
   document.getElementById('pausa').addEventListener('click',function(){
     if(!pausado){ pausado=true; clearTimeout(tm); resto-= Date.now()-ini; this.textContent='Continuar'; document.body.classList.add('pausado'); }
