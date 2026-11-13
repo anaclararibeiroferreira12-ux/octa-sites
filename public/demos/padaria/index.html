@@ -915,7 +915,7 @@ html.so-cliente-loja .palco{grid-template-columns:minmax(0,420px)!important;just
     <strong>Experimente:</strong>
     <span class="curto">faça um pedido e veja ele chegar no painel.</span>
     <ol>
-      <li><span>1</span>Escolha o QR code lido</li>
+      <li><span>1</span>Escolha onde o celular encostou</li>
       <li><span>2</span>Monte o pedido e envie</li>
       <li><span>3</span>Veja a comanda sair na impressora</li>
       <li><span>4</span>Marque como pronto e entregue</li>
@@ -933,7 +933,7 @@ html.so-cliente-loja .palco{grid-template-columns:minmax(0,420px)!important;just
 <main class="palco" id="palco" data-aba="cliente">
   <section class="lado-cliente" id="ladoCliente" aria-label="Celular do cliente">
     <div class="rotulo-lado">Celular do cliente</div>
-    <div class="qr-local"><label for="qrLocal">QR code lido:</label><select id="qrLocal"></select><small id="qrLimite"></small></div>
+    <div class="qr-local"><label for="qrLocal">Tag da mesa:</label><select id="qrLocal"></select><small id="qrLimite"></small></div>
     <div class="aparelho"><div class="tela" id="tela"></div></div>
   </section>
 
@@ -959,7 +959,7 @@ html.so-cliente-loja .palco{grid-template-columns:minmax(0,420px)!important;just
         </div>
         <div class="info-imp">
           <h3 id="impTitulo">A comanda sai sozinha</h3>
-          <p><span id="impTexto">Cada pedido novo toca um aviso e é impresso na hora, com o destino em letras grandes.</span> Cada mesa e o balcão têm seu próprio QR code. Pedido de mesa vai até a mesa; pedido do balcão, a equipe chama o cliente pelo nome.</p>
+          <p><span id="impTexto">Cada pedido novo toca um aviso e é impresso na hora, com o destino em letras grandes.</span> Cada mesa e o balcão têm sua própria tag NFC (com QR code de reserva). Pedido de mesa vai até a mesa; pedido do balcão, a equipe chama o cliente pelo nome.</p>
           <div class="legenda-cores">
             <span style="background:var(--mesa)">MESA</span>
             <span style="background:var(--balcao)">BALCÃO · COMER AQUI</span>
@@ -1263,7 +1263,7 @@ html.so-cliente-loja .palco{grid-template-columns:minmax(0,420px)!important;just
   function faixa(){
     var chip = '';
     if (cli.tela === 'cardapio' || cli.tela === 'revisao') {
-      chip = '<span class="destino-chip" title="Local lido pelo QR code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>' + (cli.modo === 'mesa' ? 'Mesa ' + cli.mesa : 'Balcão') + '</span>';
+      chip = '<span class="destino-chip" title="Local da tag encostada"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>' + (cli.modo === 'mesa' ? 'Mesa ' + cli.mesa : 'Balcão') + '</span>';
     }
     return '<div class="faixa-marca"><img src="' + IMG.logo + '" alt=""><div><b>' + esc(card.loja.nome) + '</b><small>Padaria &amp; Confeitaria</small></div>' + chip + '</div>';
   }
@@ -1413,7 +1413,7 @@ html.so-cliente-loja .palco{grid-template-columns:minmax(0,420px)!important;just
   function capaHTML(){
     return '<header class="capa" style="--capa:url(\'' + (card.loja.capa || 'img/capa.jpg') + '\')"><div class="capa-topo"><img src="' + IMG.logo + '" alt=""><div><b>' + esc(card.loja.nome) + '</b><small>Padaria &amp; Confeitaria</small></div></div>' +
       '<div class="capa-txt"><span class="sobre">Fornadas o dia todo</span><h1>Feito hoje, do jeito que você gosta</h1><p>Pães quentinhos, cafés especiais, lanches e doces da casa.</p></div>' + CAMADAS + '</header>' +
-      '<div class="capa-acoes"><button type="button" class="btn-ouro" data-acao="ver-cardapio">Ver cardápio' + SETA + '</button><button type="button" class="chip-local" data-acao="trocar" title="Local lido pelo QR code">' + QRI + (cli.modo === 'mesa' ? 'Mesa ' + cli.mesa : 'Balcão') + '</button></div>' + saudacao();
+      '<div class="capa-acoes"><button type="button" class="btn-ouro" data-acao="ver-cardapio">Ver cardápio' + SETA + '</button><button type="button" class="chip-local" data-acao="trocar" title="Local da tag encostada">' + QRI + (cli.modo === 'mesa' ? 'Mesa ' + cli.mesa : 'Balcão') + '</button></div>' + saudacao();
   }
   var CAMADAS = '<svg class="camadas" viewBox="0 0 400 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 30 C60 8 110 40 170 24 S290 4 400 22 V70 H0Z" fill="#8B5A2B" opacity=".55"/><path d="M0 40 C70 22 120 52 200 34 S320 18 400 36 V70 H0Z" fill="#235347" opacity=".9"/><path d="M0 50 C80 36 140 62 220 46 S330 34 400 48 V70 H0Z" fill="#8EB69B"/><path d="M0 60 C90 50 150 70 240 58 S340 50 400 58 V70 H0Z" fill="#F3F9F4"/></svg>';
   function saudacao(){ var h = new Date().getHours(), t = h < 12 ? 'Bom dia!' : h < 18 ? 'Boa tarde!' : 'Boa noite!'; return '<div class="saudacao"><span>' + t + '</span><h2>O que vai querer hoje?</h2></div>'; }
@@ -1461,7 +1461,7 @@ html.so-cliente-loja .palco{grid-template-columns:minmax(0,420px)!important;just
       h += '<div class="rolagem"><div class="boas"><h2>Bem-vindo!</h2><p>Como você quer fazer o seu pedido?</p></div><div class="opcoes">' +
         '<button type="button" class="opcao" data-acao="modo" data-modo="mesa" aria-expanded="' + cli.escolhendoMesa + '"><span class="ic" style="background:var(--mesa)">' + ICON.mesa + '</span><span><b>Comer aqui</b><span>Peça da mesa e receba no seu lugar</span></span></button>';
       if (cli.escolhendoMesa) {
-        h += '<div class="mesas"><p><b>Na padaria, o QR code da mesa já informa o número.</b> Para a demonstração, toque na mesa:</p><div class="grade-mesas">';
+        h += '<div class="mesas"><p><b>Na padaria, a tag da mesa já informa o número.</b> Para a demonstração, toque na mesa:</p><div class="grade-mesas">';
         for (var m = 1; m <= (P().mesas || 12); m++) h += '<button type="button" data-acao="mesa" data-mesa="' + m + '" aria-label="Mesa ' + m + '">' + m + '</button>';
         h += '</div></div>';
       }
@@ -2228,7 +2228,7 @@ html.so-cliente-loja .palco{grid-template-columns:minmax(0,420px)!important;just
   $('qrLocal').addEventListener('change', function(){
     var v = this.value, enc = cli.enc; cli = novoCliente(); cli.enc = enc;
     if (v !== 'balcao') { cli.modo = 'mesa'; cli.mesa = +v; }
-    renderCliente(); toast(v === 'balcao' ? 'O celular leu o QR code do balcão.' : 'O celular leu o QR code da Mesa ' + v + '.');
+    renderCliente(); toast(v === 'balcao' ? 'O celular encostou na tag do balcão.' : 'O celular encostou na tag da Mesa ' + v + '.');
   });
   function aplicarPlano(){
     var p = P();
