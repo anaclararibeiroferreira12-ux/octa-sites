@@ -522,6 +522,8 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
   .monitor-tela{height:auto;aspect-ratio:16/10.4}
   .monitor-pe{display:block;width:150px;height:46px;margin:0 auto;background:linear-gradient(#24202C,#0E0C12);clip-path:polygon(22% 0,78% 0,100% 100%,0 100%)}
 }
+#contratar{background:radial-gradient(90% 60% at 100% 0%,#3B1F78 0%,transparent 60%),#17102B;color:#fff}
+#contratar .passo{color:var(--tinta)}#contratar .etq{color:#C4B5FD}#contratar h2{color:#fff}#contratar .contratar-cta .local{color:#CFC6E6}
 #na-loja .loja-grid{grid-template-columns:1fr!important;justify-items:center}
 #na-loja .loja-grid > div:first-child{display:none}
 .fecho{background:radial-gradient(80% 90% at 0% 0%,#7C3AED 0%,transparent 60%),linear-gradient(160deg,#5B21B6,#2E1065);color:#fff;text-align:center}
@@ -597,20 +599,6 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
   </div>
 </section>
 
-<!-- vantagens -->
-<section class="alt" aria-labelledby="vt-t">
-  <div class="cx">
-    <span class="etq">Para o estabelecimento</span>
-    <h2 id="vt-t">Menos correria no horário de pico.</h2>
-    <div class="vant">
-      <div class="v surge"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg></div><div><h3>Pedido direto para o preparo</h3><p>Sem anotar no papel e sem erro de pedido: o que o cliente escolheu é o que chega na cozinha.</p></div></div>
-      <div class="v surge"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><h3>Equipe livre no pico</h3><p>Os funcionários deixam de ir de mesa em mesa anotar pedidos e focam em preparar e entregar.</p></div></div>
-      <div class="v surge"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><div><h3>Cozinha organizada</h3><p>Os pedidos chegam em ordem, separados por mesa e já impressos.</p></div></div>
-      <div class="v surge"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></div><div><h3>Pequenas automações</h3><p>O cliente chama o garçom pelo celular e uma campainha toca no painel da loja. Também pede a conta, já dividida por pessoa.</p></div></div>
-    </div>
-  </div>
-</section>
-
 <!-- exemplos -->
 <section id="exemplos" aria-labelledby="ex-t">
   <div class="cx">
@@ -626,34 +614,6 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
       <div class="monitor"><div class="monitor-tela vivo" id="painelTela" data-w="820" data-src="demos/hamburgueria/?ver=painel"><span class="vivo-espera">Painel da loja</span></div></div>
       <div class="monitor-pe" aria-hidden="true"></div>
       <p class="legenda-vivo"><b>Painel da hamburgueria.</b> Faça um pedido no celular e veja chegar aqui, com a comanda saindo na impressora.</p>
-    </div>
-  </div>
-</section>
-
-<!-- na loja: painel + impressora -->
-<section id="na-loja" aria-labelledby="nl-t">
-  <div class="cx">
-    <span class="etq">No estabelecimento</span>
-    <h2 id="nl-t">O pedido chega no painel e a comanda sai na impressora.</h2>
-    <p class="intro">Os pedidos aparecem no painel em ordem de chegada, com aviso sonoro, e a comanda sai pronta para a cozinha.</p>
-    <div class="loja-grid">
-      <div>
-        <div class="tablet" role="img" aria-label="Exemplo do painel do estabelecimento: os pedidos aparecem em fila, em ordem de chegada, com o número, a mesa ou o balcão, o horário e os itens.">
-          <div class="painel-tela" aria-hidden="true">
-            <div class="painel-topo">Painel · Mineiro Burger<span><i class="ao-vivo"></i>Ao vivo · som ligado</span></div>
-            <div class="fila-tit"><span>Fila de pedidos</span><span>ordem de chegada</span></div>
-            <ol class="fila" id="fila"></ol>
-          </div>
-        </div>
-        <p class="legenda">Exemplo ilustrativo do painel do estabelecimento.</p>
-      </div>
-      <div class="impressora-box">
-        <div class="impressora" role="img" aria-label="Impressora térmica imprimindo a comanda do pedido mais recente, com número, mesa, itens e observações.">
-          <div class="papel-janela" aria-hidden="true"><div class="papel" id="papel"></div></div>
-          <div class="corpo-imp" aria-hidden="true"><span>80 mm</span></div>
-        </div>
-        <p class="legenda">A comanda sai sozinha, sem ninguém tocar em nada.</p>
-      </div>
     </div>
   </div>
 </section>
