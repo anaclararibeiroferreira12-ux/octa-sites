@@ -1496,6 +1496,22 @@ html.so-cliente-loja .btn-ver-painel{display:none!important}
 /* promoção sem movimento */
 .aparelho .promo-lanche,.aparelho .promo-sombra,.aparelho .promo-brilho::after{animation:none!important}
 </style>
+<style id="modos-ver">
+/* ===== modos da página inicial: só o celular (?ver=cliente) ou só o painel (?ver=painel) ===== */
+html.ver-cliente .faixa-plano,html.ver-cliente .topo,html.ver-cliente .guia,html.ver-cliente .rotulo-lado,html.ver-cliente .qr-local,html.ver-cliente .lado-painel{display:none!important}
+html.ver-cliente body{padding-top:0!important;background:#0E0B09}
+html.ver-cliente .palco{display:block!important;padding:0!important;margin:0!important;max-width:none!important;height:100dvh!important}
+html.ver-cliente .lado-cliente{display:block!important;position:static!important;padding:0!important;height:100dvh!important}
+html.ver-cliente .aparelho{width:100%!important;max-width:none!important;margin:0!important;padding:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;height:100dvh!important}
+html.ver-cliente .tela{border-radius:0!important;border:0!important;height:100dvh!important;min-height:0!important}
+html.ver-cliente .abertura{inset:0!important;border-radius:0!important}
+html.ver-cliente .toast{top:12px!important;bottom:auto!important}
+html.ver-painel .faixa-plano,html.ver-painel .guia,html.ver-painel .lado-cliente,html.ver-painel .dica-mob,html.ver-painel .rotulo-lado{display:none!important}
+html.ver-painel body{padding-top:0!important}
+html.ver-painel .palco{display:block!important;margin:0!important;max-width:none!important;height:auto!important;padding:14px!important}
+html.ver-painel .palco .lado-painel,html.ver-painel .palco[data-aba="painel"] .lado-painel{display:block!important;height:auto!important;overflow:visible!important;padding:0!important}
+html.ver-painel .palco{margin-top:0!important}
+</style>
 <script src="../sincronia.js"></script>
 <script>
 (function(){
@@ -1660,6 +1676,10 @@ html.so-cliente-loja .btn-ver-painel{display:none!important}
   // link de cliente (?loja= sem &chave=): o aparelho mostra só o celular do cliente
   var SO_CLIENTE = !!(LOJA && !OctaSync.chave());
   if (SO_CLIENTE) document.documentElement.classList.add('so-cliente-loja');
+  // ?ver=cliente mostra só o celular do cliente; ?ver=painel mostra só o painel da loja (usados lado a lado na página inicial)
+  var VER = (/[?&]ver=(cliente|painel)\b/.exec(location.search) || [])[1] || '';
+  if (VER) document.documentElement.classList.add('ver-' + VER);
+  if (VER === 'cliente') document.documentElement.classList.add('so-cliente-loja');
   if (LOJA) CHAVE += '-loja-' + LOJA;
   function semente(){
     var agora = Date.now();
@@ -2352,7 +2372,7 @@ html.so-cliente-loja .btn-ver-painel{display:none!important}
   function chegou(o, local){
     bip(); if (P().auto) imprimir(o); else renderPainel();
     var card = document.querySelector('[data-pedido="' + o.id + '"]'); if (card) card.classList.add('novo-chegou');
-    if (aba === 'cliente' && !SO_CLIENTE && window.matchMedia('(max-width:1060px)').matches) {
+    if (aba === 'cliente' && !SO_CLIENTE && !VER && window.matchMedia('(max-width:1060px)').matches) {
       naoVistos++; var bl = $('bolinha'); bl.hidden = false; bl.textContent = naoVistos;
       toast('Pedido nº ' + o.id + ' chegou no estabelecimento. Toque em "Painel da loja" para ver.');
     } else if (local) toast(P().auto ? 'Pedido nº ' + o.id + ' chegou no painel e a comanda foi impressa.' : 'Pedido nº ' + o.id + ' chegou no painel. No PRO, toque em "Imprimir" para a comanda sair.');
@@ -2403,7 +2423,7 @@ html.so-cliente-loja .btn-ver-painel{display:none!important}
     chVistos.push(c.id); bipChamado(c.tipo);
     var el = document.querySelector('[data-ch="' + c.id + '"]'); if (el) el.classList.add('chegou');
     var msg = 'Mesa ' + c.mesa + (c.tipo === 'conta' ? ' pediu a conta.' : ' chamou o garçom.');
-    if (aba === 'cliente' && !SO_CLIENTE && window.matchMedia('(max-width:1060px)').matches) { naoVistos++; var bl = $('bolinha'); bl.hidden = false; bl.textContent = naoVistos; toast(msg + ' Toque em "Painel da loja" para ver.'); }
+    if (aba === 'cliente' && !SO_CLIENTE && !VER && window.matchMedia('(max-width:1060px)').matches) { naoVistos++; var bl = $('bolinha'); bl.hidden = false; bl.textContent = naoVistos; toast(msg + ' Toque em "Painel da loja" para ver.'); }
     else if (local && c.tipo === 'conta') toast(msg + ' Veja no painel da loja.');
     else if (!local) toast(msg);
   }
@@ -2812,6 +2832,7 @@ html.so-cliente-loja .btn-ver-painel{display:none!important}
     $('abaPainel').setAttribute('aria-selected', qual === 'painel');
     if (qual === 'painel') { naoVistos = 0; $('bolinha').hidden = true; $('toast').classList.remove('on'); }
   }
+  if (VER === 'painel') trocarAba('painel');
   $('abaCliente').addEventListener('click', function(){ trocarAba('cliente'); });
   $('abaPainel').addEventListener('click', function(){ trocarAba('painel'); });
   document.addEventListener('click', function(e){
