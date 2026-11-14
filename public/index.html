@@ -499,6 +499,31 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
 .ex-motivos b{color:var(--tinta)}
 #exemplos .trilho .demo{width:min(290px,76vw)}
 @media(min-width:900px){#exemplos .cx{display:grid;grid-template-columns:minmax(0,1fr) 340px;column-gap:56px;align-content:center}#exemplos .cx > *{grid-column:1}#exemplos .trilho{grid-column:2;grid-row:1 / span 6;margin:0;padding:0;align-self:center;overflow:visible}#exemplos .trilho .demo{width:310px}}
+/* exemplo separado: celular do cliente + painel da loja ao vivo */
+.vivo{position:relative;overflow:hidden;flex:1;min-height:0;background:#0E0B09}
+.vivo iframe{position:absolute;left:0;top:0;border:0;transform-origin:0 0;background:#0E0B09}
+.celular-vivo{display:block;width:100%;border-radius:44px}
+.painel-vivo{margin-top:30px;min-width:0}
+.monitor{background:linear-gradient(145deg,#2A2633,#0E0C12 60%,#24202C);border-radius:22px;padding:10px;box-shadow:inset 0 0 0 1.5px #4A4555,0 24px 40px -18px rgba(30,21,51,.55)}
+.monitor-tela{display:flex;height:560px;border-radius:14px;background:#F4ECDD}
+.monitor-tela.vivo{background:#F4ECDD}
+.monitor-tela iframe{background:#F4ECDD}
+.monitor-pe{display:none}
+.vivo-espera{margin:auto;font-size:14px;font-weight:700;color:#6B6478}
+.legenda-vivo{margin:14px 0 0;font-size:14.5px;color:var(--tinta-2);text-align:center}
+.legenda-vivo b{color:var(--tinta)}
+@media(min-width:900px){#exemplos .cx > .painel-vivo{grid-column:1 / -1}}
+@media(min-width:1100px){
+  #exemplos .cx{grid-template-columns:310px minmax(0,1fr);column-gap:48px;align-items:start}
+  #exemplos .cx > *{grid-column:1 / -1}
+  #exemplos .ex-motivos{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+  #exemplos .trilho{grid-column:1;grid-row:auto;margin:34px 0 0;align-self:start}
+  #exemplos .cx > .painel-vivo{grid-column:2;margin-top:34px;align-self:center}
+  .monitor-tela{height:auto;aspect-ratio:16/10.4}
+  .monitor-pe{display:block;width:150px;height:46px;margin:0 auto;background:linear-gradient(#24202C,#0E0C12);clip-path:polygon(22% 0,78% 0,100% 100%,0 100%)}
+}
+#na-loja .loja-grid{grid-template-columns:1fr!important;justify-items:center}
+#na-loja .loja-grid > div:first-child{display:none}
 .fecho{background:radial-gradient(80% 90% at 0% 0%,#7C3AED 0%,transparent 60%),linear-gradient(160deg,#5B21B6,#2E1065);color:#fff;text-align:center}
 .fecho h2{color:#fff;margin-top:0}
 .fecho p{margin:12px auto 0;max-width:34rem;color:#E4D9FF;font-size:16.5px}
@@ -593,9 +618,14 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
     <h2 id="ex-t">Toque no celular e faça um pedido de teste.</h2>
     <p class="intro">A Mineiro Burger é uma hamburgueria fictícia, com as cores e o cardápio dela. O cardápio do seu negócio fica com a sua marca.</p>
     <div class="demo-aviso"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span><b>O exemplo mostra todas as funções do plano Octa Completo:</b> pedido pela mesa, balcão e delivery, adicionais e combos, encomendas com data, promoções em destaque, pedir a conta e chamar o garçom.</span></div>
-    <ul class="ex-motivos"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span><b>Monte um pedido</b> como se fosse o cliente na mesa.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span><b>Veja o pedido chegar</b> no painel e a comanda sair.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span><b>Chame o garçom</b> e ouça a campainha tocar no painel.</span></li></ul>
+    <ul class="ex-motivos"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span><b>Monte um pedido</b> como se fosse o cliente na mesa.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span><b>Veja o pedido chegar</b> no painel da loja e a comanda sair.</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span><b>Chame o garçom</b> e ouça a campainha tocar no painel.</span></li></ul>
     <div class="trilho" id="trilho">
       <div class="demo" data-demo="hamburgueria"><button type="button" aria-label="Abrir o exemplo da Mineiro Burger"><div class="celular"><div class="ilha"></div><div class="tela"><div class="status"><b>9:41</b><span><svg viewBox="0 0 18 12" fill="#111"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" fill="#111"><path d="M8 2.5c2.3 0 4.4.9 6 2.4l1.3-1.3A10.3 10.3 0 0 0 8 .6 10.3 10.3 0 0 0 .7 3.6L2 4.9a8.5 8.5 0 0 1 6-2.4zm0 3.6c1.3 0 2.5.5 3.4 1.3l1.3-1.3A6.6 6.6 0 0 0 8 4.2c-1.8 0-3.5.7-4.7 1.9l1.3 1.3c.9-.8 2.1-1.3 3.4-1.3zM8 9.6l2-2a2.8 2.8 0 0 0-4 0z"/></svg><svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="#111" opacity=".5"/><rect x="2" y="2" width="17" height="8" rx="1.8" fill="#111"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" fill="#111" opacity=".5"/></svg></span></div><img src="demos/hamburgueria/tela.jpg" alt="" loading="lazy"></div><span class="tocar"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>Toque para testar</span></div></button><h3>Mineiro Burger</h3><p>Hamburgueria</p></div>
+    </div>
+    <div class="painel-vivo" id="painelVivo">
+      <div class="monitor"><div class="monitor-tela vivo" id="painelTela" data-w="820" data-src="demos/hamburgueria/?ver=painel"><span class="vivo-espera">Painel da loja</span></div></div>
+      <div class="monitor-pe" aria-hidden="true"></div>
+      <p class="legenda-vivo"><b>Painel da hamburgueria.</b> Faça um pedido no celular e veja chegar aqui, com a comanda saindo na impressora.</p>
     </div>
   </div>
 </section>
@@ -605,7 +635,7 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
   <div class="cx">
     <span class="etq">No estabelecimento</span>
     <h2 id="nl-t">O pedido chega no painel e a comanda sai na impressora.</h2>
-    <p class="intro">Os pedidos aparecem em ordem de chegada, com aviso sonoro, e a comanda sai pronta para a cozinha.</p>
+    <p class="intro">Os pedidos aparecem no painel em ordem de chegada, com aviso sonoro, e a comanda sai pronta para a cozinha.</p>
     <div class="loja-grid">
       <div>
         <div class="tablet" role="img" aria-label="Exemplo do painel do estabelecimento: os pedidos aparecem em fila, em ordem de chegada, com o número, a mesa ou o balcão, o horário e os itens.">
@@ -810,6 +840,22 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
     pts.forEach(function(p,i){ p.classList.toggle('on',i===m); });
   },{passive:true});
 
+  /* exemplo separado: o celular mostra só o cliente e o monitor mostra só o painel (as duas telas conversam sozinhas) */
+  function ajustaVivo(v){ var f=v.querySelector('iframe'); if(!f) return; var W=matchMedia('(min-width:1100px)').matches||v.dataset.sempre?(+v.dataset.w||v.clientWidth):Math.max(v.clientWidth,340), e=v.clientWidth/W; f.style.width=W+'px'; f.style.height=Math.ceil(v.clientHeight/e)+'px'; f.style.transform='scale('+e+')'; }
+  function criaVivo(v,src,titulo){ var f=document.createElement('iframe'); f.title=titulo; f.src=src; v.textContent=''; v.appendChild(f); ajustaVivo(v); }
+  addEventListener('resize',function(){ [].forEach.call(document.querySelectorAll('.vivo'),ajustaVivo); });
+  function ligaCelular(k,botao){
+    var cel=botao.querySelector('.celular'), tela=cel.querySelector('.tela'), img=tela.querySelector('img'), toc=cel.querySelector('.tocar');
+    var caixa=document.createElement('div'); caixa.className='celular-vivo'; botao.parentNode.insertBefore(caixa,botao); caixa.appendChild(cel); botao.remove(); if(toc) toc.remove();
+    var v=document.createElement('div'); v.className='vivo'; v.dataset.w='390'; v.dataset.sempre='1'; tela.replaceChild(v,img);
+    criaVivo(v,'demos/hamburgueria/?ver=cliente','Celular do cliente: cardápio do Mineiro Burger');
+  }
+  (function(){
+    var pt=document.getElementById('painelTela'); if(!pt) return;
+    function liga(){ if(pt.querySelector('iframe')) return; criaVivo(pt,pt.dataset.src,'Painel da loja do Mineiro Burger'); }
+    if('IntersectionObserver' in window){ var io=new IntersectionObserver(function(es){ if(es.some(function(e){return e.isIntersecting;})){ io.disconnect(); liga(); } },{rootMargin:'500px'}); io.observe(pt); } else liga();
+  })();
+
   /* janela da demonstração */
   var jan=document.getElementById('janela'), fr=document.getElementById('demoFrame'), nome=document.getElementById('janelaNome'), ultimo=null;
   var DEMOS=window.OCTA_DEMOS||{};
@@ -817,8 +863,9 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
     k.querySelector('button').addEventListener('click',function(){
       var id=k.dataset.demo; ultimo=this;
       nome.textContent='Exemplo: '+k.querySelector('h3').textContent;
-      if(DEMOS[id]) fr.srcdoc=DEMOS[id]; else fr.src='demos/'+id+'/';
-      jan.classList.add('aberta','cheia'); document.body.style.overflow='hidden';
+      if(id==='hamburgueria'&&matchMedia('(min-width:1100px)').matches){ ligaCelular(k,this); return; }
+      if(DEMOS[id]) fr.srcdoc=DEMOS[id]; else fr.src='demos/'+id+'/'+(id==='hamburgueria'?'?ver=cliente':'');
+      jan.classList.add('aberta'); if(id!=='hamburgueria') jan.classList.add('cheia'); document.body.style.overflow='hidden';
       document.getElementById('fechar').focus();
     });
   });
