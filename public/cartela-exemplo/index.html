@@ -94,15 +94,26 @@ h2{font-size:19px;font-weight:800;letter-spacing:-.4px;line-height:1.15}
 .toque.vai::after{animation:toque .9s ease-out}
 @keyframes toque{0%{opacity:0;transform:scale(.4)}30%{opacity:1;transform:scale(.8)}100%{opacity:0;transform:scale(2)}}
 
-/* final */
-.fim{background:radial-gradient(110% 70% at 0% 0%,#2BB5C9,transparent 60%),linear-gradient(160deg,#0E8FA8,#0B6E8A);color:#fff;text-align:center;justify-content:center;gap:12px;padding:46px 20px 20px}
-.fim .mini{display:flex;gap:5px;justify-content:center}
-.fim .mini i{width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 2px 0 rgba(7,72,92,.5)}
-.fim .mini i.v{background:transparent;border:2px dashed rgba(255,255,255,.4)}
-.fim h2{font-size:21px}
-.fim p{color:#E6FAFD;font-size:12px;line-height:1.5}
-.fim a{display:flex;align-items:center;justify-content:center;min-height:46px;border-radius:99px;background:#fff;color:#07485C;font-weight:800;font-size:14px;text-decoration:none;margin-top:6px;box-shadow:0 4px 0 #07485C}
-.fim .preco-x{font-size:12px;color:#C9F1F7}
+/* final: dourado cheio */
+.fim{background:radial-gradient(100% 60% at 20% 0%,#FBE3A0,transparent 60%),linear-gradient(165deg,#F2B33D,#D99A1E);color:#2A1704;text-align:center;justify-content:center;align-items:center;gap:12px;padding:46px 18px 20px}
+.fim .cartao{width:100%;border-radius:18px;padding:14px 12px 12px;text-align:left}
+.fim .cartao-topo{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.fim .cartao-topo small{font-size:9.5px;font-weight:800;letter-spacing:.12em}
+.fim .cartao-topo b{font-size:11px;font-weight:800}
+.fim .grade{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.fim .grade i{aspect-ratio:1;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:14px}
+.fim .grade i.on{background:radial-gradient(circle at 35% 30%,#F6D88A,#E8B23A 55%,#A87C14)}
+.fim h2{font-size:22px;letter-spacing:-.5px;line-height:1.1}
+.fim p{font-size:12px;line-height:1.5}
+.fim .chip{display:inline-flex;align-items:baseline;gap:3px;border-radius:99px;padding:6px 14px;font-size:15px;font-weight:800}
+.fim .chip span{font-size:11px;font-weight:600;opacity:.8}
+.fim a{display:flex;align-items:center;justify-content:center;width:100%;min-height:46px;border-radius:99px;font-weight:800;font-size:13.5px;text-decoration:none}
+.fim .cartao{background:#FFFBF2;box-shadow:0 14px 28px -14px rgba(90,61,0,.6);transform:rotate(-2deg)}
+.fim .cartao-topo small{color:#A87C14}.fim .cartao-topo b{color:#2A1704}
+.fim .grade i{border:2px dashed #E3D3AE}.fim .grade i.on{border:0}.fim .grade i.pr{border-color:#C8102E}
+.fim p{color:#4A2E06}
+.fim .chip{background:rgba(255,255,255,.55);color:#2A1704}
+.fim a{background:#1E1033;color:#fff;box-shadow:0 4px 0 rgba(30,16,51,.35)}
 .tela.escura .status{color:#fff}.tela.escura .status svg{filter:invert(1)}
 
 /* legenda */
@@ -121,6 +132,29 @@ h2{font-size:19px;font-weight:800;letter-spacing:-.4px;line-height:1.15}
 .ctrl button{min-height:44px;padding:0 14px;border-radius:12px;background:rgba(255,255,255,.1);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:6px}
 .ctrl button:focus-visible,.fim a:focus-visible{outline:3px solid #F2B33D;outline-offset:2px}
 @media (prefers-reduced-motion:reduce){.cena{transition:opacity .2s;transform:none!important}.selo.carimbo,.ped{animation:none}.toque.vai::after{animation:none}.comanda{transition:none}}
+
+/* celular de verdade: tela grande, letras maiores e fáceis de tocar */
+@media (max-width:560px) and (pointer:coarse){
+ html,body{height:100%}
+ body{justify-content:flex-start;gap:10px;padding:10px 12px max(12px,env(safe-area-inset-bottom));height:100dvh;min-height:0;overflow:hidden}
+ .celular{width:100%;max-width:440px;flex:1 1 auto;min-height:0;aspect-ratio:auto;padding:0;border-radius:24px;background:none;box-shadow:0 18px 40px -18px rgba(0,0,0,.8)}
+ .celular::before,.celular::after,.ilha,.status{display:none}
+ .tela{border-radius:24px}
+ .cena{padding:14px;zoom:1.22;overflow-y:auto;-webkit-overflow-scrolling:touch}
+ .p-topo{margin:-14px -14px 12px;padding:12px 14px 10px}
+ .fim{padding:16px 18px}
+ .legenda{min-height:0}
+ .passo{font-size:13px}
+ .texto{font-size:16.5px;margin-top:4px}
+ .pontos{margin-top:8px}.pontos i{width:26px;height:5px}
+ .ctrl{gap:8px;flex-wrap:nowrap;width:100%;max-width:440px}
+ .ctrl button{flex:1;min-height:52px;font-size:16px;justify-content:center;padding:0 6px;border-radius:14px;white-space:nowrap}
+ .ctrl #prox,.ctrl #denovo{background:#F2B33D;color:#2A1704}
+ .ctrl #pular{flex:0 0 auto}
+}
+@media (max-width:560px) and (min-width:400px) and (min-height:700px) and (pointer:coarse){.cena{zoom:1.3}}
+@media (max-width:560px) and (max-height:640px) and (pointer:coarse){.cena{zoom:1.12}}
+@media (max-width:379px) and (pointer:coarse){.cena{zoom:1.1}.ctrl #pular{display:none}.ctrl button{font-size:15px}}
 </style>
 </head>
 <body>
@@ -205,10 +239,10 @@ h2{font-size:19px;font-weight:800;letter-spacing:-.4px;line-height:1.15}
 
   <!-- 7 fim -->
   <section class="cena fim" data-c="6">
-    <div class="mini"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="v"></i><i class="v"></i><i class="v"></i></div>
+    <div class="cartao"><div class="cartao-topo"><small>CARTELA FIDELIDADE</small><b>7 de 10 selos</b></div><div class="grade"><i class="on">🍔</i><i class="on">🍔</i><i class="on">🍔</i><i class="on">🍔</i><i class="on">🍔</i><i class="on">🍔</i><i class="on">🍔</i><i></i><i></i><i class="pr">🎁</i></div></div>
     <h2>Faça o cliente voltar</h2>
-    <p>Um extra opcional do plano Octa Completo.</p>
-    <span class="preco-x">+ R$ 29,90 por mês</span>
+    <p>A cartela de fidelidade é um extra opcional do plano Octa Completo.</p>
+    <span class="chip">+ R$ 29,90<span>/mês</span></span>
   </section>
 </div></div>
 
@@ -270,7 +304,7 @@ h2{font-size:19px;font-weight:800;letter-spacing:-.4px;line-height:1.15}
   function vai(n){
     sub.forEach(clearTimeout); sub=[]; clearTimeout(tm);
     cenas.forEach(function(c,k){ c.classList.toggle('sai',k===i&&k!==n); c.classList.toggle('on',k===n); });
-    i=n; legenda(n); extras(n); document.getElementById('tela').classList.toggle('escura',n>=4);
+    i=n; legenda(n); extras(n); document.getElementById('tela').classList.toggle('escura',n>=4&&n<6);
     ['pausa','prox','pular'].forEach(function(id){ document.getElementById(id).hidden= n>=6; });
     document.getElementById('volta').hidden= n===0||n>=6; document.getElementById('denovo').hidden= n<6;
     if(C[n].d){ resto=C[n].d*V; ini=Date.now(); tm=setTimeout(function(){ vai(n+1); },resto); }
