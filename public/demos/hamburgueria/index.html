@@ -9,7 +9,7 @@
 <meta name="description" content="Exemplo de cardápio com pedido pelo celular: Mineiro Burger, hamburgueria.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Karla:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@400;500;600;700;800&family=Oswald:wght@600;700&family=DM+Serif+Display:ital@0;1&family=Karla:wght@400;500;600;700&display=swap">
 <style>
 body{margin:0}img{max-width:100%}[hidden]{display:none!important}
 
@@ -1454,6 +1454,47 @@ html.so-cliente-loja .btn-ver-painel{display:none!important}
 #tela .lst-passo{background:var(--n-cobre)}
 #tela .lst-passo button{background:none;color:var(--n-cobre-esc)}
 #tela .lst-txt b,#tela .lst-txt small{white-space:normal}
+
+/* ===== ajustes pedidos: letra condensada, mais contraste, sem barra branca, promoção no topo, bebidas sem vidro ===== */
+.aparelho{--n-suave:#CFC5B8;--n-linha:rgba(243,237,228,.2);--titulo:'Oswald',Impact,sans-serif;--corpo:'Ordinal','Karla',system-ui,sans-serif}
+.aparelho *{scrollbar-width:none}
+.aparelho *::-webkit-scrollbar{display:none;width:0;height:0}
+/* títulos na letra nova */
+.aparelho .ad-txt h2,.aparelho .app-marca b,.aparelho .lst-txt b,.aparelho .sec-tit,.aparelho h2,.aparelho h3,.aparelho .abertura .marca-serra b,.aparelho .faixa-marca b,.aparelho .enc-cartao b,.aparelho .promo-txt b{font-family:var(--titulo)!important;font-weight:700!important;text-transform:uppercase;letter-spacing:.005em;font-style:normal}
+.aparelho .ad-txt h2 i,.aparelho .app-marca b i,.aparelho .abertura .marca-serra b i,.aparelho .faixa-marca b i,.aparelho h2 i{font-style:normal}
+.aparelho .ad-txt h2{font-size:46px;line-height:1}
+.aparelho .ad-preco,.aparelho .lst-preco,.aparelho .beb-preco,.aparelho .promo-preco{font-family:var(--titulo)!important;font-weight:700!important;letter-spacing:.01em}
+.aparelho .ad-preco s{font:500 15px var(--corpo);color:var(--n-suave);margin-right:8px}
+.aparelho .ad-preco{color:var(--n-cobre);font-size:32px}
+.aparelho .ad-sobre{display:inline-block;background:var(--n-cobre);color:var(--n-cobre-esc);padding:7px 12px;border-radius:999px;letter-spacing:.18em;font-weight:800}
+.aparelho .ad-btn{background:var(--n-cobre);color:var(--n-cobre-esc);font-weight:800}
+.aparelho .ad-txt p{color:#E6DDD1}
+.aparelho .lst-txt b{line-height:1.25!important;padding-top:3px;overflow:visible}
+.aparelho .beb-a{margin:0;padding:6px 16px 16px}
+/* busca bem visível */
+.aparelho .app-busca{background:#F3EDE4;border:0;color:#2A1A0C;min-height:52px}
+.aparelho .app-busca svg{color:#2A1A0C;opacity:1}
+.aparelho .app-busca input{color:#17120E;font-weight:600}
+.aparelho .app-busca input::placeholder{color:#4A3D31;opacity:1}
+/* abas e textos pequenos mais claros */
+.aparelho .app-abas a,.aparelho .app-abas button{color:#CFC5B8}
+.aparelho .app-nav button{color:#B9AEA1}
+.aparelho .app-nav button[aria-current],.aparelho .app-nav .on{color:var(--n-texto)}
+/* bebidas em lista simples */
+.aparelho .beb-a{flex-direction:column;overflow:visible;gap:0;margin:0;padding:0 16px!important}
+.aparelho .beb-a .beb{width:100%!important;align-self:stretch;box-sizing:border-box;background:none!important;border:0!important;border-bottom:1px solid var(--n-linha)!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;border-radius:0;padding:10px 56px 10px 0!important;overflow:visible}
+.aparelho .beb-a .beb::before,.aparelho .beb-a .beb::after{display:none!important}
+.aparelho .beb-a .beb-abre{flex-direction:row;align-items:center;gap:14px}
+.aparelho .beb-a .beb-foto{height:64px;width:52px;flex:none;background:none!important}
+.aparelho .beb-a .beb-foto img{max-height:64px;max-width:48px}
+.aparelho .beb-a .beb-txt{flex:1;margin-top:0!important;padding:0!important;background:none!important;border:0!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:none!important;border-radius:0}
+.aparelho .beb-a .beb-txt b,.aparelho .beb-a .beb-txt small,.aparelho .beb-a .beb-preco{text-shadow:none}
+.aparelho .beb-a .beb-txt b{font-size:16px}
+.aparelho .beb-a .beb-add{top:50%;bottom:auto;right:0;transform:translateY(-50%);background:var(--n-cobre)!important;color:var(--n-cobre-esc)!important;border:0!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;font-weight:700}
+.aparelho .beb-a .beb-passo{left:auto;right:0;top:50%;bottom:auto;transform:translateY(-50%);width:104px}
+.aparelho .beb-a .beb:has(.beb-passo){padding-bottom:10px!important;padding-right:116px!important}
+/* promoção sem movimento */
+.aparelho .promo-lanche,.aparelho .promo-sombra,.aparelho .promo-brilho::after{animation:none!important}
 </style>
 <script src="../sincronia.js"></script>
 <script>
@@ -1914,6 +1955,17 @@ html.so-cliente-loja .btn-ver-painel{display:none!important}
       '<div class="c3-txt"><b>' + esc(p.nome) + '</b><small>' + esc(p.desc) + '</small><span class="c3-preco">' + (temMais(p.id) ? 'a partir de ' : '') + fmt(p.preco) + '</span></div></div>' + btn + '</article>';
   }
   function deCombo(){ return (PROD.classico ? PROD.classico.preco : 0) + (PROD.batata ? PROD.batata.preco : 0) + (PROD.coca ? PROD.coca.preco : 0); }
+  // promoção com nome para cada dia da semana (0 = domingo)
+  var PROMO_SEMANA = [
+    {id:'classico', dia:'Domingo', de:'do Clássico'},
+    {id:'cheesesalada', dia:'Segunda', de:'do Cheese Salada'},
+    {id:'uaismash', dia:'Terça', de:'do Smash'},
+    {id:'combo', dia:'Quarta', de:'do Combo Clássico'},
+    {id:'frango', dia:'Quinta', de:'do Frango Crocante'},
+    {id:'canastrabacon', dia:'Sexta', de:'do Canastra Bacon'},
+    {id:'comboburger', dia:'Sábado', de:'do Burger com Batata'}
+  ];
+  function promoHoje(){ var d = PROMO_SEMANA[new Date().getDay()]; return {p: PROD[d.id], dia: d.dia, de: d.de}; }
   function promoDia(){
     var p = PROD.combo; if (!p || p.esgotado || !(catDe(p.cat) || {}).visivel) return '';
     var q = qtdBase(p.id);
@@ -1972,10 +2024,10 @@ html.so-cliente-loja .btn-ver-painel{display:none!important}
       if (!cli.aba || (cli.aba !== 'encomendas' && !visiveis.some(function(c){ return c.id === cli.aba; }))) cli.aba = (visiveis.filter(function(c){ return c.id === 'cafes'; })[0] || visiveis[0] || {}).id;
       var hr = new Date().getHours(), oi = hr < 12 ? 'Bom dia!' : hr < 18 ? 'Boa tarde!' : 'Boa noite!';
       h += '<div class="app" id="lista">';
-      var gOk = temMesa() && P().garcom, gFeito = gOk && garcomRecente(), dq = PROD.uaismash, temDest = dq && !dq.esgotado && (catDe(dq.cat) || {}).visivel && !(cli.busca || '').trim();
+      var gOk = temMesa() && P().garcom, gFeito = gOk && garcomRecente(), pd = promoHoje(), dq = pd.p, temDest = dq && !dq.esgotado && (catDe(dq.cat) || {}).visivel && !(cli.busca || '').trim();
       h += '<div class="app-capa' + (temDest ? ' com-destaque' : '') + '"><div class="app-topo"><span class="app-marca">' + SERRA + '<span><b>' + nomeLoja() + '</b><button type="button" class="app-local" data-acao="trocar">' + (cli.modo === 'mesa' ? 'Mesa ' + cli.mesa : cli.modo === 'delivery' ? 'Delivery' : 'Balcão') + '</button></span></span>' +
         (gOk ? '<button type="button" class="app-garcom" data-acao="garcom"' + (gFeito ? ' disabled' : '') + '>' + SINO + (gFeito ? 'Garçom chamado ✓' : 'Chamar garçom') + '</button>' : '') + '</div>';
-      if (temDest) h += '<div class="app-destaque"><img src="' + dq.img + '" alt=""><div class="ad-txt"><span class="ad-sobre">A assinatura da casa</span><h2>' + esc(dq.nome).replace(/ (\S+)$/, '<br><i>$1</i>') + '</h2><p>' + esc(dq.desc) + '</p><div class="ad-linha"><button type="button" class="ad-btn" data-acao="ver-prod" data-id="' + dq.id + '">Pedir este</button><span class="ad-preco">' + fmt(dq.preco) + '</span></div></div></div>';
+      if (temDest) h += '<div class="app-destaque"><img src="' + dq.img + '" alt=""><div class="ad-txt"><span class="ad-sobre">Promoção do dia</span><h2>' + esc(pd.dia) + '<br><i>' + esc(pd.de) + '</i></h2><p><b>' + esc(dq.nome) + '.</b> ' + esc(dq.desc) + '</p><div class="ad-linha"><button type="button" class="ad-btn" data-acao="ver-prod" data-id="' + dq.id + '">Quero esse</button><span class="ad-preco">' + (dq.id === 'combo' && deCombo() > dq.preco ? '<s>' + fmt(deCombo()) + '</s>' : '') + fmt(dq.preco) + '</span></div></div></div>';
       else h += '<div class="app-oi"><span>' + oi + '</span><h2>O que vai querer hoje?</h2></div>';
       h += '</div>';
       h += '<label class="app-busca">' + LUPA + '<input id="busca" type="search" placeholder="Buscar no cardápio" autocomplete="off" value="' + esc(cli.busca || '') + '" aria-label="Buscar no cardápio"></label>';
@@ -1986,7 +2038,7 @@ html.so-cliente-loja .btn-ver-painel{display:none!important}
         h += '<section class="lst-sec"><h3>Resultados</h3>' + (achados.length ? '<div class="lst-grade">' + achados.map(cartaoLista).join('') + '</div>' : '<p class="app-vazio">Nenhum produto encontrado. Tente outra palavra.</p>') + '</section>';
       } else {
         // promoção do dia (um cartão só, com o lanche saindo do cartão)
-        if (P().data || P().dst) h += promoDia();
+        if (!temDest && (P().data || P().dst)) h += promoDia();
         h += '<nav class="app-abas" id="cats" aria-label="Categorias">';
         visiveis.forEach(function(c, k){ h += '<button type="button" data-acao="aba" data-cat="' + c.id + '"' + (k === 0 ? ' aria-current="true"' : '') + '>' + esc(c.curto || c.nome) + '</button>'; });
         if (P().enc) h += '<button type="button" data-acao="aba" data-cat="encomendas">Encomendas</button>';
