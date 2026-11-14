@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Octa Sites · Pedidos pelo celular para estabelecimentos de comida</title>
-<meta name="description" content="Sistema de pedidos por QR code para lanchonetes, pizzarias, padarias, cafés e marmitarias. O pedido sai da mesa e chega direto na cozinha, sem comissão.">
+<meta name="description" content="Sistema de pedidos por aproximação (NFC) e QR code para lanchonetes, pizzarias, padarias, cafés e marmitarias. O pedido sai da mesa e chega direto na cozinha, sem comissão.">
 <meta name="theme-color" content="#FFFFFF">
 <link rel="canonical" href="https://octasites.com.br/">
 <meta property="og:type" content="website">
@@ -98,19 +98,23 @@ h1 em{font-style:normal;color:var(--roxo)}
 .aviso.a2 i{background:var(--verde-claro);color:var(--verde)}
 @keyframes flutua{50%{transform:translateY(-6px)}}
 @media(min-width:900px){.aviso.a1{right:-2%}.aviso.a2{left:4%}}
-/* topo: curta-metragem (QR code -> cardapio -> pedido -> cozinha), ciclo de 16s */
+/* topo: curta-metragem (tag NFC -> cardapio -> pedido -> cozinha), ciclo de 16s */
 .topo-visual{flex-direction:column;align-items:center;gap:18px}
 .hist-qr,.hist-coz{position:absolute;inset:9px;border-radius:36px;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:#fff;text-align:center;overflow:hidden}
 .hist-qr{background:linear-gradient(160deg,#3B3345,#17141C);animation:hist-qr 16s ease-in-out infinite}
-.hist-qr .mesa{position:relative;background:#fff;color:#1E1533;border-radius:16px;padding:12px 12px 10px;width:58%;box-shadow:0 18px 30px -14px rgba(0,0,0,.7);transform:rotate(3deg)}
-.hist-qr .mesa svg{display:block;width:100%;height:auto}
-.hist-qr .mesa b{display:block;font-size:13px;letter-spacing:.14em;margin-top:8px}
-.hist-qr .mira{position:absolute;left:14%;right:14%;top:24%;bottom:30%;border-radius:22px;box-shadow:0 0 0 2000px rgba(10,8,14,.35)}
-.hist-qr .mira::before,.hist-qr .mira::after{content:"";position:absolute;inset:0;border-radius:22px;border:3px solid #fff;clip-path:polygon(0 0,22% 0,22% 100%,0 100%,0 0,78% 0,100% 0,100% 100%,78% 100%,78% 0);}
-.hist-qr .mira::after{border:0;inset:auto 6% auto 6%;top:8%;height:3px;border-radius:3px;background:var(--roxo-claro);box-shadow:0 0 14px 3px rgba(139,92,246,.8);clip-path:none;animation:hist-scan 1.3s ease-in-out infinite alternate}
+.hist-qr .mesa{position:relative;background:#fff;color:#1E1533;border-radius:18px;padding:16px 12px 12px;width:62%;box-shadow:0 18px 30px -14px rgba(0,0,0,.7);display:flex;flex-direction:column;align-items:center;gap:6px;animation:hist-perto 16s ease-out infinite}
+.hist-qr .mesa .ico{position:relative;display:block;width:46%}
+.hist-qr .mesa .nfc{position:relative;display:block;width:100%;height:auto;color:var(--roxo);z-index:1}
+.hist-qr .mesa em{font-style:normal;font-size:11.5px;font-weight:700;line-height:1.2}
+.hist-qr .mesa b{display:block;font-size:13px;letter-spacing:.14em}
+.hist-qr .mini-qr{position:absolute;right:8px;bottom:8px;font-size:8px;font-weight:800;border:1.5px solid #1E1533;border-radius:4px;padding:2px 3px;opacity:.6}
+.hist-qr .ondas{position:absolute;left:50%;top:50%;width:0;height:0}
+.hist-qr .ondas i{position:absolute;left:-30px;top:-30px;width:60px;height:60px;border-radius:50%;border:3px solid var(--roxo-claro);opacity:0;animation:hist-onda 1.6s ease-out infinite}
+.hist-qr .ondas i:nth-child(2){animation-delay:.5s}.hist-qr .ondas i:nth-child(3){animation-delay:1s}
 .hist-qr small{position:absolute;bottom:9%;left:8%;right:8%;font-size:12.5px;line-height:1.35}
 .hist-qr .link{position:absolute;top:7%;left:10%;right:10%;background:#fff;color:#1E1533;border-radius:12px;padding:8px 10px;font-size:11.5px;font-weight:700;box-shadow:0 10px 20px -10px rgba(0,0,0,.7);opacity:0;animation:hist-link 16s ease-out infinite}
-@keyframes hist-scan{to{top:88%}}
+@keyframes hist-onda{0%{opacity:.9;transform:scale(.4)}100%{opacity:0;transform:scale(1.6)}}
+@keyframes hist-perto{0%{transform:scale(.62) translateY(30px) rotate(-4deg)}9%,100%{transform:scale(1) rotate(2deg)}}
 @keyframes hist-qr{0%,19%{opacity:1;transform:none}23%,97%{opacity:0;transform:scale(1.08)}100%{opacity:1;transform:none}}
 @keyframes hist-link{0%,10%{opacity:0;transform:translateY(-12px)}13%,100%{opacity:1;transform:none}}
 .hist-toque{position:absolute;width:44px;height:44px;border-radius:50%;z-index:4;border:3px solid #fff;background:rgba(255,255,255,.4);box-shadow:0 0 0 2px rgba(30,21,51,.25);opacity:0}
@@ -144,7 +148,7 @@ h1 em{font-style:normal;color:var(--roxo)}
 @keyframes hist-a2{0%,86%{opacity:0;transform:translateY(10px) scale(.94)}90%,96%{opacity:1;transform:none}100%{opacity:0}}
 .aviso.a2{bottom:130px}@media(min-width:900px){.aviso.a2{bottom:120px}}
 .hist-passos{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;list-style:none;padding:0;margin:0}
-.hist-passos li{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--tinta-2);background:#fff;border:1.5px solid var(--linha);border-radius:999px;padding:7px 12px 7px 7px}
+.hist-passos li{display:flex;align-items:center;gap:7px;white-space:nowrap;font-size:13px;font-weight:700;color:var(--tinta-2);background:#fff;border:1.5px solid var(--linha);border-radius:999px;padding:7px 12px 7px 7px}
 .hist-passos li i{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--lilas-1);color:var(--roxo);font-style:normal;font-size:12px}
 .hist-passos li:nth-child(1){animation:hist-p1 16s linear infinite}
 .hist-passos li:nth-child(2){animation:hist-p2 16s linear infinite}
@@ -499,7 +503,7 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
  {"@type":"Organization","@id":"https://octasites.com.br/#org","name":"Octa Sites","url":"https://octasites.com.br/","logo":"https://octasites.com.br/img/logo.png","areaServed":{"@type":"AdministrativeArea","name":"Sul de Minas, Minas Gerais, Brasil"},"contactPoint":{"@type":"ContactPoint","telephone":"+55-35-99994-5992","contactType":"sales","availableLanguage":"Portuguese"}},
- {"@type":"SoftwareApplication","name":"Octa Completo","applicationCategory":"BusinessApplication","operatingSystem":"Web","description":"Sistema de pedidos por QR code para estabelecimentos de comida: o cliente pede pelo celular e o pedido chega no painel da loja, com comanda impressa automaticamente.","url":"https://octasites.com.br/#planos","provider":{"@id":"https://octasites.com.br/#org"},"offers":{"@type":"Offer","price":"149.90","priceCurrency":"BRL","url":"https://octasites.com.br/#planos","availability":"https://schema.org/InStock","description":"Mensal, com 30 dias grátis para testar. Anual: R$ 1.499,00."}}
+ {"@type":"SoftwareApplication","name":"Octa Completo","applicationCategory":"BusinessApplication","operatingSystem":"Web","description":"Sistema de pedidos por aproximação (NFC) e QR code para estabelecimentos de comida: o cliente pede pelo celular e o pedido chega no painel da loja, com comanda impressa automaticamente.","url":"https://octasites.com.br/#planos","provider":{"@id":"https://octasites.com.br/#org"},"offers":{"@type":"Offer","price":"149.90","priceCurrency":"BRL","url":"https://octasites.com.br/#planos","availability":"https://schema.org/InStock","description":"Mensal, com 30 dias grátis para testar. Anual: R$ 1.499,00."}}
 ]}
 </script>
 </head>
@@ -524,7 +528,7 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
 <section class="topo" aria-labelledby="titulo">
   <div class="cx">
     <div>
-      <span class="selo-topo"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 21h-4v-4"/></svg></i>Pedido pelo QR code da mesa</span>
+      <span class="selo-topo"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 9.5a3.5 3.5 0 0 1 0 5"/><path d="M9 7a7 7 0 0 1 0 10"/><path d="M12.5 4.5a10.5 10.5 0 0 1 0 15"/><path d="M16 2a14 14 0 0 1 0 20"/></svg></i>Encoste o celular na mesa e peça</span>
       <h1 id="titulo">Transforme seu cardápio em <em>pedidos automáticos.</em></h1>
       <p class="lead">Seus clientes pedem pelo celular. Nada de anotar no papel e nada de comissão: tudo chega organizado e pronto para atender.</p>
       <div class="acoes">
@@ -538,10 +542,10 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
       </div>
     </div>
     <div class="topo-visual" aria-hidden="true">
-      <div class="celular"><div class="ilha"></div><div class="hist-qr"><div class="mesa"><svg viewBox="0 0 21 21" shape-rendering="crispEdges" fill="#1E1533"><path d="M0 0h7v7H0zM1 1v5h5V1zM2 2h3v3H2zM14 0h7v7h-7zM15 1v5h5V1zM16 2h3v3h-3zM0 14h7v7H0zM1 15v5h5v-5zM2 16h3v3H2z" fill-rule="evenodd"/><path d="M8 0h1v2H8zM10 1h2v1h-2zM9 3h1v2H9zM11 3h2v1h-2zM8 6h2v1H8zM12 5h1v3h-1zM0 8h2v1H0zM3 9h2v1H3zM6 8h1v2H6zM8 8h3v1H8zM14 8h2v1h-2zM18 8h3v1h-3zM1 11h3v1H1zM5 11h2v2H5zM9 10h2v2H9zM13 10h1v3h-1zM16 10h2v1h-2zM19 11h2v1h-2zM8 13h2v1H8zM11 13h1v2h-1zM15 12h2v2h-2zM9 15h3v1H9zM14 15h1v2h-1zM17 15h4v1h-4zM8 17h2v2H8zM11 18h2v1h-2zM16 17h2v2h-2zM19 18h2v3h-2zM9 20h3v1H9zM13 19h2v2h-2z"/></svg><b>MESA 4</b></div><div class="mira"></div><div class="link">Abrir cardápio · Mineiro Burger</div><small>O cliente aponta a câmera para o QR code da mesa</small></div><i class="hist-toque t1"></i><div class="hist-sacola"><span><b>Combo Clássico</b>1 item · R$ 39,00</span><em>Enviar pedido</em></div><i class="hist-toque t2"></i><div class="hist-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Pedido enviado</div><div class="hist-coz"><b>NA COZINHA</b><div class="card"><b>Pedido nº 24 · Mesa 4 <i>NOVO</i></b>1x Combo Clássico com Coca-Cola</div><div class="imp"><div class="papel"><b>MESA 4</b>Pedido nº 24 · 19:44<br>1x Combo Clássico<br>&nbsp;&nbsp;Coca-Cola</div></div></div><div class="tela"><div class="status"><b>9:41</b><span><svg viewBox="0 0 18 12" fill="#111"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" fill="#111"><path d="M8 2.5c2.3 0 4.4.9 6 2.4l1.3-1.3A10.3 10.3 0 0 0 8 .6 10.3 10.3 0 0 0 .7 3.6L2 4.9a8.5 8.5 0 0 1 6-2.4zm0 3.6c1.3 0 2.5.5 3.4 1.3l1.3-1.3A6.6 6.6 0 0 0 8 4.2c-1.8 0-3.5.7-4.7 1.9l1.3 1.3c.9-.8 2.1-1.3 3.4-1.3zM8 9.6l2-2a2.8 2.8 0 0 0-4 0z"/></svg><svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="#111" opacity=".5"/><rect x="2" y="2" width="17" height="8" rx="1.8" fill="#111"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" fill="#111" opacity=".5"/></svg></span></div><img src="demos/hamburgueria/tela.jpg" alt=""></div></div>
+      <div class="celular"><div class="ilha"></div><div class="hist-qr"><div class="mesa"><span class="ico"><span class="ondas"><i></i><i></i><i></i></span><svg class="nfc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5.5 9.5a3.5 3.5 0 0 1 0 5"/><path d="M9 7a7 7 0 0 1 0 10"/><path d="M12.5 4.5a10.5 10.5 0 0 1 0 15"/><path d="M16 2a14 14 0 0 1 0 20"/></svg></span><em>Encoste o celular aqui</em><b>MESA 4</b><span class="mini-qr">QR</span></div><div class="link">Abrir cardápio · Mineiro Burger</div><small>O cliente encosta o celular na plaquinha da mesa</small></div><i class="hist-toque t1"></i><div class="hist-sacola"><span><b>Combo Clássico</b>1 item · R$ 39,00</span><em>Enviar pedido</em></div><i class="hist-toque t2"></i><div class="hist-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Pedido enviado</div><div class="hist-coz"><b>NA COZINHA</b><div class="card"><b>Pedido nº 24 · Mesa 4 <i>NOVO</i></b>1x Combo Clássico com Coca-Cola</div><div class="imp"><div class="papel"><b>MESA 4</b>Pedido nº 24 · 19:44<br>1x Combo Clássico<br>&nbsp;&nbsp;Coca-Cola</div></div></div><div class="tela"><div class="status"><b>9:41</b><span><svg viewBox="0 0 18 12" fill="#111"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12" fill="#111"><path d="M8 2.5c2.3 0 4.4.9 6 2.4l1.3-1.3A10.3 10.3 0 0 0 8 .6 10.3 10.3 0 0 0 .7 3.6L2 4.9a8.5 8.5 0 0 1 6-2.4zm0 3.6c1.3 0 2.5.5 3.4 1.3l1.3-1.3A6.6 6.6 0 0 0 8 4.2c-1.8 0-3.5.7-4.7 1.9l1.3 1.3c.9-.8 2.1-1.3 3.4-1.3zM8 9.6l2-2a2.8 2.8 0 0 0-4 0z"/></svg><svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="#111" opacity=".5"/><rect x="2" y="2" width="17" height="8" rx="1.8" fill="#111"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" fill="#111" opacity=".5"/></svg></span></div><img src="demos/hamburgueria/tela.jpg" alt=""></div></div>
       <div class="aviso a1"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></i><span><b>Novo pedido · Mesa 4</b>1 Combo Clássico</span></div>
       <div class="aviso a2"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></i><span><b>Comanda impressa</b>direto na cozinha</span></div>
-      <ol class="hist-passos"><li><i>1</i>Lê o QR code</li><li><i>2</i>Pede pelo celular</li><li><i>3</i>Chega na cozinha</li></ol>
+      <ol class="hist-passos"><li><i>1</i>Encosta na mesa</li><li><i>2</i>Pede pelo celular</li><li><i>3</i>Chega na cozinha</li></ol>
     </div>
   </div>
 </section>
@@ -553,7 +557,7 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
     <h2 id="cf-t">Do celular do cliente para a cozinha, em segundos.</h2>
     <p class="intro">O cliente não precisa baixar aplicativo. O cardápio abre direto no navegador do celular.</p>
     <div class="passos">
-      <div class="passo surge"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 21h-4v-4"/></svg></div><h3>Lê o QR code</h3><p>Cada mesa tem o seu QR code. O pedido já chega com o número da mesa.</p></div>
+      <div class="passo surge"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 9.5a3.5 3.5 0 0 1 0 5"/><path d="M9 7a7 7 0 0 1 0 10"/><path d="M12.5 4.5a10.5 10.5 0 0 1 0 15"/><path d="M16 2a14 14 0 0 1 0 20"/></svg></div><h3>Encosta o celular</h3><p>Cada mesa tem uma tag NFC. O cliente encosta o celular e o cardápio abre, já com o número da mesa.</p><small>Ou lê o QR code da plaquinha</small></div>
       <div class="passo surge"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg></div><h3>Escolhe e pede</h3><p>O cliente vê as fotos, escolhe as opções e envia o pedido pelo celular.</p></div>
       <div class="passo surge"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></div><h3>Chega no painel</h3><p>A loja recebe o pedido na hora, com aviso sonoro, em ordem de chegada.</p></div>
       <div class="passo surge"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></div><h3>Sai a comanda</h3><p>A comanda é impressa para a cozinha começar o preparo.</p><small>Sai automaticamente</small></div>
@@ -640,7 +644,7 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
         <div class="preco" data-mes="R$ 149,90" data-ano="R$ 1.499,00"><b>R$ 149,90</b><span class="per">/mês</span></div>
         <p class="dia" data-mes="Apenas R$ 5 por dia" data-ano="Economia de R$ 299,80 no ano">Apenas R$ 5 por dia</p>
         <ul class="destaques">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Mesas e produtos sem limite, com QR code</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Mesas e produtos sem limite, com tag NFC e QR code</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Comanda impressa automaticamente</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Delivery e retirada: você define o valor da entrega por bairro</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Adicionais, combos e encomendas com data</li>
@@ -683,8 +687,8 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
       </div>
     </article>
     </div>
-    <div class="plano-notas"><div class="todos-planos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span><b>Você altera o cardápio quando quiser.</b> Preços, fotos, produtos e o que está esgotado mudam na hora, pelo painel, sem pagar nada a mais.</span></div><div class="compara"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h8M8 14h3M8 18h3M14 14h2M14 18h2"/></svg><span><b>Faça a conta.</b> Nos aplicativos de entrega, um pedido de R$ 40 pode deixar até R$ 10 em taxas. Na Octa, o estabelecimento paga R$ 5 por dia e recebe quantos pedidos quiser, pelo QR code da mesa e pelo próprio link de delivery.</span></div></div>
-    <p class="condicoes">O plano inclui a montagem do sistema em até 15 dias, os QR codes prontos para impressão, a visita no dia da inauguração e o treinamento do dono, inclusive no teste grátis. Sem fidelidade no plano mensal. Quem preferir pode escolher o plano anual, com 12 meses pelo preço de 10.</p>
+    <div class="plano-notas"><div class="todos-planos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span><b>Você altera o cardápio quando quiser.</b> Preços, fotos, produtos e o que está esgotado mudam na hora, pelo painel, sem pagar nada a mais.</span></div><div class="compara"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h8M8 14h3M8 18h3M14 14h2M14 18h2"/></svg><span><b>Faça a conta.</b> Nos aplicativos de entrega, um pedido de R$ 40 pode deixar até R$ 10 em taxas. Na Octa, o estabelecimento paga R$ 5 por dia e recebe quantos pedidos quiser, pela tag da mesa e pelo próprio link de delivery.</span></div></div>
+    <p class="condicoes">O plano inclui a montagem do sistema em até 15 dias, as tags NFC das mesas já gravadas, os QR codes prontos para impressão, a visita no dia da inauguração e o treinamento do dono, inclusive no teste grátis. Sem fidelidade no plano mensal. Quem preferir pode escolher o plano anual, com 12 meses pelo preço de 10.</p>
   </div>
 </section>
 
@@ -702,7 +706,7 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
       </div>
       <div class="resp-col octa">
         <h3>A Octa Sites cuida de</h3>
-        <ul><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Montar o sistema com o cardápio da loja</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Ajudar a escolher um modelo compatível antes da compra</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Instalar e testar tudo no estabelecimento, no primeiro uso</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Treinar a equipe</span></li></ul>
+        <ul><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Montar o sistema com o cardápio da loja</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Entregar as tags NFC das mesas, já gravadas</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Ajudar a escolher um modelo compatível antes da compra</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Instalar e testar tudo no estabelecimento, no primeiro uso</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Treinar a equipe</span></li></ul>
       </div>
     </div>
   </div>
@@ -716,7 +720,7 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
     <div class="passos">
       <div class="passo"><span class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.6A8.4 8.4 0 1 1 21 11.5z"/></svg></span><h3>Conversa e amostra</h3><p>Pelo WhatsApp, a Octa Sites entende o seu negócio e monta um cardápio de amostra com alguns produtos da loja, antes de qualquer compromisso.</p></div>
       <div class="passo"><span class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg></span><h3>Cardápio</h3><p>A loja manda o cardápio como tiver: foto, PDF ou lista. A Octa Sites organiza os produtos, os preços e as fotos.</p></div>
-      <div class="passo"><span class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><h3>Montagem</h3><p>A Octa Sites monta o sistema e os QR codes em até 15 dias.</p></div>
+      <div class="passo"><span class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><h3>Montagem</h3><p>A Octa Sites monta o sistema e grava as tags NFC das mesas em até 15 dias.</p></div>
       <div class="passo"><span class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><h3>Inauguração</h3><p>No primeiro dia, a Octa Sites vai até o estabelecimento, instala, testa e treina a equipe.</p></div>
     </div>
     <div class="contratar-cta"><a class="btn btn-roxo" href="https://wa.me/5535999945992?text=Ol%C3%A1!%20Quero%20conhecer%20a%20Octa%20Sites." target="_blank" rel="noopener">Falar no WhatsApp</a><p class="local">A Octa Sites é do Sul de Minas e vai até o estabelecimento no dia da inauguração.</p></div>
@@ -730,7 +734,8 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
     <h2 id="dv-t">Perguntas frequentes.</h2>
     <div class="faq">
       <details><summary>A Octa cobra comissão por pedido?<i>+</i></summary><p>Não. Você paga só a mensalidade do plano, não importa quantos pedidos receba.</p></details>
-      <details><summary>O cliente precisa baixar algum aplicativo?<i>+</i></summary><p>Não. O cardápio abre direto no navegador do celular, ao ler o QR code da mesa ou tocar no link da loja.</p></details>
+      <details><summary>O cliente precisa baixar algum aplicativo?<i>+</i></summary><p>Não. O cardápio abre direto no navegador do celular, ao encostar na tag da mesa, ler o QR code ou tocar no link da loja.</p></details>
+      <details><summary>E se o celular do cliente não tiver NFC?<i>+</i></summary><p>A plaquinha da mesa também tem QR code. Quem tem um celular sem NFC, ou com o NFC desligado, aponta a câmera e o cardápio abre do mesmo jeito.</p></details>
       <details><summary>O dono consegue mudar preços e produtos?<i>+</i></summary><p>Sim. O próprio dono altera preços, fotos e produtos pelo painel, e marca o que está esgotado com 1 toque.</p></details>
       <details><summary>Em quanto tempo o sistema fica pronto?<i>+</i></summary><p>Em até 15 dias depois que o estabelecimento envia o cardápio, com fotos e preços.</p></details>
       <details><summary>Como o cliente paga o pedido?<i>+</i></summary><p>Normalmente, no caixa da loja, como já acontece hoje. O sistema organiza os pedidos e não faz cobrança.</p></details>
