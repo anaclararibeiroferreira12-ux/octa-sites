@@ -966,7 +966,7 @@ html.so-cliente-loja .btn-ver-painel{display:none!important}
 .promo-add:focus-visible{outline:3px solid #141414;outline-offset:2px}
 .promo-dia + .app-abas{margin-top:22px}
 @media (prefers-reduced-motion:reduce){.promo-lanche,.promo-sombra,.promo-brilho::after{animation:none}}
-/* "Vai um refri?" na tela do pedido */
+/* "Vai uma bebida?" na tela do pedido */
 .refri{margin:16px -4px 4px;padding:14px 4px 6px;border-radius:18px;background:linear-gradient(180deg,#FFF3E0,#FFFBF5);box-shadow:0 0 0 1px rgba(200,16,46,.10)}
 .refri-tit{padding:0 10px 10px}
 .refri-tit b{display:block;font-size:18px;font-weight:900;color:#B20F27}
@@ -1493,6 +1493,11 @@ html.so-cliente-loja .btn-ver-painel{display:none!important}
 .aparelho .beb-a .beb-add{top:50%;bottom:auto;right:0;transform:translateY(-50%);background:var(--n-cobre)!important;color:var(--n-cobre-esc)!important;border:0!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;font-weight:700}
 .aparelho .beb-a .beb-passo{left:auto;right:0;top:50%;bottom:auto;transform:translateY(-50%);width:104px}
 .aparelho .beb-a .beb:has(.beb-passo){padding-bottom:10px!important;padding-right:116px!important}
+/* escolha de como pedir, sempre à vista */
+.aparelho .app-modos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:22px 16px 0}
+.aparelho .app-modos button{min-height:46px;border-radius:999px;border:1px solid rgba(243,237,228,.45);background:none;color:var(--n-texto);font:700 13.5px var(--corpo);cursor:pointer;padding:0 6px}
+.aparelho .app-modos button[aria-pressed="true"]{background:var(--n-cobre);border-color:var(--n-cobre);color:var(--n-cobre-esc)}
+.aparelho .app-modos + .app-busca{margin-top:12px}
 /* promoção sem movimento */
 .aparelho .promo-lanche,.aparelho .promo-sombra,.aparelho .promo-brilho::after{animation:none!important}
 </style>
@@ -1996,12 +2001,12 @@ html.ver-painel .palco{margin-top:0!important}
       '<span class="promo-preco">' + (deCombo() > p.preco ? '<s>' + fmt(deCombo()) + '</s>' : '') + fmt(p.preco) + '</span></div></div>' +
       '<button type="button" class="promo-add" data-acao="mais" data-id="' + p.id + '" aria-label="Adicionar ' + esc(p.nome) + '">' + (q ? q + ' no pedido · +1' : 'Quero esse') + '</button></div>';
   }
-  // "Vai um refri?" na tela do pedido
+  // "Vai uma bebida?" na tela do pedido
   function refriHTML(){
     var bs = PRODUTOS.filter(function(p){ var c = catDe(p.cat); return p.cat === 'bebidas' && c && c.visivel && !p.esgotado; });
     if (!bs.length) return '';
     var tem = bs.some(function(p){ return qtdBase(p.id); });
-    return '<div class="refri"><div class="refri-tit"><b>' + (tem ? 'Mais uma bebida?' : 'Vai um refri?') + '</b><small>Bem gelada, chega junto com o seu pedido.</small></div><div class="refri-lista">' +
+    return '<div class="refri"><div class="refri-tit"><b>' + (tem ? 'Mais uma bebida?' : 'Vai uma bebida?') + '</b><small>Bem gelada, chega junto com o seu pedido.</small></div><div class="refri-lista">' +
       bs.map(function(p){ var q = cli.carrinho[p.id] || 0;
         return '<div class="refri-item' + (q ? ' tem' : '') + '"><img src="' + p.img + '" alt="" loading="lazy"><b>' + esc(p.nome) + '</b><span>' + fmt(p.preco) + '</span>' +
           (q ? '<div class="refri-passo"><button type="button" data-acao="menos" data-id="' + p.id + '" aria-label="Remover um ' + esc(p.s) + '">−</button><output>' + q + '</output><button type="button" data-acao="mais" data-id="' + p.id + '" aria-label="Adicionar mais um ' + esc(p.s) + '">+</button></div>'
@@ -2051,6 +2056,7 @@ html.ver-painel .palco{margin-top:0!important}
       if (temDest) h += '<div class="app-destaque"><img src="' + dq.img + '" alt=""><div class="ad-txt"><span class="ad-sobre">Promoção do dia</span><h2>' + esc(pd.dia) + '<br><i>' + esc(pd.de) + '</i></h2><p><b>' + esc(dq.nome) + '.</b> ' + esc(dq.desc) + '</p><div class="ad-linha"><button type="button" class="ad-btn" data-acao="ver-prod" data-id="' + dq.id + '">Quero esse</button><span class="ad-preco">' + (dq.id === 'combo' && deCombo() > dq.preco ? '<s>' + fmt(deCombo()) + '</s>' : '') + fmt(dq.preco) + '</span></div></div></div>';
       else h += '<div class="app-oi"><span>' + oi + '</span><h2>O que vai querer hoje?</h2></div>';
       h += '</div>';
+      h += '<div class="app-modos" role="group" aria-label="Como você quer pedir"><button type="button" data-acao="trocar" aria-pressed="' + (cli.modo === 'mesa') + '">' + (cli.modo === 'mesa' ? 'Mesa ' + cli.mesa : 'Comer aqui') + '</button><button type="button" data-acao="modo" data-modo="viagem" aria-pressed="' + (cli.modo === 'balcao') + '">Para viagem</button><button type="button" data-acao="modo" data-modo="delivery" aria-pressed="' + (cli.modo === 'delivery') + '">Delivery</button></div>';
       h += '<label class="app-busca">' + LUPA + '<input id="busca" type="search" placeholder="Buscar no cardápio" autocomplete="off" value="' + esc(cli.busca || '') + '" aria-label="Buscar no cardápio"></label>';
       h += extras;
       var termo = (cli.busca || '').trim().toLowerCase();
