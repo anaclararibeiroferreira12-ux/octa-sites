@@ -532,6 +532,20 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
 .fecho .acoes{justify-content:center;margin-top:24px;gap:12px;display:flex;flex-wrap:wrap}
 .btn-claro{background:#fff;color:var(--roxo-esc);box-shadow:0 12px 24px -12px rgba(0,0,0,.6)}
 .btn-vazado{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.55)}
+/* faixa "teve outra ideia?" */
+.ideia{position:relative;display:grid;grid-template-columns:auto 1fr;gap:14px 18px;align-items:center;text-align:left;max-width:860px;margin:44px auto 0;padding:24px;border-radius:24px;background:linear-gradient(135deg,#FFF8E1,#FDE9A8);color:var(--tinta);box-shadow:0 0 0 3px #F2C14E,0 24px 50px -18px rgba(0,0,0,.6)}
+.ideia-ic{width:60px;height:60px;border-radius:18px;display:grid;place-items:center;font-size:32px;background:#fff;box-shadow:0 6px 0 #E0A92E;animation:ideia-pula 2.6s ease-in-out infinite}
+.ideia-on{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--verde-txt);background:#fff;border-radius:999px;padding:4px 11px 4px 9px}
+.ideia-on i{width:9px;height:9px;border-radius:50%;background:#22C55E;box-shadow:0 0 0 0 rgba(34,197,94,.6);animation:ideia-pulso 1.8s infinite}
+.ideia h3{margin:8px 0 4px;font-size:clamp(21px,2.6vw,26px);line-height:1.2;color:var(--tinta)}
+.ideia p{margin:0;max-width:none;color:var(--tinta-2);font-size:16px}
+.ideia-btn{grid-column:1 / -1;justify-self:stretch;justify-content:center;gap:10px;background:#16A34A;color:#fff;font-size:17px;min-height:54px;box-shadow:0 8px 0 #0F7A35,0 18px 30px -12px rgba(22,163,74,.7)}
+.ideia-btn:hover{background:#15803D}
+.ideia-btn svg{width:22px;height:22px}
+@media(min-width:760px){.ideia{grid-template-columns:auto 1fr auto;padding:26px 28px}.ideia-btn{grid-column:auto;justify-self:end;padding:0 26px}}
+@keyframes ideia-pulso{70%{box-shadow:0 0 0 9px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+@keyframes ideia-pula{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-4px) rotate(-6deg)}}
+@media (prefers-reduced-motion:reduce){.ideia-ic,.ideia-on i{animation:none}}
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
@@ -754,6 +768,15 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600;color:var(--
     <h2 id="fc-t">Pronto para tirar o bloquinho da mesa?</h2>
     <p>Teste por 30 dias, sem cartão e sem compromisso. A Octa Sites monta tudo e vai até o seu estabelecimento.</p>
     <div class="acoes"><a class="btn btn-claro" href="https://wa.me/5535999945992?text=Ol%C3%A1!%20Quero%20conhecer%20a%20Octa%20Sites." target="_blank" rel="noopener">Falar no WhatsApp</a><a class="btn btn-vazado" href="#planos">Ver o plano e o preço</a></div>
+    <div class="ideia">
+      <span class="ideia-ic" aria-hidden="true">💡</span>
+      <div class="ideia-txt">
+        <span class="ideia-on"><i></i>Estamos disponíveis</span>
+        <h3>Teve outra ideia para o seu negócio?</h3>
+        <p>Fale com a gente e agende uma visita para colocarmos sua ideia em prática 😉</p>
+      </div>
+      <a class="btn ideia-btn" href="https://wa.me/5535999945992?text=Ol%C3%A1!%20Tive%20uma%20ideia%20para%20o%20meu%20neg%C3%B3cio%20e%20quero%20agendar%20uma%20visita." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2.2a9.8 9.8 0 0 0-8.4 14.86L2.3 21.8l4.86-1.28A9.8 9.8 0 1 0 12.04 2.2zm5.43 12.18c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49 2.48 1.07 2.98.86 3.56.8.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35z"/></svg>Agendar uma visita</a>
+    </div>
   </div>
 </section>
 
