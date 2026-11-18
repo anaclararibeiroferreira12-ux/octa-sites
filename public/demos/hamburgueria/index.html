@@ -1494,9 +1494,28 @@ html.so-cliente-loja .btn-ver-painel{display:none!important}
 .aparelho .beb-a .beb-passo{left:auto;right:0;top:50%;bottom:auto;transform:translateY(-50%);width:104px}
 .aparelho .beb-a .beb:has(.beb-passo){padding-bottom:10px!important;padding-right:116px!important}
 /* escolha de como pedir, sempre à vista */
-.aparelho .app-modos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:22px 16px 0}
-.aparelho .app-modos button{min-height:46px;border-radius:999px;border:1px solid rgba(243,237,228,.45);background:none;color:var(--n-texto);font:700 13.5px var(--corpo);cursor:pointer;padding:0 6px}
-.aparelho .app-modos button[aria-pressed="true"]{background:var(--n-cobre);border-color:var(--n-cobre);color:var(--n-cobre-esc)}
+.aparelho .modos-tit{margin:22px 16px 0;display:flex;align-items:center;gap:8px;font:800 14.5px var(--corpo);color:#E9C79C;letter-spacing:.01em}
+.aparelho .modos-tit.ok{font-weight:600;font-size:13px;color:var(--n-suave)}
+.aparelho .modos-tit.ok b{color:var(--n-texto)}
+.aparelho .modos-v{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:#3E9B5B;color:#fff;font-size:12px;font-weight:900}
+.aparelho .modos-seta{display:inline-block;animation:modos-seta 1.2s ease-in-out infinite}
+.aparelho .app-modos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:10px 16px 0;padding:8px;border-radius:999px;background:linear-gradient(180deg,#080605,#1A1410);box-shadow:inset 0 2px 5px rgba(0,0,0,.85),inset 0 -1px 0 rgba(255,255,255,.07)}
+.aparelho .app-modos.falta{box-shadow:inset 0 2px 5px rgba(0,0,0,.85),inset 0 -1px 0 rgba(255,255,255,.07),0 0 0 2px rgba(207,150,89,.55);animation:modos-anel 1.8s ease-in-out infinite}
+.aparelho .app-modos button{position:relative;overflow:hidden;min-height:48px;border-radius:999px;border:0;cursor:pointer;padding:0 6px;font:800 13.5px var(--corpo);color:#F7EBDD;text-shadow:0 -1px 0 rgba(0,0,0,.7),0 1px 0 rgba(255,255,255,.12);
+  background:linear-gradient(180deg,#6B5A4C 0%,#3A2F27 48%,#2A221C 52%,#4A3D33 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35),inset 0 -2px 0 rgba(0,0,0,.45),0 4px 0 #120D0A,0 8px 14px -6px rgba(0,0,0,.9);transition:transform .12s,box-shadow .12s}
+.aparelho .app-modos button::after{content:"";position:absolute;top:-20%;bottom:-20%;left:-60%;width:45%;transform:skewX(-22deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.08) 25%,rgba(255,255,255,.55) 50%,rgba(255,255,255,.08) 75%,transparent);animation:modos-brilho 3.2s ease-in-out infinite;pointer-events:none}
+.aparelho .app-modos button:nth-child(2)::after{animation-delay:.25s}
+.aparelho .app-modos button:nth-child(3)::after{animation-delay:.5s}
+.aparelho .app-modos.ok button:not([aria-pressed="true"])::after{display:none}
+.aparelho .app-modos button:active{transform:translateY(3px);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),inset 0 -1px 0 rgba(0,0,0,.4),0 1px 0 #120D0A,0 3px 6px -3px rgba(0,0,0,.9)}
+.aparelho .app-modos button[aria-pressed="true"]{color:#2A1A0C;text-shadow:0 1px 0 rgba(255,236,200,.65);
+  background:linear-gradient(180deg,#FBE3B8 0%,#E2AE6E 30%,#B97A3C 52%,#CF9659 72%,#F0C68C 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.8),inset 0 -2px 0 rgba(90,50,15,.55),0 4px 0 #6E4319,0 10px 18px -6px rgba(207,150,89,.65)}
+@keyframes modos-brilho{0%{left:-60%}55%,100%{left:130%}}
+@keyframes modos-anel{50%{box-shadow:inset 0 2px 5px rgba(0,0,0,.85),inset 0 -1px 0 rgba(255,255,255,.07),0 0 0 4px rgba(207,150,89,.25)}}
+@keyframes modos-seta{50%{transform:translateY(3px)}}
+@media (prefers-reduced-motion:reduce){.aparelho .app-modos button::after,.aparelho .app-modos.falta,.aparelho .modos-seta{animation:none}}
 .aparelho .app-modos + .app-busca{margin-top:12px}
 /* promoção sem movimento */
 .aparelho .promo-lanche,.aparelho .promo-sombra,.aparelho .promo-brilho::after{animation:none!important}
@@ -2056,7 +2075,9 @@ html.ver-painel .palco{margin-top:0!important}
       if (temDest) h += '<div class="app-destaque"><img src="' + dq.img + '" alt=""><div class="ad-txt"><span class="ad-sobre">Promoção do dia</span><h2>' + esc(pd.dia) + '<br><i>' + esc(pd.de) + '</i></h2><p><b>' + esc(dq.nome) + '.</b> ' + esc(dq.desc) + '</p><div class="ad-linha"><button type="button" class="ad-btn" data-acao="ver-prod" data-id="' + dq.id + '">Quero esse</button><span class="ad-preco">' + (dq.id === 'combo' && deCombo() > dq.preco ? '<s>' + fmt(deCombo()) + '</s>' : '') + fmt(dq.preco) + '</span></div></div></div>';
       else h += '<div class="app-oi"><span>' + oi + '</span><h2>O que vai querer hoje?</h2></div>';
       h += '</div>';
-      h += '<div class="app-modos" role="group" aria-label="Como você quer pedir"><button type="button" data-acao="trocar" aria-pressed="' + (cli.modo === 'mesa') + '">' + (cli.modo === 'mesa' ? 'Mesa ' + cli.mesa : 'Comer aqui') + '</button><button type="button" data-acao="modo" data-modo="viagem" aria-pressed="' + (cli.modo === 'balcao') + '">Para viagem</button><button type="button" data-acao="modo" data-modo="delivery" aria-pressed="' + (cli.modo === 'delivery') + '">Delivery</button></div>';
+      var mAqui = cli.modo === 'mesa' || (cli.modo === 'balcao' && cli.consumo === 'aqui'), mViagem = cli.modo === 'balcao' && cli.consumo === 'viagem', mDel = cli.modo === 'delivery', mOk = mAqui || mViagem || mDel;
+      h += '<p class="modos-tit' + (mOk ? ' ok' : '') + '">' + (mOk ? '<span class="modos-v">✓</span><span>Pedido ' + (mDel ? 'para <b>delivery</b>' : mViagem ? '<b>para viagem</b>' : '<b>' + (cli.modo === 'mesa' ? 'na mesa ' + cli.mesa : 'para comer aqui') + '</b>') + '. Toque para trocar.</span>' : '<span class="modos-seta">👇</span><span>Primeiro, escolha como quer pedir</span>') + '</p>';
+      h += '<div class="app-modos' + (mOk ? ' ok' : ' falta') + '" role="group" aria-label="Como você quer pedir"><button type="button" data-acao="trocar" aria-pressed="' + mAqui + '">' + (cli.modo === 'mesa' ? 'Mesa ' + cli.mesa : 'Comer aqui') + '</button><button type="button" data-acao="modo" data-modo="viagem" aria-pressed="' + mViagem + '">Para viagem</button><button type="button" data-acao="modo" data-modo="delivery" aria-pressed="' + mDel + '">Delivery</button></div>';
       h += '<label class="app-busca">' + LUPA + '<input id="busca" type="search" placeholder="Buscar no cardápio" autocomplete="off" value="' + esc(cli.busca || '') + '" aria-label="Buscar no cardápio"></label>';
       h += extras;
       var termo = (cli.busca || '').trim().toLowerCase();
